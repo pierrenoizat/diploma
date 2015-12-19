@@ -6,6 +6,19 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
+
+gem "cocaine", "= 0.5.7" # required for imagemagick
+# gem 'aws-sdk', '>= 2.0.0' # If using paperclip `master` (upcoming v5.0)
+gem 'aws-sdk', '1.6.9'
+# gem "paperclip", git: "git://github.com/thoughtbot/paperclip.git"
+gem 'paperclip', '4.2.1'
+
+gem 'will_paginate', '~> 3.0.6'
+gem 'mechanize'
+
+gem 'bitcoin-ruby', git: 'https://github.com/lian/bitcoin-ruby', branch: 'master', require: 'bitcoin'
+gem 'money-tree'
+
 group :development, :test do
   gem 'byebug'
 end

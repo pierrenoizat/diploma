@@ -18,8 +18,8 @@ development:
   encoding: unicode
   database: diploma_development
   pool:     5
-  username: postgres
-  password: simon2
+  username: <%= ENV["PG_USERNAME"] %>
+  password: <%= ENV["PG_PASSWORD"] %>
   template: template0
 
   # Connect on a TCP socket. Omitted by default since the client uses a
@@ -46,8 +46,8 @@ test:
   encoding: unicode
   database: diploma_test
   pool:     5
-  username: postgres
-  password: simon2
+  username: <%= ENV["PG_USERNAME"] %>
+  password: <%= ENV["PG_PASSWORD"] %>
   template: template0
 
 production:
@@ -56,6 +56,6 @@ production:
   encoding: unicode
   database: diploma_production
   pool:     5
-  username: postgres
-  password: simon2
+  username: <%= ENV["PG_USERNAME"] %>
+  password: <%= ENV["PG_PASSWORD"] %>
   template: template0

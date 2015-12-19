@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Deeds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>User</th>
+      <th>Category</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @deeds.each do |deed| %>
+      <tr>
+        <td><%= deed.name %></td>
+        <td><%= deed.user_id %></td>
+        <td><%= deed.category %></td>
+        <td><%= deed.description %></td>
+        <td><%= link_to 'Show', deed %></td>
+        <td><%= link_to 'Edit', edit_deed_path(deed) %></td>
+        <td><%= link_to 'Destroy', deed, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Deed', new_deed_path %>
