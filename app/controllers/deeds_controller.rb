@@ -16,7 +16,10 @@ class DeedsController < ApplicationController
   end
   
   def log_hash
-    boole = @deed.op_return_tx
+    @json_tx = @deed.op_return_tx
+    @deed.tx_hash = @json_tx["hash"]
+    @deed.save
+    redirect_to @deed, notice: "Deed was successfully logged. OP_RETURN Tx ID is #{@json_tx["hash"]}"
   end
 
   # GET /deeds
@@ -120,7 +123,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar)
+      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint)
     end
     
 end
