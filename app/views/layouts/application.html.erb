@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
     <title><%= content_for?(:title) ? yield(:title) : "Diploma.report" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "My Application" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -14,6 +14,9 @@
     <header>
       <%= render 'layouts/navigation' %>
     </header>
+</br>
+</br>
+</br>
     <%= render 'layouts/messages' %>
     <%= yield %>
     <%= render 'layouts/footer' %>
