@@ -2,11 +2,16 @@
 <%= f.error_notification %>
 
   <div class="form-inputs">
-  <%= f.input :avatar, as: :file %>
+  <%= f.select(:category, Deed.categories.keys.map {|category| [category.titleize,category]}) %>
+  </div></br>
+
+  <div class="form-inputs">
+  <%= f.input :avatar, :label => 'Image File', as: :file %>
   </div>
 
   <div class="form-inputs">
-    <%= f.input :name %>
+    <%= f.input :name, :label => 'Title' %>
+	<%= f.input :issuer %>
 	<%= f.input :description %>
 	<!--<%= f.input :user_id, disabled: true, placeholder: "#{current_user.name}", :value => current_user.id %>-->
 	<%= f.hidden_field :user_id , :value => current_user.id %>

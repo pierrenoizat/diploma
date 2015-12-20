@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       end
     end
     
+  # patch "/deeds" => "admin#usersupdate", :as => "admin/usersupdate"
+    
   resources :users
   
   root to: 'visitors#index'

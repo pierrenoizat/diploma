@@ -1,6 +1,44 @@
-<h1>Editing Deed</h1>
+<!-- Page Content -->
+<div class="container">
 
-<%= render 'form' %>
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"><%= @deed.name %>
+                <small><%= @deed.avatar_file_name %></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><%= link_to 'Home', root_path %></li>
+				<li><%= link_to "#{current_user.name}", current_user %></li>
+				<li><%= link_to "#{@deed.name}", @deed %></li>
+                <li class="active">Edit</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
 
-<%= link_to 'Show', @deed %> |
-<%= link_to 'Back', deeds_path %>
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <p>Most of Start Bootstrap's unstyled templates can be directly integrated into the Modern Business template. You can view all of our unstyled templates on our website at <a href="http://startbootstrap.com/template-categories/unstyled">http://startbootstrap.com/template-categories/unstyled</a>.</p>
+			<%= simple_form_for @deed, url: deed_path(@deed), method: :patch do |f| %>
+			<%= f.error_notification %>
+			  <div class="form-inputs">
+				<%= f.select :category, Deed.categories.keys.map {|category| [category.titleize,category]} %>
+			  </div></br>
+			  <div class="form-inputs">
+			    <%= f.input :name, :label => 'Title' %>
+				<%= f.input :issuer %>
+				<%= f.input :description %>
+			  </div>
+			
+			  <div class="form-actions">
+			    <%= f.button :submit %>   <%= link_to 'Cancel', current_user, :class => 'btn btn-default' %>
+			  </div>
+			<% end %>
+        </div>
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->

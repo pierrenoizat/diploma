@@ -1,5 +1,5 @@
 class Deed < ActiveRecord::Base
-  
+  enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video]
   belongs_to :user
   
     has_attached_file :avatar,

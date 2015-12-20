@@ -123,7 +123,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint)
+      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint, :issuer)
     end
     
 end

@@ -13,11 +13,16 @@ gem 'aws-sdk', '1.6.9'
 # gem "paperclip", git: "git://github.com/thoughtbot/paperclip.git"
 gem 'paperclip', '4.2.1'
 
+gem 'google-api-client', '>= 0.8'
+gem 'launchy', '>= 2.1.1'
+
 gem 'will_paginate', '~> 3.0.6'
 gem 'mechanize'
 
 gem 'bitcoin-ruby', git: 'https://github.com/lian/bitcoin-ruby', branch: 'master', require: 'bitcoin'
 gem 'money-tree'
+
+
 
 group :development, :test do
   gem 'byebug'

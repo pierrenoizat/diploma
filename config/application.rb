@@ -33,10 +33,12 @@ module Diploma
   end
 end
 
-$ADMIN_USERNAME = "André Boussac"
+$ADMIN_USERNAME = "Bitcoin Radio"
 $BROADCAST = false
 
 $NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
+
+$GOOGLE_DRIVE_URL = "https://www.googleapis.com/upload/drive/v2/files?uploadType=media" # simple file upload
 
 $BLOCKR_BLOCK_URL = "http://btc.blockr.io/api/v1/block/info/"  # used to get block hash for given block height
 

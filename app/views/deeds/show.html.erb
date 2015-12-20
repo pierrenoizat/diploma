@@ -8,9 +8,9 @@
                 <small><%= @deed.avatar_file_name %></small>
             </h1>
             <ol class="breadcrumb">
-                <li><%= link_to 'Home', root_path %>
-                </li>
-                <li class="active">Portfolio Item</li>
+                <li><%= link_to 'Home', root_path %></li>
+				<li><%= link_to "#{current_user.name}", current_user %></li>
+                <li class="active"><%= @deed.category.titleize %></li>
             </ol>
         </div>
     </div>
@@ -35,17 +35,7 @@
 				<% end %>
                 <li>Adipiscing Elit</li>
             </ul>
-			<p><%= link_to "Download", download_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
-        </div>
-
-    </div>
-    <!-- /.row -->
-
-    <!-- Related Projects Row -->
-    <div class="row">
-
-        <div class="col-lg-12">
-            <h4 class="page-header"><%= link_to 'Back to the deeds of ' + "#{current_user.name}", current_user %></h4>
+			<p><%= link_to "Download", download_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Edit", edit_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
         </div>
 
     </div>
