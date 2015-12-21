@@ -3,8 +3,6 @@ class Deed < ActiveRecord::Base
   belongs_to :user
   
     has_attached_file :avatar,
-     :styles => { :original=> '700x700>' },
-     :convert_options=> { :original => "-quality 100" },
      :default_url => "/images/:style/missing.png",
      :storage => :s3,
      :s3_permissions => :public_read,
@@ -16,7 +14,7 @@ class Deed < ActiveRecord::Base
      # :s3_options => { :server => "s3-eu-west-1.amazonaws.com" }
 
      validates_attachment :avatar,
-       :size => { :in => 0..499.kilobytes }
+       :size => { :in => 0..$MAX_SIZE.kilobytes }
 
      # validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 

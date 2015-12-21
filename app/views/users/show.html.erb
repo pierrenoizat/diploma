@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-md-7">
 			<%= link_to deed do %>
-			  <%= image_tag deed.avatar.url(:medium), class: 'img-responsive img-hover' %>
+			  <%= image_tag deed.avatar.url, class: 'img-responsive img-hover' %>
             <% end %>
         </div>
         <div class="col-md-5">
@@ -36,7 +36,18 @@
 	<hr>
 
 	<% end %>
-	<%= link_to "Upload a New Deed", new_deed_path, :class => 'btn btn-lg btn-default btn-block'  %>
+	
+	<!-- Call to Action Section -->
+    <div class="well">
+        <div class="row">
+            <div class="col-md-8">
+                <p>Upload your most precious deeds. A deed is valuable document such as a diploma, property title or an academic paper. Accepted file formats are pdf, jpg or png. File size must be less than <%= '%.0f' % ($MAX_SIZE/1.2) %>k.</p>
+            </div>
+            <div class="col-md-4">
+                <%= link_to "Upload a New Deed", new_deed_path, :class => 'btn btn-lg btn-default btn-block'  %>
+            </div>
+        </div>
+    </div>
 
     <!-- Pagination -->
     <div class="row text-center">

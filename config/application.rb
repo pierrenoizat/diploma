@@ -35,6 +35,7 @@ end
 
 $ADMIN_USERNAME = "Bitcoin Radio"
 $BROADCAST = false
+$MAX_SIZE = 599 # maximum deed avatar file size, in kilobytes
 
 $NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
 

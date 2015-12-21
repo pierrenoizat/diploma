@@ -13,7 +13,10 @@ gem 'aws-sdk', '1.6.9'
 # gem "paperclip", git: "git://github.com/thoughtbot/paperclip.git"
 gem 'paperclip', '4.2.1'
 
-gem 'google-api-client', '>= 0.8'
+# gem 'google-api-client', '0.9.pre4'
+
+gem 'google-api-client', require: 'google/api_client'
+
 gem 'launchy', '>= 2.1.1'
 
 gem 'will_paginate', '~> 3.0.6'

@@ -1,11 +1,18 @@
 class DeedsController < ApplicationController
   before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash]
+  
+  require 'google/api_client'
+  require 'google/api_client'
+  require 'google/api_client/client_secrets'
+  require 'google/api_client/auth/file_storage'
+  require 'google/api_client/auth/installed_app'
+  require 'logger'
 
   def download
     
     s3 = AWS::S3.new(
     :access_key_id     => Rails.application.secrets.access_key_id,
-        :secret_access_key => Rails.application.secrets.secret_access_key
+    :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
     bucket = s3.buckets['hashtree-assets']
@@ -70,7 +77,7 @@ class DeedsController < ApplicationController
         
         s3 = AWS::S3.new(
         :access_key_id     => Rails.application.secrets.access_key_id,
-            :secret_access_key => Rails.application.secrets.secret_access_key
+        :secret_access_key => Rails.application.secrets.secret_access_key
         )
 
         bucket = s3.buckets['hashtree-assets']
