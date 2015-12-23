@@ -24,18 +24,18 @@
         </div>
 
         <div class="col-md-4">
-            <h3><%= @deed.name %></h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+            <h3><%= @deed.category.titleize %>:<%= @deed.issuer %></h3>
+            <p><%= @deed.description %></p>
             <h3>Deed Details</h3>
             <ul>
-                <li>Original MD5 Fingerprint: <strong><%= @deed.avatar_fingerprint %></strong></li>
-                <li>S3 File MD5 Fingerprint: <strong><%= @md5 %></strong></li>
+                <li>Original MD5 Fingerprint: <%= @deed.avatar_fingerprint %></li>
+				<li>S3 File SHA256 Fingerprint: <strong><%= @sha2 %></strong></li>
 				<% unless @deed.tx_hash.blank? %>
                 	<li>OP_RETURN Tx ID: <%= @deed.tx_hash %></li>
 				<% end %>
                 <li>Adipiscing Elit</li>
             </ul>
-			<p><%= link_to "Download", download_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Edit", edit_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
+			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Edit", edit_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
         </div>
 
     </div>

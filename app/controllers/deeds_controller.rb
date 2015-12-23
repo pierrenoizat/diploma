@@ -48,8 +48,7 @@ class DeedsController < ApplicationController
 
     bucket = s3.buckets['hashtree-assets']
     object = bucket.objects[@deed.avatar_file_name]
-
-    @md5 = Digest::MD5.hexdigest object.read
+    @sha2 = Digest::SHA256.hexdigest object.read
     
   end
 
@@ -82,8 +81,9 @@ class DeedsController < ApplicationController
 
         bucket = s3.buckets['hashtree-assets']
         object = bucket.objects[@deed.avatar_file_name]
-        # send_data object.read, filename: @deed.avatar_file_name, type: "application/json", disposition: 'attachment', stream: 'true', buffer_size: '4096'
-        @md5 = Digest::MD5.hexdigest object.read
+        @sha2 = Digest::SHA256.hexdigest object.read
+        @deed.avatar_fingerprint = Digest::SHA256.hexdigest object.read
+        @deed.save
         
         format.html { redirect_to @deed, notice: 'Deed was successfully created.' }
         format.json { render :show, status: :created, location: @deed }

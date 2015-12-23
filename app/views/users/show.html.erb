@@ -25,10 +25,10 @@
             <% end %>
         </div>
         <div class="col-md-5">
-            <h3><%= deed.name %></h3>
-            <h4><%= deed.category.titleize %>: <%= deed.issuer %></h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos perspiciatis atque eveniet unde.</p>
-            <%= link_to 'View Deed', deed, class: 'btn btn-primary' %>
+            <h4><%= deed.name %></h4>
+            <h5><%= deed.category.titleize %>: <%= deed.issuer %></h5>
+            <p><%= deed.description %></p>
+            <%= link_to 'View Deed', deed, class: 'btn btn-default btn-xs btn' %><span> </span><a class="btn btn-default btn-xs btn" href="<%= "#{download_deed_path(deed)}" %> "><i class="fa fa-download"></i><%= " #{deed.avatar_file_name}" %></a>
         </div>
     </div>
     <!-- /.row -->
