@@ -41,15 +41,6 @@ class DeedsController < ApplicationController
     
     @user = User.find_by_id(@deed.user_id)
     
-    s3 = AWS::S3.new(
-    :access_key_id     => Rails.application.secrets.access_key_id,
-        :secret_access_key => Rails.application.secrets.secret_access_key
-    )
-
-    bucket = s3.buckets['hashtree-assets']
-    object = bucket.objects[@deed.avatar_file_name]
-    @sha2 = Digest::SHA256.hexdigest object.read
-    
   end
 
   # GET /deeds/new
@@ -81,7 +72,6 @@ class DeedsController < ApplicationController
 
         bucket = s3.buckets['hashtree-assets']
         object = bucket.objects[@deed.avatar_file_name]
-        @sha2 = Digest::SHA256.hexdigest object.read
         @deed.avatar_fingerprint = Digest::SHA256.hexdigest object.read
         @deed.save
         

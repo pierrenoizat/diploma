@@ -28,12 +28,10 @@
             <p><%= @deed.description %></p>
             <h3>Deed Details</h3>
             <ul>
-                <li>Original MD5 Fingerprint: <%= @deed.avatar_fingerprint %></li>
-				<li>S3 File SHA256 Fingerprint: <strong><%= @sha2 %></strong></li>
+				<li>S3 File SHA256 Fingerprint: <strong><%= @deed.avatar_fingerprint %></strong></li>
 				<% unless @deed.tx_hash.blank? %>
                 	<li>OP_RETURN Tx ID: <%= @deed.tx_hash %></li>
 				<% end %>
-                <li>Adipiscing Elit</li>
             </ul>
 			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Edit", edit_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
         </div>
