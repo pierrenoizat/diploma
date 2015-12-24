@@ -128,13 +128,14 @@ class Deed < ActiveRecord::Base
        http.use_ssl = true
 
        request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
-       if $BROADCAST
+       if ($BROADCAST == true)
          data = {"tx": @raw_transaction}
          request.body = data.to_json
 
          response = http.request(request)  # broadcast transaction using $PUSH_TX_URL
          post_response = JSON.parse(response.body)
        end
+       puts post_response
        
        @json_tx
 

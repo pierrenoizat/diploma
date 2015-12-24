@@ -102,12 +102,14 @@ class DeedsController < ApplicationController
   # DELETE /deeds/1.json
   def destroy
     
+    @user = User.find_by_id(@deed.user_id)
+    
     @deed.avatar = nil
     @deed.save # destroy attachment first
     
     @deed.delete
     respond_to do |format|
-      format.html { redirect_to root_url, notice: 'Deed was successfully destroyed.' }
+      format.html { redirect_to @user, notice: 'Deed was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
