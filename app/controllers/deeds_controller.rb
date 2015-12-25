@@ -23,10 +23,16 @@ class DeedsController < ApplicationController
   end
   
   def log_hash
-    @json_tx = @deed.op_return_tx
-    @deed.tx_hash = @json_tx["hash"]
-    @deed.save
-    redirect_to @deed, notice: "Deed was successfully logged. OP_RETURN Tx ID is #{@json_tx["hash"]}"
+    if @deed.tx_raw.blank?
+      @raw_transaction = @deed.op_return_tx
+    else
+      @deed.broadcast_tx
+    end
+    unless @deed.tx_hash.blank?
+      redirect_to @deed, notice: "Deed was successfully logged. OP_RETURN Tx ID is: #{@deed.tx_hash}"
+    else
+      redirect_to @deed, notice: "Our wallet is currently empty or a previous tx has yet to be confirmed. Please broadcast again later the following tx: #{@deed.tx_raw}"
+    end
   end
 
   # GET /deeds
@@ -122,7 +128,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash)
+      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw)
     end
     
 end

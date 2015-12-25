@@ -28,6 +28,35 @@ class Deed < ActiveRecord::Base
      require 'money-tree'
 
      include Bitcoin::Builder
+     
+     def broadcast_tx
+       
+       unless self.tx_raw.blank?
+       # $PUSH_TX_URL = "https://api.blockcypher.com/v1/btc/main/txs/push"
+        uri = URI.parse($PUSH_TX_URL)  # param is "tx"
+
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+
+        request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
+        if ($BROADCAST == true)
+          data = {"tx": self.tx_raw}
+          request.body = data.to_json
+
+          response = http.request(request)  # broadcast transaction using $PUSH_TX_URL
+          post_response = JSON.parse(response.body)
+        end
+        puts post_response
+        if post_response["error"]
+         @tx_id = "Due to malleability issue, Tx ID is not confirmed yet. Broadcast tx again later: #{@raw_transaction}"
+        else
+         @tx_id = "Confirmed Tx ID: #{post_response["tx"]["hash"]}"
+         self.tx_hash = post_response["tx"]["hash"] # save tx id from blockcypher api response rather than tx id computed by the app.
+         self.save
+        end
+      end
+      
+     end # of broadcast_tx method
 
      def op_return_tx
 
@@ -121,7 +150,8 @@ class Deed < ActiveRecord::Base
        puts "\n\n"
        # print JSON version of new signed transaction
        puts "Tx ID: "+ @json_tx["hash"]
-
+       
+       # $PUSH_TX_URL = "https://api.blockcypher.com/v1/btc/main/txs/push"
        uri = URI.parse($PUSH_TX_URL)  # param is "tx"
 
        http = Net::HTTP.new(uri.host, uri.port)
@@ -136,8 +166,17 @@ class Deed < ActiveRecord::Base
          post_response = JSON.parse(response.body)
        end
        puts post_response
+       if post_response["error"]
+        @tx_id = "Due to malleability issue, Tx ID is not confirmed yet. Broadcast tx again later: #{@raw_transaction}"
+       else
+        @tx_id = "Confirmed Tx ID: #{post_response["tx"]["hash"]}"
+        self.tx_hash = post_response["tx"]["hash"] # save tx id from blockcypher api response rather than tx id computed by the app.
+       end
        
-       @json_tx
+       puts @tx_id
+       self.tx_raw = @raw_transaction
+       self.save
+       @raw_transaction
 
      end # of op_return_tx method
 

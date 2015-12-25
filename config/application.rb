@@ -59,6 +59,7 @@ $WEBBTC_TX_URL = "http://webbtc.com/tx/"
 
 $PUSH_TX_URL = "https://api.blockcypher.com/v1/btc/main/txs/push"
 
+
 # $SUGGESTED_AMOUNT = 0.0015 # in BTC, 1500 bits or 0.0015 BTC or 0.50 € with 1 BTC = 300 €
 # $SUGGESTED_USD_AMOUNT = 0.05
 # string = "#{$BLOCKR_RATES_URL}"
