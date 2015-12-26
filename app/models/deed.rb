@@ -94,8 +94,7 @@ class Deed < ActiveRecord::Base
          for k in 0..n
 
            tx_id = result['data']['unspent'][k]['tx'] # fetch the tx ID of the i+1 unspent output available from address
-           @address_balance += result['data']['unspent'][k]['amount'].to_f
-           prev_out_index[k] = result['data']['unspent'][k]['n'].to_i
+           
            string = $WEBBTC_TX_URL + "#{tx_id }.json" # $WEBBTC_TX_URL = "http://webbtc.com/tx/"
            @agent = Mechanize.new
 
@@ -106,16 +105,22 @@ class Deed < ActiveRecord::Base
            end
 
            data = page.body
+            if Deed.find_by_tx_hash(tx_id).blank? # check that utxo is not already spent
            # TODO handle errors if webbtc server is down
-           prev_tx[k] = Bitcoin::P::Tx.from_json(data)
-
+              prev_tx[k] = Bitcoin::P::Tx.from_json(data)
+              @address_balance += result['data']['unspent'][k]['amount'].to_f
+              prev_out_index[k] = result['data']['unspent'][k]['n'].to_i
            # use those utxos as inputs
-
-           t.input do |i|
-             i.prev_out prev_tx[k]
-             i.prev_out_index prev_out_index[k]
-             # i.signature_key key
-           end
+           
+              t.input do |i|
+               i.prev_out prev_tx[k]
+               i.prev_out_index prev_out_index[k]
+               # i.signature_key key
+             end
+            else 
+              prev_out_index[k] = nil
+              prev_tx[k] = nil
+            end
 
          end # for loop
 
@@ -134,8 +139,7 @@ class Deed < ActiveRecord::Base
            end
 
          @send_notification = ( @address_balance < 100*$NETWORK_FEE )
-         complete = (@address_balance > 0)
-
+         complete = (@new_balance > 0)
        end # build_tx
      end # of unless
      i += 1
@@ -151,8 +155,10 @@ class Deed < ActiveRecord::Base
        payment_key = Bitcoin.open_key Bitcoin::Key.from_base58(payment_private_key).priv # private key corresponding to payment address (standard address only, TODO: handle multisigs)
 
        for k in 0..n
-         signature = Bitcoin.sign_data(payment_key, new_tx.signature_hash_for_input(k, prev_tx[k])) # sign first input in new tx
-         new_tx.in[k].script_sig = Bitcoin::Script.to_pubkey_script_sig(signature, @payment_keypair.pub.htb) # add signature and public key to first input in new tx
+         unless prev_tx[k].blank?
+           signature = Bitcoin.sign_data(payment_key, new_tx.signature_hash_for_input(k, prev_tx[k])) # sign first input in new tx
+           new_tx.in[k].script_sig = Bitcoin::Script.to_pubkey_script_sig(signature, @payment_keypair.pub.htb) # add signature and public key to first input in new tx
+         end
        end
 
        @raw_transaction = new_tx.to_payload.unpack('H*')[0] # 166-character hex string, signed raw transaction
