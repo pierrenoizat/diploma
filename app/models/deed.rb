@@ -68,7 +68,7 @@ class Deed < ActiveRecord::Base
          @payment_node = @master.node_for_path "m/2/#{i}"
   
          @payment_address = @payment_node.to_address
-         string = $BLOCKR_ADDRESS_BALANCE_URL + @payment_address
+         string = $BLOCKR_ADDRESS_BALANCE_URL + @payment_address + "?confirmations=0"
 
          @agent = Mechanize.new
 
