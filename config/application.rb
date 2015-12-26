@@ -33,7 +33,7 @@ module Diploma
   end
 end
 
-$ADMIN_USERNAME = "Bitcoin Radio"
+$ADMIN_UID = 100434393826874153399
 $BROADCAST = true # set to false to prevent the OP RETURN tx from being broadcast, only seen in the logs then.
 $MAX_SIZE = 599 # maximum deed avatar file size, in kilobytes
 
@@ -82,3 +82,9 @@ $PAYMENT_ADDRESS_PATH = "m/1/1" # address where txs are paid from, currently 13i
 @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
 @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
 $PAYMENT_ADDRESS = @payment_node.to_address
+
+$PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
+# Payment node i has path "m/2/#{i}"
+# TODO fund payment nodes and automate refill from master payment address
+# TODO cycle through payment nodes when creating op return txs
+# TODO option to send email to user upon op return tx logged successfully
