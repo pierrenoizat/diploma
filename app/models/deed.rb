@@ -66,14 +66,9 @@ class Deed < ActiveRecord::Base
        while ((i <= $PAYMENT_NODES_COUNT) and !complete)
          
          @payment_node = @master.node_for_path "m/2/#{i}"
+  
          $payment_address = @payment_node.to_address
-         string = $BLOCKR_ADDRESS_UNSPENT_URL + $payment_address # ?multisigs=1
-         tx_id = ""
-         prev_out_index = []
-         prev_tx = []
-         @address_balance = 0
-         @send_notification = false
-         total_rewards = 0
+         string = $BLOCKR_ADDRESS_BALANCE_URL + $payment_address
 
          @agent = Mechanize.new
 
@@ -85,44 +80,62 @@ class Deed < ActiveRecord::Base
 
        data = page.body
        result = JSON.parse(data)
-       
-       unless result['data']['unspent'].blank?
+       complete = (result["data"]["balance"].to_f > ($NETWORK_FEE/100000000))
+       i += 1
+     end # while
+     
+     puts "Payment address : #{@payment_address}"
+     puts i-1
          
-       n = result['data']['unspent'].count - 1
+     string = $BLOCKR_ADDRESS_UNSPENT_URL  + $payment_address
+     tx_id = ""
+     prev_out_index = []
+     prev_tx = []
+     @address_balance = 0
+     @send_notification = false
+     total_rewards = 0
+        
+     @agent = Mechanize.new
 
-       new_tx = build_tx do |t|
-         for k in 0..n
+     begin
+       page = @agent.get string
+     rescue Exception => e
+       page = e.page
+     end
 
-           tx_id = result['data']['unspent'][k]['tx'] # fetch the tx ID of the i+1 unspent output available from address
+     data = page.body
+     result = JSON.parse(data)
+     n = result['data']['unspent'].count - 1
+
+    new_tx = build_tx do |t|
+      for k in 0..n
+
+        tx_id = result['data']['unspent'][k]['tx'] # fetch the tx ID of the i+1 unspent output available from address
            
-           string = $WEBBTC_TX_URL + "#{tx_id }.json" # $WEBBTC_TX_URL = "http://webbtc.com/tx/"
-           @agent = Mechanize.new
+        string = $WEBBTC_TX_URL + "#{tx_id }.json" # $WEBBTC_TX_URL = "http://webbtc.com/tx/"
+        @agent = Mechanize.new
 
-           begin
-             page = @agent.get string
-           rescue Exception => e
-             page = e.page
-           end
+        begin
+          page = @agent.get string
+        rescue Exception => e
+          page = e.page
+        end
 
-           data = page.body
-            if Deed.find_by_tx_hash(tx_id).blank? # check that utxo is not already spent
-           # TODO handle errors if webbtc server is down
-              prev_tx[k] = Bitcoin::P::Tx.from_json(data)
-              @address_balance += result['data']['unspent'][k]['amount'].to_f
-              prev_out_index[k] = result['data']['unspent'][k]['n'].to_i
+        data = page.body
+        # TODO check that utxo is not already spent
+        # TODO handle errors if webbtc server is down
+        prev_tx[k] = Bitcoin::P::Tx.from_json(data)
+        @address_balance += result['data']['unspent'][k]['amount'].to_f
+        prev_out_index[k] = result['data']['unspent'][k]['n'].to_i
            # use those utxos as inputs
            
-              t.input do |i|
-               i.prev_out prev_tx[k]
-               i.prev_out_index prev_out_index[k]
-               # i.signature_key key
-             end
-            else 
-              prev_out_index[k] = nil
-              prev_tx[k] = nil
-            end
+        t.input do |i|
+          i.prev_out prev_tx[k]
+          i.prev_out_index prev_out_index[k]
+          # i.signature_key key
+        end
 
-         end # for loop
+      end # for loop
 
          @new_balance = @address_balance*100000000 - $NETWORK_FEE # in satoshis
 
@@ -139,11 +152,7 @@ class Deed < ActiveRecord::Base
            end
 
          @send_notification = ( @address_balance < 100*$NETWORK_FEE )
-         complete = (@new_balance > 0)
        end # build_tx
-     end # of unless
-     i += 1
-   end # while
 
        # @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
        # @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
@@ -155,10 +164,8 @@ class Deed < ActiveRecord::Base
        payment_key = Bitcoin.open_key Bitcoin::Key.from_base58(payment_private_key).priv # private key corresponding to payment address (standard address only, TODO: handle multisigs)
 
        for k in 0..n
-         unless prev_tx[k].blank?
            signature = Bitcoin.sign_data(payment_key, new_tx.signature_hash_for_input(k, prev_tx[k])) # sign first input in new tx
            new_tx.in[k].script_sig = Bitcoin::Script.to_pubkey_script_sig(signature, @payment_keypair.pub.htb) # add signature and public key to first input in new tx
-         end
        end
 
        @raw_transaction = new_tx.to_payload.unpack('H*')[0] # 166-character hex string, signed raw transaction
