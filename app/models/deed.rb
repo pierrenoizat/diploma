@@ -67,8 +67,8 @@ class Deed < ActiveRecord::Base
          
          @payment_node = @master.node_for_path "m/2/#{i}"
   
-         $payment_address = @payment_node.to_address
-         string = $BLOCKR_ADDRESS_BALANCE_URL + $payment_address
+         @payment_address = @payment_node.to_address
+         string = $BLOCKR_ADDRESS_BALANCE_URL + @payment_address
 
          @agent = Mechanize.new
 
@@ -84,10 +84,10 @@ class Deed < ActiveRecord::Base
        i += 1
      end # while
      
-     puts "Payment address : #{@payment_address}"
+     puts "Payment address: #{@payment_address}"
      puts i-1
          
-     string = $BLOCKR_ADDRESS_UNSPENT_URL  + $payment_address
+     string = $BLOCKR_ADDRESS_UNSPENT_URL  + @payment_address
      tx_id = ""
      prev_out_index = []
      prev_tx = []
