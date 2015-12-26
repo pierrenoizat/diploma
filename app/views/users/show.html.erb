@@ -10,7 +10,7 @@
             <ol class="breadcrumb">
                 <li><%= link_to 'Home', root_path %>
                 </li>
-                <li class="active">Your Deeds</li>
+                <li class="active">You have <%=  pluralize @deeds.count, "Deed" %></li>
             </ol>
         </div>
     </div>

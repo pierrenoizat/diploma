@@ -11,7 +11,11 @@
           <% end %>
 			<tr>
 				<td><%= $PAYMENT_ADDRESS %></td>
+				<% if @tx_hash%>
+					<td><%= @tx_hash %></td>
+				<% else %>
 				<td><%= link_to "Fund UTXOs from #{$PAYMENT_ADDRESS}", fund_utxos_user_path(current_user), :class => 'btn btn-default btn-xs btn-success' %></td>
+				<% end %>
 			</tr>
 			<td><%= $COLLECTION_ADDRESS %></td>
 			<td><%= link_to "Refund payment address from #{$COLLECTION_ADDRESS}", refund_payment_address_user_path(current_user), :class => 'btn btn-default btn-xs btn-success' %></td>

@@ -6,10 +6,13 @@ Rails.application.routes.draw do
         get 'log_hash'
       end
     end
-    
-  # patch "/deeds" => "admin#usersupdate", :as => "admin/usersupdate"
-    
-  resources :users
+  
+  resources :users do
+      member do
+        get 'fund_utxos'
+        get'refund_payment_address'
+      end
+    end
   
   root to: 'visitors#index'
   get '/auth/:provider/callback' => 'sessions#create'

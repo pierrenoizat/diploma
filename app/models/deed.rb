@@ -59,16 +59,23 @@ class Deed < ActiveRecord::Base
      end # of broadcast_tx method
 
      def op_return_tx
+       
+       complete = false
+       @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
+       i = 1
+       while ((i <= $PAYMENT_NODES_COUNT) and !complete)
+         
+         @payment_node = @master.node_for_path "m/2/#{i}"
+         $payment_address = @payment_node.to_address
+         string = $BLOCKR_ADDRESS_UNSPENT_URL + $payment_address # ?multisigs=1
+         tx_id = ""
+         prev_out_index = []
+         prev_tx = []
+         @address_balance = 0
+         @send_notification = false
+         total_rewards = 0
 
-       string = $BLOCKR_ADDRESS_UNSPENT_URL + $PAYMENT_ADDRESS # ?multisigs=1
-       tx_id = ""
-       prev_out_index = []
-       prev_tx = []
-       @address_balance = 0
-       @send_notification = false
-       total_rewards = 0
-
-       @agent = Mechanize.new
+         @agent = Mechanize.new
 
        begin
          page = @agent.get string
@@ -78,6 +85,9 @@ class Deed < ActiveRecord::Base
 
        data = page.body
        result = JSON.parse(data)
+       
+       unless result['data']['unspent'].blank?
+         
        n = result['data']['unspent'].count - 1
 
        new_tx = build_tx do |t|
@@ -113,7 +123,7 @@ class Deed < ActiveRecord::Base
 
          t.output do |o|
            o.value @new_balance
-           o.script {|s| s.recipient $PAYMENT_ADDRESS }
+           o.script {|s| s.recipient $COLLECTION_ADDRESS }
          end
 
          t.output do |o|
@@ -124,11 +134,15 @@ class Deed < ActiveRecord::Base
            end
 
          @send_notification = ( @address_balance < 100*$NETWORK_FEE )
+         complete = (@address_balance > 0)
 
        end # build_tx
+     end # of unless
+     i += 1
+   end # while
 
-       @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
-       @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
+       # @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
+       # @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
 
        payment_private_key = @payment_node.private_key.to_hex
        payment_private_key = Bitcoin::Key.new(payment_private_key).to_base58

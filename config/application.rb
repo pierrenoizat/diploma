@@ -34,8 +34,8 @@ module Diploma
 end
 
 $ADMIN_UID = 100434393826874153399
-$BROADCAST = true # set to false to prevent the OP RETURN tx from being broadcast, only seen in the logs then.
-$MAX_SIZE = 599 # maximum deed avatar file size, in kilobytes
+$BROADCAST = true # set to false to prevent transactions from being broadcast, only seen in the logs then.
+$MAX_SIZE = 3999 # maximum deed avatar file size, in kilobytes
 
 $NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
 
@@ -59,8 +59,7 @@ $WEBBTC_TX_URL = "http://webbtc.com/tx/"
 
 $PUSH_TX_URL = "https://api.blockcypher.com/v1/btc/main/txs/push"
 
-
-# $SUGGESTED_AMOUNT = 0.0015 # in BTC, 1500 bits or 0.0015 BTC or 0.50 € with 1 BTC = 300 €
+$OP_RETURN_AMOUNT = 0.001 # in BTC, 1000 bits or 0.001 BTC or 0.50 € with 1 BTC = 500 €
 # $SUGGESTED_USD_AMOUNT = 0.05
 # string = "#{$BLOCKR_RATES_URL}"
 # @agent = Mechanize.new
@@ -78,10 +77,14 @@ $PUSH_TX_URL = "https://api.blockcypher.com/v1/btc/main/txs/push"
 # usd_base_rate = result['data'][0]['rates']
 # $SUGGESTED_BTC_AMOUNT = $SUGGESTED_USD_AMOUNT*usd_base_rate["BTC"].to_f
 
-$PAYMENT_ADDRESS_PATH = "m/1/1" # address where txs are paid from, currently 13iriEcc5Bws3JLmx1NcRYe5rophT9xfdP in dev and prod
+$PAYMENT_ADDRESS_PATH = "m/1/3" # address where txs are paid from, currently 13iriEcc5Bws3JLmx1NcRYe5rophT9xfdP in dev and prod
+$COLLECTION_ADDRESS_PATH = "m/1/4"
 @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
 @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
 $PAYMENT_ADDRESS = @payment_node.to_address
+
+@collection_node = @master.node_for_path $COLLECTION_ADDRESS_PATH
+$COLLECTION_ADDRESS = @collection_node.to_address
 
 $PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
 # Payment node i has path "m/2/#{i}"
