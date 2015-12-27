@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  
+  enum category: [:student, :vip, :visitor, :customer]
   has_many :deeds
 
   def self.create_with_omniauth(auth)

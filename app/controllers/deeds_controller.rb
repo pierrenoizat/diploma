@@ -1,4 +1,5 @@
 class DeedsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash]
   
   require 'google/api_client'
@@ -31,7 +32,7 @@ class DeedsController < ApplicationController
     unless @deed.tx_hash.blank?
       redirect_to @deed, notice: "Deed was successfully logged. OP_RETURN Tx ID is: #{@deed.tx_hash}"
     else
-      redirect_to @deed, notice: "Our wallet is currently empty or a previous tx has yet to be confirmed. Please broadcast again later the following tx: #{@deed.tx_raw}"
+      redirect_to @deed, notice: "Our wallet is empty, a previous tx has yet to be confirmed or tx broadcast is temporarily disabled. Please broadcast tx again later."
     end
   end
 
@@ -39,6 +40,7 @@ class DeedsController < ApplicationController
   # GET /deeds.json
   def index
     @deeds = Deed.all
+    redirect_to current_user
   end
 
   # GET /deeds/1
@@ -65,6 +67,7 @@ class DeedsController < ApplicationController
     @deed = Deed.new(deed_params)
     
     require 'digest'
+    require 'openssl'
 
     respond_to do |format|
       if @deed.save
@@ -76,9 +79,25 @@ class DeedsController < ApplicationController
         :secret_access_key => Rails.application.secrets.secret_access_key
         )
 
+        key = 's3-object-key'
+
+        # Creates a string key - store this!
+        symmetric_key = OpenSSL::Cipher::AES256.new(:CBC).random_key
+        puts symmetric_key
+
+        options = { :encryption_key => symmetric_key }
+        # s3_object = s3.buckets[bucket].objects[key]
+
+        # Writing an encrypted object to S3
+        # s3_object.write(data, options)
+
+        # Reading the object from S3 and decrypting
+        # puts s3_object.read(options)
+
         bucket = s3.buckets['hashtree-assets']
         object = bucket.objects[@deed.avatar_file_name]
-        @deed.avatar_fingerprint = Digest::SHA256.hexdigest object.read
+        @deed.upload = Digest::SHA256.hexdigest object.read
+        # @deed.avatar_fingerprint = Digest::SHA256.hexdigest s3_object.read(options)
         @deed.save
         
         format.html { redirect_to @deed, notice: 'Deed was successfully created.' }
@@ -128,7 +147,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw)
+      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload)
     end
     
 end

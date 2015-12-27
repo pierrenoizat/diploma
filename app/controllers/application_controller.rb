@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   helper_method :current_user
-  helper_method :user_signed_in?
-  helper_method :correct_user?
+  helper_method :user_signed_in?, :current_user_admin?
+  helper_method :correct_user?, :utxo_addresses, :balance
   helper_method :setup
   helper_method :insert_file
   
@@ -13,9 +13,57 @@ class ApplicationController < ActionController::Base
   API_VERSION = 'v2'
   CACHED_API_FILE = "drive-#{API_VERSION}.cache"
   CREDENTIAL_STORE_FILE = "#{$0}-oauth2.json"
+  
+  def balance(address)
+    string = $BLOCKR_ADDRESS_BALANCE_URL + address + "?confirmations=0"
+    @agent = Mechanize.new
+    begin
+      page = @agent.get string
+    rescue Exception => e
+      page = e.page
+    end
+    data = page.body
+    result = JSON.parse(data)
+    return result['data']['balance'].to_f
+  end
+  
+  def utxo_addresses
+    # returns an array of unspent addresses available to fund OP_RETURN transactions
+    @addresses =[]
+    complete = false
+    @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
+    i = 1
+    while (i <= $PAYMENT_NODES_COUNT)
+     
+      payment_node = @master.node_for_path "m/2/#{i}"
+
+      payment_address = payment_node.to_address
+      string = $BLOCKR_ADDRESS_BALANCE_URL + payment_address + "?confirmations=0"
+
+      @agent = Mechanize.new
+
+      begin
+        page = @agent.get string
+      rescue Exception => e
+        page = e.page
+      end
+
+      data = page.body
+      result = JSON.parse(data)
+      if (result['data']['balance'].to_f > ($NETWORK_FEE/100000000))
+        @addresses << payment_address
+      end
+      
+      i += 1
+    end # while
+ 
+    puts "Available addresses: #{@addresses}"
+    puts "#{i-1} Addresses scanned."
+    return @addresses
+  end
 
   # Handles authentication and loading of the API.
-  def setup
+  def setup # unused method
     log_file = File.open('drive.log', 'a+')
     log_file.sync = true
     logger = Logger.new(log_file)
@@ -62,7 +110,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Handles files.insert call to Drive API.
-  def insert_file(client, drive)
+  def insert_file(client, drive)  # unused method
     # Insert a file
     file = drive.files.insert.request_schema.new({
       'title' => 'My document',
@@ -96,10 +144,16 @@ class ApplicationController < ActionController::Base
     def user_signed_in?
       return true if current_user
     end
+    
+    def current_user_admin?
+        unless (current_user.uid == $ADMIN_UID)
+          redirect_to root_url, :alert => 'You need to sign in as admin for access to this page.'
+        end
+    end
 
     def correct_user?
-      @user = User.find(params[:id])
-      unless current_user == @user
+      @user = User.find_by_id(params[:id])
+      unless ((current_user == @user) or (current_user.uid == $ADMIN_UID))
         redirect_to root_url, :alert => "Access denied."
       end
     end

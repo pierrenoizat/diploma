@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :correct_user?, :except => [:index]
+  before_action :correct_user?, :except => [:index, :destroy, :edit]
+  before_action :current_user_admin?, :except => [:show, :edit, :update]
   
   require 'money-tree'
 
@@ -9,10 +10,52 @@ class UsersController < ApplicationController
   def index
     @users = User.all
   end
+  
+  def dashboard
+    @user = User.find(params[:id])
+    @users = User.all
+  end
 
   def show
     @user = User.find(params[:id])
     @deeds = @user.deeds.paginate(:page => params[:page], :per_page => 2)
+  end
+  
+  # GET /deeds/1/edit
+  def edit
+      @user = User.find(params[:id])
+  end
+  
+  def update
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def destroy
+    if current_user.uid == $ADMIN_UID
+      @user = User.find(params[:id])
+      @user.deeds.each do |deed|
+        deed.avatar = nil
+        deed.save # destroy attachment first
+        deed.delete
+      end
+    
+      @user.delete
+      # @users = User.all
+      respond_to do |format|
+        format.html { redirect_to users_path, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to users_path, notice: 'Access denied for delete action.'
+    end
   end
   
   def fund_utxos # fund multiple utxos that will be used in op return transactions, preventing unconfirmed/unspent conflicts
@@ -140,6 +183,14 @@ class UsersController < ApplicationController
   
   def refund_payment_address
     # when collection address balance > $OP_RETURN_AMOUNT*$PAYMENT_NODES_COUNT*0.9
+    @users = User.all
+    render :index
+  end
+  
+  private
+  
+  def user_params
+    params.require(:user).permit(:email, :category, :credit)
   end
 
 end

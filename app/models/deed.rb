@@ -21,7 +21,7 @@ class Deed < ActiveRecord::Base
      validates_attachment :avatar,
        :content_type => { :content_type => ["image/jpeg", "image/png", "application/pdf"] }
 
-     validates_attachment_file_name :avatar, :matches => [/png\Z/, /jpe?g\Z/,/pdf\Z/]
+     validates_attachment_file_name :avatar, :matches => [/png\Z/, /jpe?g\Z/,/pdf\Z/,/JPE?G\Z/,/PNG\Z/,/PDF\Z/]
      # Explicitly do not validate
      do_not_validate_attachment_file_type :avatar
 
@@ -32,28 +32,30 @@ class Deed < ActiveRecord::Base
      def broadcast_tx
        
        unless self.tx_raw.blank?
-       # $PUSH_TX_URL = "https://api.blockcypher.com/v1/btc/main/txs/push"
-        uri = URI.parse($PUSH_TX_URL)  # param is "tx"
+         puts self.tx_raw
+         # $PUSH_TX_URL = "https://api.blockcypher.com/v1/btc/main/txs/push"
+         uri = URI.parse($PUSH_TX_URL)  # param is "tx"
 
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
+         http = Net::HTTP.new(uri.host, uri.port)
+         http.use_ssl = true
 
-        request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
-        if ($BROADCAST == true)
-          data = {"tx": self.tx_raw}
-          request.body = data.to_json
+         request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
+         if ($BROADCAST == true)
+           data = {"tx": self.tx_raw}
+           request.body = data.to_json
 
-          response = http.request(request)  # broadcast transaction using $PUSH_TX_URL
-          post_response = JSON.parse(response.body)
-        end
-        puts post_response
-        if post_response["error"]
-         @tx_id = "Due to malleability issue, Tx ID is not confirmed yet. Broadcast tx again later: #{@raw_transaction}"
-        else
-         @tx_id = "Confirmed Tx ID: #{post_response["tx"]["hash"]}"
-         self.tx_hash = post_response["tx"]["hash"] # save tx id from blockcypher api response rather than tx id computed by the app.
-         self.save
-        end
+           response = http.request(request)  # broadcast transaction using $PUSH_TX_URL
+           post_response = JSON.parse(response.body)
+        
+           puts post_response
+           if post_response["error"]
+             @tx_id = "Due to malleability issue, Tx ID is not confirmed yet. Broadcast tx again later: #{@raw_transaction}"
+           else
+             @tx_id = "Confirmed Tx ID: #{post_response["tx"]["hash"]}"
+             self.tx_hash = post_response["tx"]["hash"] # save tx id from blockcypher api response rather than tx id computed by the app.
+             self.save
+           end
+         end # if $BROADCAST 
       end
       
      end # of broadcast_tx method
@@ -63,7 +65,7 @@ class Deed < ActiveRecord::Base
        complete = false
        @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
        i = 1
-       while ((i <= $PAYMENT_NODES_COUNT) and !complete)
+       while ((i <= $PAYMENT_NODES_COUNT) and (complete == false))
          
          @payment_node = @master.node_for_path "m/2/#{i}"
   
@@ -80,11 +82,13 @@ class Deed < ActiveRecord::Base
 
        data = page.body
        result = JSON.parse(data)
-       complete = (result["data"]["balance"].to_f > ($NETWORK_FEE/100000000))
+       # complete = (page.body[:data][:balance].to_f > ($NETWORK_FEE/100000000))
+       complete = (result['data']['balance'].to_f > ($NETWORK_FEE/100000000))
        i += 1
      end # while
      
      puts "Payment address: #{@payment_address}"
+     # puts "Payment address balance: #{balance(@payment_address)} BTC"
      puts i-1
          
      string = $BLOCKR_ADDRESS_UNSPENT_URL  + @payment_address
@@ -146,7 +150,7 @@ class Deed < ActiveRecord::Base
 
          t.output do |o|
              # specify the deed hash to encode in the blockchain    
-             o.to self.avatar_fingerprint.unpack("H*"), :op_return
+             o.to self.upload.unpack("H*"), :op_return
              # specify the value of this output (zero)
              o.value 0
            end
@@ -191,16 +195,17 @@ class Deed < ActiveRecord::Base
 
          response = http.request(request)  # broadcast transaction using $PUSH_TX_URL
          post_response = JSON.parse(response.body)
-       end
-       puts post_response
-       if post_response["error"]
-        @tx_id = "Due to malleability issue, Tx ID is not confirmed yet. Broadcast tx again later: #{@raw_transaction}"
-       else
-        @tx_id = "Confirmed Tx ID: #{post_response["tx"]["hash"]}"
-        self.tx_hash = post_response["tx"]["hash"] # save tx id from blockcypher api response rather than tx id computed by the app.
-       end
        
-       puts @tx_id
+         puts post_response
+         if post_response["error"]
+           @tx_id = "Due to malleability issue, Tx ID is not confirmed yet. Broadcast tx again later: #{@raw_transaction}"
+         else
+           @tx_id = "Confirmed Tx ID: #{post_response["tx"]["hash"]}"
+           self.tx_hash = post_response["tx"]["hash"] # save tx id from blockcypher api response rather than tx id computed by the app.
+         end
+       
+         puts @tx_id
+       end # if $BROADCAST
        self.tx_raw = @raw_transaction
        self.save
        @raw_transaction

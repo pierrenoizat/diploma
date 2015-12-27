@@ -1,11 +1,5 @@
 <% if user_signed_in? %>
-
   <li><%= link_to 'Sign out', signout_path %></li>
-
-  <% if current_user.uid.to_i == $ADMIN_UID %>
-	<li><%= link_to 'Users', users_path %></li>
-  <% end %>
-	
 <% else %>
   <li><%= link_to 'Sign in', signin_path %></li>
 <% end %>

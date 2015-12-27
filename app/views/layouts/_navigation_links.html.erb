@@ -3,8 +3,20 @@
         <li>
             <%= link_to 'Contact', page_path('contact') %>
         </li>
-        <li>
-			<% if current_user %>
-				<%= link_to "#{current_user.name}", current_user %>
-			<% end %>
+	<% if current_user %>
+		<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "#{current_user.email}" %><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <%= link_to 'Deeds', current_user %>
+                </li>
+                <li>
+                    <%= link_to 'Edit account', edit_user_path(current_user) %>
+                </li>
+              <% if current_user.uid == $ADMIN_UID %>
+				<li><%= link_to pluralize(User.all.count, "User"), users_path %></li>
+				<li><%= link_to 'Admin Dashboard', dashboard_user_path(current_user) %></li>
+			  <% end %>
+            </ul>
         </li>
+	<% end %>

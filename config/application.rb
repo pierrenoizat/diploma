@@ -33,7 +33,8 @@ module Diploma
   end
 end
 
-$ADMIN_UID = 100434393826874153399
+$ADMIN_UID = "101654331331347806482" # André Boussac
+
 $BROADCAST = true # set to false to prevent transactions from being broadcast, only seen in the logs then.
 $MAX_SIZE = 3999 # maximum deed avatar file size, in kilobytes
 

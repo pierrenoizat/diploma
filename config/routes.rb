@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       member do
         get 'fund_utxos'
         get'refund_payment_address'
+        get 'dashboard'
       end
     end
   
