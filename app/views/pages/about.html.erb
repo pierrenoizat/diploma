@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">About
-                <small>Subheading</small>
+                <small>Diploma.report</small>
             </h1>
             <ol class="breadcrumb">
                 <li><%= link_to 'Home', root_path %>
@@ -18,14 +18,14 @@
 
     <!-- Intro Content -->
     <div class="row">
-        <div class="col-md-6">
-            <img class="img-responsive" src="http://placehold.it/750x450" alt="">
-        </div>
-        <div class="col-md-6">
-            <h2>About Modern Business</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed voluptate nihil eum consectetur similique? Consectetur, quod, incidunt, harum nisi dolores delectus reprehenderit voluptatem perferendis dicta dolorem non blanditiis ex fugiat.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, magni, aperiam vitae illum voluptatum aut sequi impedit non velit ab ea pariatur sint quidem corporis eveniet. Odit, temporibus reprehenderit dolorum!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, consequuntur, modi mollitia corporis ipsa voluptate corrupti eum ratione ex ea praesentium quibusdam? Aut, in eum facere corrupti necessitatibus perspiciatis quis?</p>
+        <div class="col-md-12">
+            <h2>Check your file digest</h2>
+            <p>On OSX or Linux, open a terminal window and verify your local file sha256 digest (hash) by yourself (avoid space caracters in file names or folder names, if any, replace with underscore caracters):</br>
+			$ irb</br>
+			2.2.0 :001 > require 'digest'</br>
+			 => true </br>
+			2.2.0 :002 > md5 = Digest::SHA256.file '/Users/noizat/Documents/Bitcoin_book_2012.pdf'</br>
+			 <%= "=> #<Digest::SHA256: 99368fbbbbb6cbebfcc436f97da3ef97dfb28f37c16ae13cd484a166f251dba0>" %></p>
         </div>
     </div>
     <!-- /.row -->
