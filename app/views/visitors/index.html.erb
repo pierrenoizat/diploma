@@ -10,21 +10,18 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
         <div class="item active">
-            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide One');"></div>
+            <div class="fill" style="background-image" ><%= image_tag("diploma_1.png") %></div>
             <div class="carousel-caption">
-                <h2>Caption 1</h2>
             </div>
         </div>
         <div class="item">
-            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Two');"></div>
+            <div class="fill" style="background-image" ><%= image_tag("diploma_2.png") %></div>
             <div class="carousel-caption">
-                <h2>Caption 2</h2>
             </div>
         </div>
         <div class="item">
-            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three');"></div>
+            <div class="fill" style="background-image" ><%= image_tag("diploma_3.png") %></div>
             <div class="carousel-caption">
-                <h2>Caption 3</h2>
             </div>
         </div>
     </div>
@@ -51,22 +48,22 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-check"></i> Bootstrap v3.2.0</h4>
+                    <h4><i class="fa fa-fw fa-check"></i> Secured by the Blockchain</h4>
                 </div>
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                    <a href="#" class="btn btn-default">Learn More</a>
+                    <p>Your documents digest are stored in the Bitcoin blockchain, as OP_RETURN transaction outputs.</br>The file that you are uploading is stored securely by diploma.report in the Amazon cloud (AWS S3).</br>You can download it at any time later on or use the local copy of the file to prove that its digest matches the digest recorded in your OP_RETURN transaction.</p></br></br></br></br>
+                    <a href="<%= page_path('about') %>" class="btn btn-default">Learn More</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-fw fa-gift"></i> Free &amp; Open Source</h4>
+                    <h4><i class="fa fa-fw fa-gift"></i> Based on Free Software</h4>
                 </div>
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                    <a href="#" class="btn btn-default">Learn More</a>
+                    <p>Diploma.report was developped using free software, notably ruby-on-rails, bitcoin-ruby and money-tree.</br>Free blockchain explorers such as blockcypher.com can be used to check bitcoin OP_RETURN transactions.</br>I am very grateful for the work of the free software developpers who are building such great tools and making them available to all of us.</p></br></br></br>
+                    <a href="<%= page_path('about') %>" class="btn btn-default">Learn More</a>
                 </div>
             </div>
         </div>
@@ -76,8 +73,13 @@
                     <h4><i class="fa fa-fw fa-compass"></i> Easy to Use</h4>
                 </div>
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                    <a href="#" class="btn btn-default">Learn More</a>
+                    <p>No sign up is required: simply sign in with a gmail address of yours.</br>Upload a copy of your file, diploma.report takes care of computing the digest and storing it in the blockchain.</br>Anytime later on, you can provide a a copy of the original file along with the OP_RETURN transaction ID to prove prior ownership of the file.</br>If you lose your local copy of the file, you can always download it from the Amazon cloud via diploma.report.</p>
+				<% if current_user %>
+					<a href="<%= new_deed_path %>" class="btn btn-default">Upload a New Deed</a>
+				<% else %>
+                    <a href="<%= signin_path %>" class="btn btn-default">Sign in with a Gmail Account</a>
+				<% end %>
+
                 </div>
             </div>
         </div>
@@ -87,31 +89,16 @@
     <!-- Portfolio Section -->
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Portfolio Heading</h2>
+            <h2 class="page-header">Sample of Blockchain Notarized Documents</h2>
         </div>
         <div class="col-md-4 col-sm-6">
-          <%= link_to page_path('portfolio-item') do %>
-            <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
+          <%= link_to page_path('portfolio-diploma') do %>
+            <div class="fill" style="background-image" ><%= image_tag("U_Pacific_diploma.jpg") %></div>
           <% end %>
         </div>
         <div class="col-md-4 col-sm-6">
           <%= link_to page_path('portfolio-item') do %>
-            <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-          <% end %>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <%= link_to page_path('portfolio-item') do %>
-            <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-          <% end %>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <%= link_to page_path('portfolio-item') do %>
-            <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
-          <% end %>
-        </div>
-        <div class="col-md-4 col-sm-6">
-          <%= link_to page_path('portfolio-item') do %>
-            <img class="img-responsive img-portfolio img-hover" src="http://placehold.it/700x450" alt="">
+			<div class="fill" style="background-image" ><%= image_tag("bitcoin_white_paper_satoshi_nakamoto.pdf") %></div>
           <% end %>
         </div>
         <div class="col-md-4 col-sm-6">
@@ -125,40 +112,25 @@
     <!-- Features Section -->
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Modern Business Features</h2>
+            <h2 class="page-header">Features</h2>
         </div>
         <div class="col-md-6">
-            <p>The Modern Business template by Start Bootstrap includes:</p>
+            <p>Diploma.report includes the following features: </p>
             <ul>
-                <li><strong>Bootstrap v3.2.0</strong>
-                </li>
-                <li>jQuery v1.11.0</li>
-                <li>Font Awesome v4.1.0</li>
-                <li>Working PHP contact form with validation</li>
-                <li>Unstyled page elements for easy customization</li>
-                <li>17 HTML pages</li>
+                <li><strong>Compute the SHA256 hash of a file</strong></li>
+                <li>Upload and optionally store the file in the Amazon cloud (AWS S3)</li>
+                <li>Supported file format: png, jpg, pdf</li>
+                <li>Maximum file size with free plan: <%= '%.0f' % ($MAX_SIZE/1.2) %>k.</li>
+                <li>Download the original file any time from the Amazon cloud storage (option).</li>
+                <li>Log the file hash in the blockchain and save the tx ID for easy retrieval.</li>
             </ul>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia dolorum ducimus unde.</p>
+            <p>The file hash can be verified in the blockchain using any blockchain explorer aware of OP_RETURN transactions such as <a href="https://live.blockcypher.com/btc/tx/7a92ab538095c4b6e57075c6ff36e100a34cdd5bcaae521479510413be25745e/" target="blank">blockcypher.com</a></p>
         </div>
         <div class="col-md-6">
-            <img class="img-responsive" src="http://placehold.it/700x450" alt="">
+			<div class="fill" style="background-image" ><%= image_tag("DIU_New_Orleans_diploma.jpg") %></div>
         </div>
     </div>
     <!-- /.row -->
-
-    <hr>
-
-    <!-- Call to Action Section -->
-    <div class="well">
-        <div class="row">
-            <div class="col-md-8">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
-            </div>
-            <div class="col-md-4">
-                <a class="btn btn-lg btn-default btn-block" href="#">Call to Action</a>
-            </div>
-        </div>
-    </div>
 
 </div>
 <!-- /.container -->
@@ -167,7 +139,7 @@
 <script>
 $(document).on('ready', function () {
   $('.carousel').carousel({
-      interval: 1000 //changes the speed
+      interval: 50000 //changes the speed
   })
 });
 </script>

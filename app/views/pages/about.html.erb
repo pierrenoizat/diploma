@@ -20,6 +20,8 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Check your file digest</h2>
+			<p> What makes diploma.report so powerful as a secure file certification mechanism, is that you can check your local file digest by yourself. There is no need for a third party to verify that the digest (hash) of your local copy of the file matches the digest (hash) logged in the blockchain.</p>
+			<p> Only the digest of your file, not the file itself, is publicly visible in the blockchain as a transaction ouptput. It is embedded as a special kind of Bitcoin transaction outputs known as "OP_RETURN" outputs. Those outputs are not spendable, i.e carry zero monetary face value but are stored in the blockchain just as securely and permanently as any other transaction output.
             <p>On OSX or Linux, open a terminal window and verify your local file sha256 digest (hash) by yourself (avoid space caracters in file names or folder names, if any, replace with underscore caracters):</br>
 			$ irb</br>
 			2.2.0 :001 > require 'digest'</br>
@@ -33,147 +35,37 @@
     <!-- Team Members -->
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Our Team</h2>
+            <h2 class="page-header">Contact</h2>
         </div>
         <div class="col-md-4 text-center">
             <div class="thumbnail">
-                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+                <div class="img-responsive"><%= image_tag("Pierre_Noizat_Photo.jpg") %></div>
                 <div class="caption">
-                    <h3>John Smith<br>
-                        <small>Job Title</small>
+                    <h3>Pierre Noizat<br>
+                        <small>contact@paymium.com</small>
                     </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste saepe et quisquam nesciunt maxime.</p>
+                    <p>Questions, comments, suggestions ? Your feedback will be appreciated. Please drop me a note via email or social network.</p>
                     <ul class="list-inline">
-                        <li><a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
+                        <li><a href="https://www.facebook.com/Paymium/"><i class="fa fa-2x fa-facebook-square"></i></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
+                        <li><a href="https://fr.linkedin.com/in/pierrenoizat"><i class="fa fa-2x fa-linkedin-square"></i></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
+                        <li><a href="https://twitter.com/PierreNoizat"><i class="fa fa-2x fa-twitter-square"></i></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 text-center">
-            <div class="thumbnail">
-                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
-                <div class="caption">
-                    <h3>John Smith<br>
-                        <small>Job Title</small>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste saepe et quisquam nesciunt maxime.</p>
-                    <ul class="list-inline">
-                        <li><a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 text-center">
-            <div class="thumbnail">
-                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
-                <div class="caption">
-                    <h3>John Smith<br>
-                        <small>Job Title</small>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste saepe et quisquam nesciunt maxime.</p>
-                    <ul class="list-inline">
-                        <li><a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 text-center">
-            <div class="thumbnail">
-                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
-                <div class="caption">
-                    <h3>John Smith<br>
-                        <small>Job Title</small>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste saepe et quisquam nesciunt maxime.</p>
-                    <ul class="list-inline">
-                        <li><a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 text-center">
-            <div class="thumbnail">
-                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
-                <div class="caption">
-                    <h3>John Smith<br>
-                        <small>Job Title</small>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste saepe et quisquam nesciunt maxime.</p>
-                    <ul class="list-inline">
-                        <li><a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 text-center">
-            <div class="thumbnail">
-                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
-                <div class="caption">
-                    <h3>John Smith<br>
-                        <small>Job Title</small>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste saepe et quisquam nesciunt maxime.</p>
-                    <ul class="list-inline">
-                        <li><a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+        
     <!-- /.row -->
 
     <!-- Our Customers -->
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Our Customers</h2>
+            <h2 class="page-header">Customers</h2>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6">
-            <img class="img-responsive customer-img" src="http://placehold.it/500x300" alt="">
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-6">
-            <img class="img-responsive customer-img" src="http://placehold.it/500x300" alt="">
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-6">
-            <img class="img-responsive customer-img" src="http://placehold.it/500x300" alt="">
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-6">
-            <img class="img-responsive customer-img" src="http://placehold.it/500x300" alt="">
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-6">
-            <img class="img-responsive customer-img" src="http://placehold.it/500x300" alt="">
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-6">
-            <img class="img-responsive customer-img" src="http://placehold.it/500x300" alt="">
+            <div class="img-responsive"><a href="http://www.esilv.fr" target="blank" ><%= image_tag("esilv_logo_resized.png") %></a></div>
         </div>
     </div>
     <!-- /.row -->
