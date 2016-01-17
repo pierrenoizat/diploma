@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :deeds do
       member do
         get 'download'
+        get 'download_sample'
         get 'log_hash'
       end
     end

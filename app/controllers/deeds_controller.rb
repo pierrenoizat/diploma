@@ -1,6 +1,6 @@
 class DeedsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash]
+  before_action :authenticate_user!, except: [:download_sample]
+  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample]
   
   require 'google/api_client'
   require 'google/api_client'
@@ -8,6 +8,20 @@ class DeedsController < ApplicationController
   require 'google/api_client/auth/file_storage'
   require 'google/api_client/auth/installed_app'
   require 'logger'
+  
+  def download_sample
+    
+    s3 = AWS::S3.new(
+    :access_key_id     => Rails.application.secrets.access_key_id,
+    :secret_access_key => Rails.application.secrets.secret_access_key
+    )
+
+    bucket = s3.buckets['hashtree-assets']
+    object = bucket.objects[@deed.avatar_file_name]
+    
+    send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
+    
+  end
 
   def download
     
