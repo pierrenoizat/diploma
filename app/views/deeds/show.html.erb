@@ -28,8 +28,7 @@
             <p><%= @deed.description %></p>
             <h3>Deed Details</h3>
             <ul>
-				<li>S3 File MD5 Fingerprint: <%= @deed.avatar_fingerprint %></li>
-				<li>S3 File SHA256 Fingerprint: <strong><%= @deed.upload %></strong></li>
+				<li>S3 File SHA256 Fingerprint: <%= @deed.avatar_fingerprint %></li>
 				<% unless @deed.tx_hash.blank? %>
                 	<li>OP_RETURN Tx ID: <%= @deed.tx_hash %></li>
 				<% end %>
