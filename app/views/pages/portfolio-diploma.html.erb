@@ -1,3 +1,4 @@
+<% @deed =  Deed.find_by_name('BA') %>
 <!-- Page Content -->
 <div class="container">
 
@@ -19,81 +20,18 @@
     <!-- Portfolio Item Row -->
     <div class="row">
 
-        <div class="col-md-8">
-            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                </ol>
-
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-                    </div>
-                    <div class="item">
-                        <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-                    </div>
-                    <div class="item">
-                        <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-                    </div>
-                </div>
-
-                <!-- Controls -->
-                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                </a>
-                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                </a>
-            </div>
+        <div class="col-md-4">
+            <%= image_tag @deed.avatar.url %>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-8">
             <h3>Document Details</h3>
             <ul>
                 <li>Bachelor of Music, University of California</li>
                 <li>SHA256 Digest: a021ad208122840f1ce31740007e53ce6c8e7779ec6cdbfcf8485385e4384bd1</li>
                 <li>OP_RETURN Tx ID: <a href="https://live.blockcypher.com/btc/tx/5ac252fa2d6d7c6176a902295a4d26e0fa832edda65677b4d7b2bb2d5f5882f5/"  target="blank">5ac252fa2d6d7c6176a902295a4d26e0fa832edda65677b4d7b2bb2d5f5882f5</a></li>
             </ul>
-			<% @deed =  Deed.find_by_name('BA') %>
 			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_sample_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a></p>
-        </div>
-
-    </div>
-    <!-- /.row -->
-
-    <!-- Related Projects Row -->
-    <div class="row">
-
-        <div class="col-lg-12">
-            <h3 class="page-header">Related Projects</h3>
-        </div>
-
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-
-        <div class="col-sm-3 col-xs-6">
-            <a href="#">
-                <img class="img-responsive img-hover img-related" src="http://placehold.it/500x300" alt="">
-            </a>
         </div>
 
     </div>
