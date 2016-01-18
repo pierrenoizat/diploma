@@ -19,20 +19,20 @@
     <!-- Portfolio Item Row -->
     <div class="row">
 
-        <div class="col-md-8">
+        <div class="col-md-4">
 			<%= image_tag @deed.avatar.url %>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-8">
             <h3><%= @deed.category.titleize %>:<%= @deed.issuer %></h3>
             <p><%= @deed.description %></p>
-            <h3>Deed Details</h3>
+            <h3>Deed Details</h3></br>
             <ul>
-				<li>S3 File SHA256 Fingerprint: <%= @deed.upload %></li>
+				<li>S3 File SHA256 Fingerprint: <%= @deed.upload %></li></br>
 				<% unless @deed.tx_hash.blank? %>
                 	<li>OP_RETURN Tx ID: <%= @deed.tx_hash %></li>
 				<% end %>
-            </ul>
+            </ul></br></br>
 			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Edit", edit_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
         </div>
 
