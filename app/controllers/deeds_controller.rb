@@ -88,6 +88,9 @@ class DeedsController < ApplicationController
         # TODO use Digest::SHA256.file("X11R6.8.2-src.tar.bz2").hexdigest for now, using Paperclip MD5 fingerprint of the file.
         # Digest::MD5.hexdigest(File.read("data"))
         
+        # TODO send PGP signed message to prove origin/ownership of the OP_RETURN tx
+        # signing key must match the output spent to create the OP_RETURN tx
+        
         s3 = AWS::S3.new(
         :access_key_id     => Rails.application.secrets.access_key_id,
         :secret_access_key => Rails.application.secrets.secret_access_key

@@ -20,13 +20,13 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Check your file digest</h2>
-			<p> What makes diploma.report so powerful as a secure file certification mechanism, is that you can check your local file digest by yourself. There is no need for a third party to verify that the digest (hash) of your local copy of the file matches the digest (hash) logged in the blockchain.</p>
-			<p> Only the digest of your file, not the file itself, is publicly visible in the blockchain as a transaction ouptput. It is embedded as a special kind of Bitcoin transaction outputs known as "OP_RETURN" outputs. Those outputs are not spendable, i.e carry zero monetary face value but are stored in the blockchain just as securely and permanently as any other transaction output.
-            <p>On OSX or Linux, open a terminal window and verify your local file sha256 digest (hash) by yourself (avoid space caracters in file names or folder names, if any, replace with underscore caracters):</br>
+			<p> What makes diploma.report so powerful as a secure file certification mechanism, is that you can check your local file digest by yourself. </br>There is no need for a third party to verify that the digest (hash) of your local copy of the file matches the digest (hash) logged in the blockchain.</p>
+			<p> Only the digest of your file, not the file itself, is publicly visible in the blockchain as a transaction ouptput. </br>It is embedded as a special kind of Bitcoin transaction outputs known as "OP_RETURN" outputs. </br>Those outputs are not spendable, i.e carry zero monetary face value but are stored in the blockchain just as securely and permanently as any other transaction output.
+            <p>On OSX or Linux, open a terminal window and verify your local file sha256 digest (hash) by yourself (avoid space caracters in file names or folder names, if any, replace with underscore caracters):</br></br>
 			$ irb</br>
 			2.2.0 :001 > require 'digest'</br>
 			 => true </br>
-			2.2.0 :002 > md5 = Digest::SHA256.file '/Users/noizat/Documents/Bitcoin_book_2012.pdf'</br>
+			2.2.0 :002 > sha256 = Digest::SHA256.file '/Users/noizat/Documents/Bitcoin_book_2012.pdf'</br>
 			 <%= "=> #<Digest::SHA256: 99368fbbbbb6cbebfcc436f97da3ef97dfb28f37c16ae13cd484a166f251dba0>" %></p>
         </div>
     </div>

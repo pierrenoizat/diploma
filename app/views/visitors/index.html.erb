@@ -51,7 +51,7 @@
                     <h4><i class="fa fa-fw fa-check"></i> Secured by the Blockchain</h4>
                 </div>
                 <div class="panel-body">
-                    <p>Your documents digest are stored in the Bitcoin blockchain, as OP_RETURN transaction outputs.</br>The file that you are uploading is stored securely by diploma.report in the Amazon cloud (AWS S3).</br>You can download it at any time later on or use the local copy of the file to prove that its digest matches the digest recorded in your OP_RETURN transaction.</p></br></br></br></br>
+                    <p>The diploma file digest is stored in the Bitcoin blockchain, as an OP_RETURN transaction output.</br>The file itself is stored securely by diploma.report in the Amazon cloud (AWS S3).</br>Later on, recruiters can download the diploma file to verify that its digest matches the digest recorded in the blockchain.</p></br></br></br></br></br></br></br>
                     <a href="<%= page_path('about') %>" class="btn btn-default">Learn More</a>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                     <h4><i class="fa fa-fw fa-gift"></i> Based on Free Software</h4>
                 </div>
                 <div class="panel-body">
-                    <p>Diploma.report was developped using free software, notably ruby-on-rails, bitcoin-ruby and money-tree.</br>Free blockchain explorers such as blockcypher.com can be used to check bitcoin OP_RETURN transactions.</br>I am very grateful for the work of the free software developpers who are building such great tools and making them available to all of us.</p></br></br></br>
+                    <p>Diploma.report was developped using free software, notably ruby-on-rails, bitcoin-ruby and money-tree.</br>Free blockchain explorers such as blockcypher.com can be used to check bitcoin OP_RETURN transactions.</br>I am very grateful for the work of the free software developpers who are building such great tools and making them available to all of us.</p></br></br></br></br></br>
                     <a href="<%= page_path('about') %>" class="btn btn-default">Learn More</a>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                     <h4><i class="fa fa-fw fa-compass"></i> Easy to Use</h4>
                 </div>
                 <div class="panel-body">
-                    <p>No sign up is required: simply sign in with a gmail address of yours.</br>Upload a copy of your file, diploma.report takes care of computing the digest and storing it in the blockchain.</br>Anytime later on, you can provide a a copy of the original file along with the OP_RETURN transaction ID to prove prior ownership of the file.</br>If you lose your local copy of the file, you can always download it from the Amazon cloud via diploma.report.</p>
+                    <p>Diploma.report is meant to serve the needs of graduates, schools, universities and recruiters.</br> No sign up is required: simply sign in with a gmail address of yours.</br>Upload a copy of your file, diploma.report takes care of computing the digest and storing it in the blockchain.</br>Anytime later on, you can provide a a copy of the original file along with the OP_RETURN transaction ID to prove prior ownership of the file.</br>If you lose your local copy of the file, you can always download it from the Amazon cloud via diploma.report.</p>
 				<% if current_user %>
 					<a href="<%= new_deed_path %>" class="btn btn-default">Upload a New Deed</a>
 				<% else %>
