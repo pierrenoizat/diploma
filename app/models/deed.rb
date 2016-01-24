@@ -1,7 +1,10 @@
 class Deed < ActiveRecord::Base
   enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video]
   belongs_to :user
+  has_many :viewers
   
+    attr_readonly :user_id
+    
     has_attached_file :avatar,
      :default_url => "/images/:style/missing.png",
      :storage => :s3,

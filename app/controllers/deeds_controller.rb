@@ -60,9 +60,11 @@ class DeedsController < ApplicationController
   # GET /deeds/1
   # GET /deeds/1.json
   def show
-    
     @user = User.find_by_id(@deed.user_id)
-    
+    if @deed.upload.blank?
+      @deed.upload = @deed.avatar_fingerprint
+      @deed.save
+    end
   end
 
   # GET /deeds/new
@@ -130,7 +132,7 @@ class DeedsController < ApplicationController
   # PATCH/PUT /deeds/1.json
   def update
     respond_to do |format|
-      if @deed.update(deed_params)
+      if @deed.update(deed_params.except(:user_id))
         format.html { redirect_to @deed, notice: 'Deed was successfully updated.' }
         format.json { render :show, status: :ok, location: @deed }
       else
@@ -145,6 +147,10 @@ class DeedsController < ApplicationController
   def destroy
     
     @user = User.find_by_id(@deed.user_id)
+    
+    @deed.viewers.each do |viewer|
+      viewer.delete
+    end
     
     @deed.avatar = nil
     @deed.save # destroy attachment first
@@ -164,7 +170,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:name, :user_id, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload)
+      params.require(:deed).permit(:name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:deed_id, :email])
     end
     
 end

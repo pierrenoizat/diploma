@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @viewer.email %>
+</p>
+
+<p>
+  <strong>Deed:</strong>
+  <%= @viewer.deed_id %>
+</p>
+
+<%= link_to 'Edit', edit_viewer_path(@viewer) %> |
+<%= link_to 'Back', viewers_path %>

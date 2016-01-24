@@ -5,7 +5,10 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "#{current_user.email}" %><b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <%= link_to "#{pluralize current_user.deeds.count, "Deed"}", current_user %>
+                    <%= link_to "#{pluralize current_user.deeds.count, "Upload"}", current_user %>
+                </li>
+				<li>
+                    <%= link_to "Authorized Deeds", show_authorized_user_path(current_user) %>
                 </li>
                 <li>
                     <%= link_to 'Edit account', edit_user_path(current_user) %>

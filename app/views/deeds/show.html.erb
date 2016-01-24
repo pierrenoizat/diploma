@@ -28,7 +28,7 @@
             <p><%= @deed.description %></p>
             <h3>Deed Details</h3></br>
             <ul>
-				<li>S3 File SHA256 Fingerprint: <%= @deed.upload %></li></br>
+				<li>File SHA256 Fingerprint: <%= @deed.upload %></li></br>
 				<% unless @deed.tx_hash.blank? %>
                 	<li>OP_RETURN Tx ID: <%= @deed.tx_hash %></li>
 				<% end %>
@@ -37,6 +37,49 @@
         </div>
 
     </div>
+    <!-- /.row -->
+
+	<!-- Viewers Row -->
+	<div class="row">
+		<table>
+		  <thead>
+		    <tr>
+		      <th>Authorized viewers email:</th>
+		    </tr>
+		  </thead>
+
+		  <tbody>
+		    <% @deed.viewers.each do |viewer| %>
+		      <tr>
+		        <td><%= viewer.email %></td>
+		      </tr>
+		    <% end %>
+		  </tbody>
+		</table>
+	</div>
+	<!-- /.row -->
+
+	<!-- New Viewer Form Row -->
+	<div class="row">
+	<%= form_for([@deed, @deed.viewers.build]) do |f| %>
+	<table class="table table-striped">
+		<thead>
+		    <tr>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		    </tr>
+		  </thead>
+	  <tbody>
+		<tr>
+	    	<td><%= f.text_field :email, :style => "width:520px;" , :placeholder => "email" %></td>
+			<td><%= f.hidden_field :deed_id, :value => @deed.id %></td>
+			<td><%= button_to 'Add Viewer', :controller => "viewers", :action => "create", :method => :post, :class => 'btn btn-default btn-xs' %></td>
+		</tr>
+		  </tbody>
+		</table>
+	<% end %>
+	</div>
     <!-- /.row -->
 
 </div>

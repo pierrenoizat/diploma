@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
   
+  resources :viewers
+    
   resources :deeds do
-      member do
-        get 'download'
-        get 'download_sample'
-        get 'log_hash'
-      end
+    resources :viewers
+    member do
+      get 'download'
+      get 'download_sample'
+      get 'log_hash'
+    end
     end
   
   resources :users do
@@ -13,6 +16,7 @@ Rails.application.routes.draw do
         get 'fund_utxos'
         get'refund_payment_address'
         get 'dashboard'
+        get 'show_authorized'
       end
     end
   

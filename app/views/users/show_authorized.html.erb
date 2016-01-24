@@ -10,7 +10,7 @@
             <ol class="breadcrumb">
                 <li><%= link_to 'Home', root_path %>
                 </li>
-                <li class="active">You have <%=  pluralize @deeds.count, "Upload" %></li>
+                <li class="active">You have <%=  pluralize @deeds.count, "authorized deed" %></li>
             </ol>
         </div>
     </div>
@@ -19,21 +19,20 @@
 	<% @deeds.each do |deed| %>
     <div class="row">
         <div class="col-md-5">
-			<%= link_to deed do %>
-				<%= image_tag deed.avatar.url(:square), class: 'img-responsive img-hover' %>
-			<% end %>
+			<%= image_tag deed.avatar.url(:square), class: 'img-responsive' %>
         </div>
         <div class="col-md-7">
             <h4><%= deed.name %></h4>
             <h5><%= deed.category.titleize %>: <%= deed.issuer %></h5>
             <p><%= deed.description %></p>
 			<ul>
+				
+				<li>Uploaded by: <%= User.find_by_id(deed.user_id).email %></li></br>
 				<li>File SHA256 Fingerprint: <%= deed.upload %></li></br>
 				<% unless deed.tx_hash.blank? %>
                 	<li>OP_RETURN Tx ID: <%= deed.tx_hash %></li>
 				<% end %>
             </ul>
-            	<%= link_to 'View Deed', deed, class: 'btn btn-default btn-xs btn' %><span> </span>
 			<a class="btn btn-default btn-xs btn" href="<%= "#{download_deed_path(deed)}" %> "><i class="fa fa-download"></i><%= " #{deed.avatar_file_name}" %></a>
         </div>
     </div>
@@ -42,13 +41,6 @@
 	<% end %>
 
     <!-- Pagination -->
-    <div class="row text-center">
-	        <div class="col-lg-12">
-				<div class="digg_pagination">
-					<%= will_paginate @deeds, :page_links => false %>
-				</div>
-	        </div>
-	    </div>
     <!-- /.row -->
 
 	<!-- Call to Action Section -->

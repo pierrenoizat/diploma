@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :correct_user?, :except => [:index, :destroy, :edit]
-  before_action :current_user_admin?, :except => [:show, :edit, :update]
+  before_action :current_user_admin?, :except => [:show, :edit, :update, :show_authorized]
   
   require 'money-tree'
 
@@ -18,7 +18,22 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @deeds = @user.deeds.paginate(:page => params[:page], :per_page => 2)
+
+    @deeds = @user.deeds
+    @deeds = @deeds.paginate(:page => params[:page], :per_page => 2)
+  end
+  
+  def show_authorized
+    @user = User.find(params[:id])
+
+    @viewers = Viewer.where(:email => @user.email)
+
+    @deeds = []
+    @viewers.each do |viewer|
+      @deed = Deed.find_by_id(viewer.deed_id)
+      @deeds << @deed
+    end
+
   end
   
   # GET /deeds/1/edit
@@ -190,7 +205,7 @@ class UsersController < ApplicationController
   private
   
   def user_params
-    params.require(:user).permit(:email, :category, :credit)
+    params.require(:user).permit(:email, :category, :credit, deeds_attributes: [:user_id, :name, :upload, :category, :tx_hash, :tx_id])
   end
 
 end
