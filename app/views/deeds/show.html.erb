@@ -30,7 +30,7 @@
             <ul>
 				<li>File SHA256 Fingerprint: <%= @deed.upload %></li></br>
 				<% unless @deed.tx_hash.blank? %>
-                	<li>OP_RETURN Tx ID: <%= @deed.tx_hash %></li>
+					<li>OP_RETURN Tx ID: <a href="<%= "https://live.blockcypher.com/btc/tx/#{@deed.tx_hash}/" %>"  target="blank"><%= @deed.tx_hash %></a></li></br>
 				<% end %>
             </ul></br></br>
 			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Edit", edit_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
@@ -38,7 +38,7 @@
 
     </div>
     <!-- /.row -->
-
+	<hr>
 	<!-- Viewers Row -->
 	<div class="row">
 		<table>
