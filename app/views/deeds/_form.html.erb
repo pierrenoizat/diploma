@@ -6,8 +6,9 @@
   </div></br>
 
   <div class="form-inputs">
-  <%= f.input :avatar, :label => 'Image File', as: :file %>
+  <%= f.input :avatar, :label => 'Image File (jpg, png or pdf)', as: :file %>
   </div>
+  <p>Maximum file size with free plan: <%= '%.0f' % ($MAX_SIZE/1.2) %>k.</p></br></br>
 
   <div class="form-inputs">
     <%= f.input :name, :label => 'Title' %>

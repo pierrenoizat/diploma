@@ -30,7 +30,7 @@
 			<ul>
 				<li>File SHA256 Fingerprint: <%= deed.upload %></li></br>
 				<% unless deed.tx_hash.blank? %>
-                	<li>OP_RETURN Tx ID: <%= deed.tx_hash %></li>
+                	<li>OP_RETURN Tx ID: <a href="<%= tx_link(deed.tx_hash) %>"  target="blank"><%= deed.tx_hash %></a></li>
 				<% end %>
             </ul>
             	<%= link_to 'View Deed', deed, class: 'btn btn-default btn-xs btn' %><span> </span>
