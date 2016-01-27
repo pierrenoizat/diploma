@@ -32,7 +32,7 @@
 				<% unless deed.tx_hash.blank? %>
                 	<li>OP_RETURN Tx ID: <a href="<%= tx_link(deed.tx_hash) %>"  target="blank"><%= deed.tx_hash %></a></li>
 				<% end %>
-            </ul>
+            </ul></br></br>
 			<a class="btn btn-default btn-xs btn" href="<%= "#{download_deed_path(deed)}" %> "><i class="fa fa-download"></i><%= " #{deed.avatar_file_name}" %></a>
         </div>
     </div>

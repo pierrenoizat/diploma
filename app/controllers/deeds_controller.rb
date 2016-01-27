@@ -70,6 +70,11 @@ class DeedsController < ApplicationController
   # GET /deeds/new
   def new
     @deed = Deed.new
+    
+    if current_user.credit < 1
+      redirect_to current_user, alert: 'Insufficient credit: please contact the administrator.'
+    end
+    
   end
 
   # GET /deeds/1/edit
@@ -87,6 +92,9 @@ class DeedsController < ApplicationController
 
     respond_to do |format|
       if @deed.save
+        
+        current_user.credit -= 1
+        current_user.save
         # TODO use Digest::SHA256.file("X11R6.8.2-src.tar.bz2").hexdigest for now, using Paperclip MD5 fingerprint of the file.
         # Digest::MD5.hexdigest(File.read("data"))
         
@@ -170,7 +178,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:deed_id, :email])
+      params.require(:deed).permit(:user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:deed_id, :email])
     end
     
 end
