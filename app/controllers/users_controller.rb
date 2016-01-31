@@ -107,7 +107,9 @@ class UsersController < ApplicationController
          begin
            page = @agent.get string
          rescue Exception => e
-           page = e.page
+           # page = e.page
+           string = "https://bitcoin.toshi.io/api/v0/transactions/" + tx_id #  if webbtc.com is unavailable
+           page = @agent.get string
          end
 
          data = page.body

@@ -10,8 +10,9 @@ class DeedsController < ApplicationController
   require 'logger'
   
   def verify
-    @deed.signed_email
-    redirect_to current_user, notice: "Signed email was sent successfully to #{User.find_by_id(@deed.user_id).email}."
+    
+    @deed.signed_email(current_user.email)
+    redirect_to current_user, notice: "Signed email was sent successfully to #{current_user.email}."
   end
   
   def download_sample

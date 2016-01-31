@@ -150,12 +150,14 @@ class Deed < ActiveRecord::Base
         begin
           page = @agent.get string
         rescue Exception => e
-          page = e.page
+          # page = e.page
+          string = "https://bitcoin.toshi.io/api/v0/transactions/" + tx_id #  if webbtc.com is unavailable
+          page = @agent.get string
         end
 
         data = page.body
         # TODO check that utxo is not already spent
-        # TODO handle errors if webbtc server is down
+
         prev_tx[k] = Bitcoin::P::Tx.from_json(data)
         @address_balance += result['data']['unspent'][k]['amount'].to_f
         prev_out_index[k] = result['data']['unspent'][k]['n'].to_i
@@ -257,7 +259,7 @@ class Deed < ActiveRecord::Base
      end 
      
      
-     def signed_email
+     def signed_email(to_email)
              msk = case self.issuer
           	    when 'ESILV' then Rails.application.secrets.msk_esilv
           	    when 'TEST SCHOOL' then Rails.application.secrets.msk
@@ -293,16 +295,18 @@ class Deed < ActiveRecord::Base
               end # while
               puts @payment_address
               
-              text = "Your deed, #{self.name}, was verified successsfully by diploma.report. This message is signed by its issuer: #{self.issuer}."
+              text = "Your deed, #{self.name}, was verified successfully by diploma.report. This message is signed by its issuer: #{self.issuer}."
               key1 = Bitcoin::Key.new(@payment_node.private_key.to_hex) # priv key in hex
               signature = key1.sign_message(text)
-              text = text + "\n Signature: " + signature + "\n Address: " + @payment_address
+              text = text + "\n Address: " + @payment_address + "\n " + "\n Signature: " + signature 
               user = User.find_by_id(self.user_id)
+              # @current_user ||= User.find(session[:user_id]) if session[:user_id]
               client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
 
 
               mail = SendGrid::Mail.new do |m|
-                m.to = user.email
+                m.to = to_email
+                m.cc = user.email
                 m.from = 'diploma.report'
                 m.subject = 'Signed verification message'
                 m.text = text
