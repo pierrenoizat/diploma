@@ -1,6 +1,6 @@
 class DeedsController < ApplicationController
-  before_action :authenticate_user!, except: [:download_sample]
-  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample]
+  before_action :authenticate_user!, except: [:download_sample, :show]
+  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify]
   
   require 'google/api_client'
   require 'google/api_client'
@@ -8,6 +8,11 @@ class DeedsController < ApplicationController
   require 'google/api_client/auth/file_storage'
   require 'google/api_client/auth/installed_app'
   require 'logger'
+  
+  def verify
+    @deed.signed_email
+    redirect_to current_user, notice: "Signed email was sent successfully to #{User.find_by_id(@deed.user_id).email}."
+  end
   
   def download_sample
     
@@ -65,6 +70,11 @@ class DeedsController < ApplicationController
       @deed.upload = @deed.avatar_fingerprint
       @deed.save
     end
+    
+    if @user != current_user
+      redirect_to current_user, alert: 'Access denied: you are not authorized to edit this deed.'
+    end
+    
   end
 
   # GET /deeds/new
@@ -84,7 +94,7 @@ class DeedsController < ApplicationController
   # POST /deeds
   # POST /deeds.json
   def create
-    
+
     @deed = Deed.new(deed_params)
     
     require 'digest'
@@ -126,11 +136,12 @@ class DeedsController < ApplicationController
         @deed.upload = Digest::SHA256.hexdigest object.read
         # @deed.avatar_fingerprint = Digest::SHA256.hexdigest s3_object.read(options)
         @deed.save
-        
+        @deed.confirmation_email
         format.html { redirect_to @deed, notice: 'Deed was successfully created.' }
         format.json { render :show, status: :created, location: @deed }
       else
-        format.html { render :new }
+        flash[:error] = @deed.errors[:base]
+        format.html { render :new, notice: 'Deed could not be saved: user not authorized by issuer.' }
         format.json { render json: @deed.errors, status: :unprocessable_entity }
       end
     end
@@ -178,7 +189,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:deed_id, :email])
+      params.require(:deed).permit(:issuer_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:deed_id, :email])
     end
     
 end

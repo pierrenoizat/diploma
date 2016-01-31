@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Issuers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Batch</th>
+      <th>Mpk</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @issuers.each do |issuer| %>
+      <tr>
+        <td><%= issuer.name %></td>
+        <td><%= issuer.batch %></td>
+        <td><%= issuer.mpk %></td>
+        <td><%= link_to 'Show', issuer %></td>
+        <td><%= link_to 'Edit', edit_issuer_path(issuer) %></td>
+        <td><%= link_to 'Destroy', issuer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Issuer', new_issuer_path %>

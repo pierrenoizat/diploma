@@ -1,8 +1,29 @@
 <%= simple_form_for @deed, url: deeds_path do |f| %>
 <%= f.error_notification %>
+<% if @deed.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@deed.errors.count, "error") %> prohibited this deed from being saved:</h2>
+
+      <ul>
+      <% @deed.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <div class="form-inputs">
   <%= f.select(:category, Deed.categories.keys.map {|category| [category.titleize,category]}) %>
+  </div></br>
+
+  <div class="form-inputs">
+  	<% default = case current_user.email  %>
+	<%	when 'boussac.75011@gmail.com' then 'ESILV' %>
+	<%	when 'pierre.noizat@paymium.com' then 'TEST SCHOOL' %>
+	<%	else 'Unregistered School or University' %>
+	<%	end %>
+    <%= f.label :issuer, t('.issuer') %><br />
+	<%= f.select :issuer, Deed::ISSUERS, :selected => "#{default}" %>
   </div></br>
 
   <div class="form-inputs">
@@ -12,7 +33,6 @@
 
   <div class="form-inputs">
     <%= f.input :name, :label => 'Title' %>
-	<%= f.input :issuer %>
 	<%= f.input :description %>
 	
 	<%= f.hidden_field :user_id , :value => current_user.id %>

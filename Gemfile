@@ -25,6 +25,7 @@ gem 'mechanize'
 gem 'bitcoin-ruby', git: 'https://github.com/lian/bitcoin-ruby', branch: 'master', require: 'bitcoin'
 gem 'money-tree'
 
+gem 'sendgrid-ruby'
 
 
 group :development, :test do

@@ -22,6 +22,10 @@
 				<td><%= link_to "Refund payment address from #{$COLLECTION_ADDRESS}", refund_payment_address_user_path(current_user), :class => 'btn btn-default btn-xs btn-success' %></td>
 			</tr>
 			<tr>
+				<td>New issuer:</td>
+				<td><%= link_to "Create new issuer", new_issuer_path, :class => 'btn btn-default btn-xs btn-success' %></td>
+			</tr>
+			<tr>
 				<td>Broadcast activated: <%= $BROADCAST %></td>
 			</tr>
 			<tr>

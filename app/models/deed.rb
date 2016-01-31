@@ -1,9 +1,32 @@
+class DeedValidator < ActiveModel::Validator
+  
+  def validate(record)
+    
+    authorized_issuers = case record.issuer
+  	  when 'ESILV' then ['boussac.75011@gmail.com']
+  	  when 'TEST SCHOOL' then ['pierre.noizat@paymium.com']
+  	  else User.select("email").to_a
+  	end
+    
+   unless authorized_issuers.include?(User.find_by_id(record.user_id).email)
+     record.errors[:base] << "You are not authorized by #{record.issuer}."
+   end
+    
+  end # of validate method
+  
+end
+
+
 class Deed < ActiveRecord::Base
   enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video]
   belongs_to :user
+  # belongs_to :issuer
   has_many :viewers
   
+  ISSUERS = ["TEST SCHOOL", "ESILV", "Unregistered School or University"]
+  
     attr_readonly :user_id
+
     
     has_attached_file :avatar,
      :default_url => "/images/:style/missing.png",
@@ -27,6 +50,8 @@ class Deed < ActiveRecord::Base
      validates_attachment_file_name :avatar, :matches => [/png\Z/, /jpe?g\Z/,/pdf\Z/,/JPE?G\Z/,/PNG\Z/,/PDF\Z/]
      # Explicitly do not validate
      do_not_validate_attachment_file_type :avatar
+     
+     validates_with DeedValidator
 
      require 'money-tree'
 
@@ -214,5 +239,79 @@ class Deed < ActiveRecord::Base
        @raw_transaction
 
      end # of op_return_tx method
+     
+     def confirmation_email
+       user = User.find_by_id(self.user_id)
+       client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
+       
+       mail = SendGrid::Mail.new do |m|
+         m.to = user.email
+         m.from = 'diploma.report'
+         m.subject = 'Deed upload confirmation'
+         m.text = "Your deed, #{self.name}, was uploaded successsfully to diploma.report ."
+       end
+
+       res = client.send(mail)
+       puts res.code
+       puts res.body
+     end 
+     
+     
+     def signed_email
+             msk = case self.issuer
+          	    when 'ESILV' then Rails.application.secrets.msk_esilv
+          	    when 'TEST SCHOOL' then Rails.application.secrets.msk
+          	    else Rails.application.secrets.msk
+          	  end
+
+          	  complete = false
+              @master = MoneyTree::Master.from_bip32(msk)
+              i = 1
+              while ((i <= $PAYMENT_NODES_COUNT) and (complete == false))
+
+                @payment_node = @master.node_for_path "m/2/#{i}"
+
+                @payment_address = @payment_node.to_address
+                string = $BLOCKR_TX_URL + self.tx_hash
+
+                @agent = Mechanize.new
+
+                begin
+                  page = @agent.get string
+                rescue Exception => e
+                  page = e.page
+                end
+
+                data = page.body
+                result = JSON.parse(data)
+
+                complete = (result['data']['trade']['vins'][0]['address'] == @payment_address )
+                i += 1
+                puts i.to_s
+                puts result['data']['trade']['vins'][0]['address']
+                puts complete
+              end # while
+              puts @payment_address
+              
+              text = "Your deed, #{self.name}, was verified successsfully by diploma.report. This message is signed by its issuer: #{self.issuer}."
+              key1 = Bitcoin::Key.new(@payment_node.private_key.to_hex) # priv key in hex
+              signature = key1.sign_message(text)
+              text = text + "\n Signature: " + signature + "\n Address: " + @payment_address
+              user = User.find_by_id(self.user_id)
+              client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
+
+
+              mail = SendGrid::Mail.new do |m|
+                m.to = user.email
+                m.from = 'diploma.report'
+                m.subject = 'Signed verification message'
+                m.text = text
+              end
+
+              res = client.send(mail)
+              puts res.code
+              puts res.body
+           end
+     
 
   end

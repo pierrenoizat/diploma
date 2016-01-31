@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @issuer.name %>
+</p>
+
+<p>
+  <strong>Batch:</strong>
+  <%= @issuer.batch %>
+</p>
+
+<p>
+  <strong>Mpk:</strong>
+  <%= @issuer.mpk %>
+</p>
+
+<%= link_to 'Edit', edit_issuer_path(@issuer) %> |
+<%= link_to 'Back', issuers_path %>

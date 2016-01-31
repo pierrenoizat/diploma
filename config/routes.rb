@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :issuers
   resources :viewers
     
   resources :deeds do
@@ -8,6 +9,7 @@ Rails.application.routes.draw do
       get 'download'
       get 'download_sample'
       get 'log_hash'
+      get 'verify'
     end
     end
   

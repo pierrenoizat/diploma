@@ -149,6 +149,7 @@ GEM
       webrobots (>= 0.0.9, < 0.2)
     memoist (0.14.0)
     mime-types (2.99)
+    mimemagic (0.3.1)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
     money-tree (0.9.0)
@@ -230,6 +231,10 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sendgrid-ruby (1.1.6)
+      faraday (~> 0.9)
+      mimemagic
+      smtpapi (~> 0.1)
     signet (0.7.2)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -238,6 +243,7 @@ GEM
     simple_form (3.2.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
+    smtpapi (0.1.0)
     spring (1.6.0)
     sprockets (3.5.2)
       concurrent-ruby (~> 1.0)
@@ -297,6 +303,7 @@ DEPENDENCIES
   rails_12factor
   rails_layout
   sass-rails (~> 5.0)
+  sendgrid-ruby
   simple_form
   spring
   uglifier (>= 1.3.0)
