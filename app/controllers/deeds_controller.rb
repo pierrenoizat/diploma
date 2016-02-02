@@ -1,5 +1,5 @@
 class DeedsController < ApplicationController
-  before_action :authenticate_user!, except: [:download_sample, :show]
+  before_action :authenticate_user!, except: [:download_sample, :download, :show, :verify]
   before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify]
   
   require 'google/api_client'
@@ -10,9 +10,8 @@ class DeedsController < ApplicationController
   require 'logger'
   
   def verify
-    
-    @deed.signed_email(current_user.email)
-    redirect_to current_user, notice: "Signed email was sent successfully to #{current_user.email}."
+      @deed.signed_email(current_user.email)
+      redirect_to current_user, notice: "Signed email was sent successfully to #{current_user.email}."
   end
   
   def download_sample
@@ -190,7 +189,7 @@ class DeedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:issuer_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:deed_id, :email])
+      params.require(:deed).permit(:issuer_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:access_key, :deed_id, :email])
     end
     
 end

@@ -1,20 +1,32 @@
 class ViewersController < ApplicationController
-  before_action :set_viewer, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_viewer, only: [:show, :edit, :update, :destroy, :verify]
+  
+  def verify
+      Deed.find_by_id(@viewer.deed_id).signed_email(@viewer.email)
+      redirect_to @viewer, notice: "Signed email was sent successfully to #{@viewer.email}."
+  end
+  
   # GET /viewers
   # GET /viewers.json
   def index
     @viewers = Viewer.all
+    unless current_user.admin?
+      redirect_to current_user, alert: 'Access reserved to admin only.'
+    end
   end
 
   # GET /viewers/1
   # GET /viewers/1.json
   def show
+    @deed = Deed.find_by_id(@viewer.deed_id)
   end
 
   # GET /viewers/new
   def new
     @viewer = Viewer.new
+    unless current_user.admin?
+      redirect_to current_user, alert: 'Access reserved to admin only.'
+    end
   end
 
   # GET /viewers/1/edit
@@ -25,10 +37,12 @@ class ViewersController < ApplicationController
   # POST /viewers.json
   def create
     @viewer = Viewer.new(viewer_params)
+    # @viewer.access_key = [id.to_s, SecureRandom.hex(10)].join
     @user = current_user
     respond_to do |format|
       if @viewer.save
         @deed = Deed.find_by_id(@viewer.deed_id)
+        @viewer.addition_email
         format.html { redirect_to @deed, notice: 'Viewer was successfully added.' }
         format.json { render :show, status: :created, location: @viewer }
       else
@@ -65,11 +79,12 @@ class ViewersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_viewer
-      @viewer = Viewer.find(params[:id])
+      # @viewer = Viewer.find(params[:id])
+      @viewer = Viewer.find_by_access_key(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def viewer_params
-      params.require(:viewer).permit(:email, :deed_id)
+      params.require(:viewer).permit(:access_key, :email, :deed_id)
     end
 end

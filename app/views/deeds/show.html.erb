@@ -41,10 +41,11 @@
 	<hr>
 	<!-- Viewers Row -->
 	<div class="row">
-		<table>
+		<table class="table table-striped">
 		  <thead>
 		    <tr>
-		      <th>Authorized viewers email:</th>
+		      <th>Authorized viewers email: </th>
+			  <th>Access key: </th>
 		    </tr>
 		  </thead>
 
@@ -52,6 +53,7 @@
 		    <% @deed.viewers.each do |viewer| %>
 		      <tr>
 		        <td><%= viewer.email %></td>
+				<td><%= viewer.access_key %></td>
 		      </tr>
 		    <% end %>
 		  </tbody>

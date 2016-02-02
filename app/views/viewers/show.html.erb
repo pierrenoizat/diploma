@@ -1,14 +1,24 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @viewer.email %>
-</p>
-
-<p>
-  <strong>Deed:</strong>
-  <%= @viewer.deed_id %>
-</p>
-
-<%= link_to 'Edit', edit_viewer_path(@viewer) %> |
-<%= link_to 'Back', viewers_path %>
+<!-- Page Content -->
+<div class="container">
+	</br></br>
+	<div class="row">
+        <div class="col-md-5">
+			<%= image_tag @deed.avatar.url(:square), class: 'img-responsive' %>
+        </div>
+        <div class="col-md-7">
+            <h4><%= @deed.name %></h4>
+            <h5><%= @deed.category.titleize %>: <%= @deed.issuer %></h5>
+            <p><%= @deed.description %></p>
+			<ul>
+				
+				<li>Uploaded by: <%= User.find_by_id(@deed.user_id).email %></li></br>
+				<li>File SHA256 Fingerprint: <%= @deed.upload %></li></br>
+				<% unless @deed.tx_hash.blank? %>
+                	<li>OP_RETURN Tx ID: <a href="<%= tx_link(@deed.tx_hash) %>"  target="blank"><%= @deed.tx_hash %></a></li>
+				<% end %>
+            </ul></br></br>
+			<a class="btn btn-default btn-xs btn" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i><%= " #{@deed.avatar_file_name}" %></a> <% unless @deed.tx_hash.blank? %><a class="btn btn-default btn-xs btn" href="<%= "#{verify_viewer_path(@viewer)}" %> "><i class="fa fa-send"></i> Send signed email</a><% end %>
+        </div>
+	</div>
+</div>
+<!-- /.container ->
