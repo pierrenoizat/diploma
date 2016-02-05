@@ -51,7 +51,17 @@ class Deed < ActiveRecord::Base
      # Explicitly do not validate
      do_not_validate_attachment_file_type :avatar
      
-     validates_with DeedValidator
+     # validates_with DeedValidator
+     
+     before_create :generate_access_key
+
+     def to_param
+       self.access_key
+     end
+
+     def generate_access_key
+       self.access_key = [id.to_s, SecureRandom.hex(10)].join.truncate(20)
+     end
 
      require 'money-tree'
 

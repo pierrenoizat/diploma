@@ -27,6 +27,8 @@ gem 'money-tree'
 
 gem 'sendgrid-ruby'
 
+gem 'zeroclipboard-rails'
+
 
 group :development, :test do
   gem 'byebug'

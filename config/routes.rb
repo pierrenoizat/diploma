@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get 'download_sample'
       get 'log_hash'
       get 'verify'
+      get 'public_display'
     end
     end
   

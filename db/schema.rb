@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160201230826) do
+ActiveRecord::Schema.define(version: 20160204172951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20160201230826) do
     t.string   "tx_raw"
     t.string   "upload"
     t.integer  "issuer_id"
+    t.string   "access_key"
   end
 
   create_table "issuers", force: :cascade do |t|

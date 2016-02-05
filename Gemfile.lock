@@ -275,6 +275,8 @@ GEM
       sprockets-rails (>= 2.0, < 4.0)
     webrobots (0.1.1)
     will_paginate (3.0.7)
+    zeroclipboard-rails (0.1.1)
+      railties (>= 3.1)
 
 PLATFORMS
   ruby
@@ -310,6 +312,7 @@ DEPENDENCIES
   unicorn
   web-console (~> 2.0)
   will_paginate (~> 3.0.6)
+  zeroclipboard-rails
 
 BUNDLED WITH
    1.11.2

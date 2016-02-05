@@ -31,9 +31,26 @@
 				<li>File SHA256 Fingerprint: <%= @deed.upload %></li></br>
 				<% unless @deed.tx_hash.blank? %>
 					<li>OP_RETURN Tx ID: <a href="<%= tx_link(@deed.tx_hash) %>"  target="blank"><%= @deed.tx_hash %></a></li></br>
+					<li>Public link: <a id='fe_text' href="<%= "#{public_display_deed_path(@deed)}" %> "  target="blank"><%= public_link(@deed.access_key) %></a></li></br>
 				<% end %>
             </ul></br></br>
-			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a> <% if @deed.tx_hash.blank? %> <%= link_to "Log hash in Blockchain", log_hash_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <% end %> <%= link_to "Edit", edit_deed_path(@deed), :class => 'btn btn-default btn-xs btn-success' %> <%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
+			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a>
+			<% if @deed.tx_hash.blank? %>
+			<span> </span>
+			<a class="btn btn-default btn-xs btn-success" href="<%= "#{log_hash_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Log hash in Blockchain</a>
+			<% else %>
+			<span> </span>
+			<button class="btn btn-default btn-xs btn-success" data-clipboard-target='fe_text' data-clipboard-text='Default clipboard text from attribute' id='d_clip_button' title='Click me to copy the deed public link to clipboard.'><i class="fa fa-files-o"></i> Copy public link to clipboard</button>
+			<script>
+			$(document).ready(function() {
+			    var clip = new ZeroClipboard($("#d_clip_button"))
+			  });
+			</script>
+			<% end %>
+			<span> </span>
+			<a class="btn btn-default btn-xs btn-success" href="<%= "#{edit_deed_path(@deed)}" %> "><i class="fa fa-pencil-square-o"></i> Edit</a>
+			<span> </span>
+			<%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
         </div>
 
     </div>

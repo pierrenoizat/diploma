@@ -1,6 +1,6 @@
 class DeedsController < ApplicationController
   before_action :authenticate_user!, except: [:download_sample, :download, :show, :verify]
-  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify]
+  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display]
   
   require 'google/api_client'
   require 'google/api_client'
@@ -61,14 +61,16 @@ class DeedsController < ApplicationController
     @deeds = Deed.all
     redirect_to current_user
   end
+  
+  def public_display
+  end
 
   # GET /deeds/1
   # GET /deeds/1.json
   def show
     @user = User.find_by_id(@deed.user_id)
     if @deed.upload.blank?
-      @deed.upload = @deed.avatar_fingerprint
-      @deed.save
+      @deed.update(upload: @deed.avatar_fingerprint)
     end
     
     if @user != current_user
@@ -133,10 +135,11 @@ class DeedsController < ApplicationController
 
         bucket = s3.buckets['hashtree-assets']
         object = bucket.objects[@deed.avatar_file_name]
+
         @deed.upload = Digest::SHA256.hexdigest object.read
-        # @deed.avatar_fingerprint = Digest::SHA256.hexdigest s3_object.read(options)
         @deed.save
         @deed.confirmation_email
+        
         format.html { redirect_to @deed, notice: 'Deed was successfully created.' }
         format.json { render :show, status: :created, location: @deed }
       else
@@ -184,12 +187,13 @@ class DeedsController < ApplicationController
   private
     # Use before_action callbacks to share common setup or constraints between actions.
     def set_deed
-      @deed = Deed.find(params[:id])
+      # @deed = Deed.find(params[:id])
+      @deed = Deed.find_by_access_key(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
-      params.require(:deed).permit(:issuer_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:access_key, :deed_id, :email])
+      params.require(:deed).permit(:access_key,:issuer_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:access_key, :deed_id, :email])
     end
     
 end
