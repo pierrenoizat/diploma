@@ -30,7 +30,14 @@
 			  </div></br>
 			  <div class="form-inputs">
 			    <%= f.input :name, :label => 'Name' %>
-				
+				<% if current_user.category == 'admin' %>
+					<label for="issuer_id">Issuer</label><br />
+					<%= @issuer.name if @issuer %><span>  </span>
+					<%= f.collection_select :issuer_id, Issuer.all, :id, :name, :prompt => "#{@issuer}" %></br>
+				<% else %>
+					<label for="issuer_id">Issuer</label><br />
+					<%= @issuer.name if @issuer %>
+				<% end %>
 				<% if @user.email.blank? %>
 					<%= f.input :email %>
 				<% else %>

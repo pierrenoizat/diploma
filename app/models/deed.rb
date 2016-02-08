@@ -20,10 +20,8 @@ end
 class Deed < ActiveRecord::Base
   enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video]
   belongs_to :user
-  # belongs_to :issuer
+  belongs_to :issuer
   has_many :viewers
-  
-  ISSUERS = ["TEST SCHOOL", "ESILV", "Unregistered School or University"]
   
     attr_readonly :user_id
 
@@ -60,7 +58,7 @@ class Deed < ActiveRecord::Base
      end
 
      def generate_access_key
-       self.access_key = [id.to_s, SecureRandom.hex(10)].join.truncate(20)
+       self.access_key = SecureRandom.hex(10)
      end
 
      require 'money-tree'
@@ -317,8 +315,8 @@ class Deed < ActiveRecord::Base
               mail = SendGrid::Mail.new do |m|
                 m.to = to_email
                 m.cc = user.email
-                m.from = 'diploma.report'
-                m.subject = 'Signed verification message'
+                m.from = 'Diploma Report'
+                m.subject = 'Signed message'
                 m.text = text
               end
 

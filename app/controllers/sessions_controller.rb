@@ -10,6 +10,20 @@ class SessionsController < ApplicationController
                       :uid => auth['uid'].to_s).first || User.create_with_omniauth(auth)
     reset_session
     session[:user_id] = user.id
+    
+    issuer_exist = false
+    @issuers=Issuer.all
+    @issuers.each do |issuer|
+      if (issuer.name == user.email)
+        issuer_exist = true
+      end
+    end
+    unless (issuer_exist or (user.credit == 0))
+      @issuer = Issuer.create(:name => user.email, :mpk => Rails.application.secrets.mpk)
+      user.issuer_id = nil
+      user.save
+    end
+    
     redirect_to root_url, :notice => 'Signed in!'
   end
 

@@ -15,6 +15,27 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @users = User.all
   end
+  
+  def create
+    @user = User.new(user_params)
+    
+    @users = User.all
+    exist = false
+    @users.each do |user|
+     if user.email == @user.email
+       exist = true
+     end
+    end
+    
+    if exist
+      @user = User.find_by_email(params[:user][:email])
+      @user.update(user_params)
+      redirect_to @user, notice: 'User was successfully updated.'
+    else
+      redirect_to root_url, notice: 'User not registered yet.'
+    end
+    
+  end
 
   def show
     @user = User.find(params[:id])
@@ -39,6 +60,8 @@ class UsersController < ApplicationController
   # GET /deeds/1/edit
   def edit
       @user = User.find(params[:id])
+      @issuer = Issuer.find_by_id(@user.issuer_id)
+      @issuers = Issuer.where(:category => :school)
   end
   
   def update
@@ -207,7 +230,7 @@ class UsersController < ApplicationController
   private
   
   def user_params
-    params.require(:user).permit(:email, :category, :credit, deeds_attributes: [:user_id, :name, :upload, :category, :tx_hash, :tx_id])
+    params.require(:user).permit(:issuer_id, :email, :category, :credit, deeds_attributes: [:user_id, :name, :upload, :category, :tx_hash, :tx_id])
   end
 
 end

@@ -17,14 +17,18 @@
   </div></br>
 
   <div class="form-inputs">
-  	<% default = case current_user.email  %>
-	<%	when 'boussac.75011@gmail.com' then 'ESILV' %>
-	<%	when 'pierre.noizat@paymium.com' then 'TEST SCHOOL' %>
-	<%	else 'Unregistered School or University' %>
-	<%	end %>
-    <%= f.label :issuer, t('.issuer') %><br />
-	<%= f.select :issuer, Deed::ISSUERS, :selected => "#{default}" %>
+	<label for="issuer_id">Issuer</label><br />
+	<% if @issuer %>
+		<%= @issuer.name %><span>  </span>
+	<% else %>
+		<%= current_user.email %><span>  </span>
+	<% end %>
+	<% if @issuers.count > 1 %>
+		<%= f.collection_select :issuer_id, @issuers, :id, :name, :prompt => "#{@issuer.name}" %>
+	<% end %>
   </div></br>
+
+	
 
   <div class="form-inputs">
   <%= f.input :avatar, :label => 'Image File (jpg, png or pdf)', as: :file %>

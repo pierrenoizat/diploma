@@ -70,6 +70,6 @@ class IssuersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def issuer_params
-      params.require(:issuer).permit(:name, :batch, :mpk, deeds_attributes: [:issuer_id])
+      params.require(:issuer).permit(:category, :name, :batch, :mpk, deeds_attributes: [:issuer_id])
     end
 end

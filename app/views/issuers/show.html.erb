@@ -1,7 +1,8 @@
+<div class="container">
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
+  <strong>Issuer Name:</strong>
   <%= @issuer.name %>
 </p>
 
@@ -15,5 +16,51 @@
   <%= @issuer.mpk %>
 </p>
 
+<!-- Authorized Users Row -->
+<div class="row">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th>Authorized users email: </th>
+		  <th>Name: </th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <% @issuer.users.each do |user| %>
+	      <tr>
+	        <td><%= user.email %></td>
+			<td><%= user.name %></td>
+	      </tr>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>
+<!-- /.row -->
+
+<!-- New Viewer Form Row -->
+<div class="row">
+<%= form_for([@issuer, @issuer.users.build]) do |f| %>
+<table class="table table-striped">
+	<thead>
+	    <tr>
+	      <th></th>
+	      <th></th>
+	      <th></th>
+	    </tr>
+	  </thead>
+  <tbody>
+	<tr>
+    	<td><%= f.text_field :email, :style => "width:520px;" , :placeholder => "email" %></td>
+		<td><%= f.hidden_field :issuer_id, :value => @issuer.id %></td>
+		<td><%= button_to 'Add Authorized User', :controller => "users", :action => "create", :method => :post, :class => 'btn btn-default btn-xs' %></td>
+	</tr>
+	  </tbody>
+	</table>
+<% end %>
+</div>
+<!-- /.row -->
+
 <%= link_to 'Edit', edit_issuer_path(@issuer) %> |
 <%= link_to 'Back', issuers_path %>
+</div>

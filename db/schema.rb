@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204172951) do
+ActiveRecord::Schema.define(version: 20160208154153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20160204172951) do
     t.string   "mpk"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "category"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,6 +57,7 @@ ActiveRecord::Schema.define(version: 20160204172951) do
     t.string   "email"
     t.integer  "category"
     t.integer  "credit"
+    t.integer  "issuer_id"
   end
 
   create_table "viewers", force: :cascade do |t|

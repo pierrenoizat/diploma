@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   enum category: [:student, :vip, :visitor, :customer, :issuer, :admin]
   has_many :deeds
+  belongs_to :issuer
+  
+  before_create :set_credit
 
   def self.create_with_omniauth(auth)
     create! do |user|
@@ -26,6 +29,12 @@ class User < ActiveRecord::Base
       end
     end
     authorized
+  end
+  
+  private
+  
+  def set_credit
+    self.credit = 0
   end
 
 end

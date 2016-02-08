@@ -1,3 +1,8 @@
 class Issuer < ActiveRecord::Base
-  # has_many :deeds
+  enum category: [:school, :individual]
+  has_many :deeds
+  has_many :users
+  SCHOOLS = ["TEST SCHOOL", "ESILV", "CDI", "-"]
+  # validates :name, :inclusion => SCHOOLS # not anymore, since email address is a user default issuer name
+  
 end

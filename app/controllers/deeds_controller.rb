@@ -1,5 +1,5 @@
 class DeedsController < ApplicationController
-  before_action :authenticate_user!, except: [:download_sample, :download, :show, :verify]
+  before_action :authenticate_user!, except: [:new, :download_sample, :download, :show, :verify, :public_display]
   before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display]
   
   require 'google/api_client'
@@ -82,6 +82,14 @@ class DeedsController < ApplicationController
   # GET /deeds/new
   def new
     @deed = Deed.new
+    @issuer = Issuer.find_by_id(current_user.issuer_id)
+    @issuers = []
+    @issuers << Issuer.find_by_name(current_user.email)
+    if @issuer
+      @issuers << @issuer
+    else
+      @issuer = Issuer.find_by_name(current_user.email)
+    end
     
     if current_user.credit < 1
       redirect_to current_user, alert: 'Insufficient credit: please contact the administrator.'

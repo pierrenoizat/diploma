@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
   
-  resources :issuers
   resources :viewers do
     member do
       get 'verify'
     end
     end
+    
+  resources :issuers do
+    resources :users
+      end
     
   resources :deeds do
     resources :viewers

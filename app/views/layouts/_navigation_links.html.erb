@@ -15,6 +15,7 @@
                 </li>
               <% if current_user.uid == $ADMIN_UID %>
 				<li><%= link_to pluralize(User.all.count, "User"), users_path %></li>
+				<li><%= link_to pluralize(Issuer.all.count, "Issuer"), issuers_path %></li>
 				<li><%= link_to 'Admin Dashboard', dashboard_user_path(current_user) %></li>
 			  <% end %>
             </ul>
