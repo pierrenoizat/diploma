@@ -8,4 +8,5 @@ module ApplicationHelper
     $ROOT_URL + "/deeds/#{string}/public_display"
   end
 
+
 end

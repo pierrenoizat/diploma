@@ -14,8 +14,11 @@
 	<div class="col-lg-3">
 		Mpk
 	</div>
-	<div class="col-lg-3">
-		Authorized users count</strong>
+	<div class="col-lg-2">
+		Authorized users count
+	</div>
+	<div class="col-lg-1">
+		Deeds count</strong>
 	</div>
 	<div class="col-lg-1">
 	</div>
@@ -36,8 +39,11 @@
 			<div class="col-lg-3">
         		<%= issuer.mpk.truncate(24) if issuer.mpk %>
 			</div>
-			<div class="col-lg-3">
+			<div class="col-lg-2">
         		<%= issuer.users.count if issuer.users %>
+			</div>
+			<div class="col-lg-1">
+        		<%= issuer.deeds.count if issuer.deeds %>
 			</div>
 			<div class="col-lg-1">
         		<%= link_to 'Show', issuer %>

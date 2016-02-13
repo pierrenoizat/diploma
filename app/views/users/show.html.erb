@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-7">
             <h4><%= deed.name %></h4>
-            <h5><%= deed.category.titleize %>: <%= deed.issuer %></h5>
+            <h5><%= deed.category.titleize %>: <%= Issuer.find_by_id(deed.issuer_id).name if Issuer.find_by_id(deed.issuer_id) %></h5>
             <p><%= deed.description %></p>
 			<ul>
 				<li>File SHA256 Fingerprint: <%= deed.upload %></li></br>

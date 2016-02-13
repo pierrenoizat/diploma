@@ -73,16 +73,15 @@ class ApplicationController < ActionController::Base
     end
     
     def current_user_admin?
-        unless (current_user.uid == $ADMIN_UID)
-          redirect_to root_url, :alert => 'You need to sign in as admin for access to this page.'
-        end
+      current_user.uid == Rails.application.secrets.admin_uid.to_s
     end
 
     def correct_user?
       @user = User.find_by_id(params[:id])
-      unless ((current_user == @user) or (current_user.uid == $ADMIN_UID))
-        redirect_to root_url, :alert => "Access denied."
-      end
+      (current_user == @user) or (current_user.uid == Rails.application.secrets.admin_uid.to_s)
+      # unless ((current_user == @user) or (current_user.uid == Rails.application.secrets.admin_uid))
+        #redirect_to root_url, :alert => "Access denied."
+      # end
     end
 
     def authenticate_user!

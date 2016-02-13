@@ -3,6 +3,9 @@ class User < ActiveRecord::Base
   has_many :deeds
   belongs_to :issuer
   
+  validates :email, presence: true
+  validates :email, uniqueness: true
+  
   before_create :set_credit
 
   def self.create_with_omniauth(auth)
@@ -13,6 +16,8 @@ class User < ActiveRecord::Base
          user.name = auth['info']['name'] || ""
          user.email = auth['info']['email'] || ""
       end
+      @issuer = Issuer.create(:category => :individual, :name => user.email, :mpk => Rails.application.secrets.mpk)
+      user.issuer_id = @issuer.id
     end
   end
   
@@ -29,6 +34,11 @@ class User < ActiveRecord::Base
       end
     end
     authorized
+  end
+  
+  
+  def admin?
+    self.uid == Rails.application.secrets.admin_uid
   end
   
   private

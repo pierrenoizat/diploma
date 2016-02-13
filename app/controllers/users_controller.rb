@@ -9,6 +9,15 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    
+    @users.each do |user|
+      if user.issuer_id.blank?
+        @issuer = Issuer.create(:category => :individual, :name => user.email, :mpk => Rails.application.secrets.mpk)
+        user.issuer_id = @issuer.id
+        user.save
+      end
+    end
+    
   end
   
   def dashboard
@@ -39,6 +48,13 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    
+    @user.deeds.each do |deed|
+      if (deed.issuer_id.blank? and Issuer.find_by_name(@user.email))
+        deed.issuer_id = Issuer.find_by_name(@user.email).id
+        deed.save
+      end
+    end
 
     @deeds = @user.deeds
     @deeds = @deeds.paginate(:page => params[:page], :per_page => 2)
@@ -48,7 +64,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     @viewers = Viewer.where(:email => @user.email)
-
     @deeds = []
     @viewers.each do |viewer|
       @deed = Deed.find_by_id(viewer.deed_id)
@@ -96,17 +111,21 @@ class UsersController < ApplicationController
     end
   end
   
+  
   def fund_utxos # fund multiple utxos that will be used in op return transactions, preventing unconfirmed/unspent conflicts
-     @users = User.all
-     string = $BLOCKR_ADDRESS_UNSPENT_URL + $PAYMENT_ADDRESS # ?multisigs=1
-     tx_id = ""
-     prev_out_index = []
-     prev_tx = []
-     @address_balance = 0
-     @send_notification = false
-     total_rewards = 0
 
-     @agent = Mechanize.new
+    @user = User.find(params[:id])
+    @issuer = Issuer.find_by_id(@user.issuer_id)
+    @users = User.all
+    string = $BLOCKR_ADDRESS_UNSPENT_URL + $PAYMENT_ADDRESS # ?multisigs=1
+    tx_id = ""
+    prev_out_index = []
+    prev_tx = []
+    @address_balance = 0
+    @send_notification = false
+    total_rewards = 0
+
+    @agent = Mechanize.new
 
      begin
        page = @agent.get string
@@ -130,7 +149,6 @@ class UsersController < ApplicationController
          begin
            page = @agent.get string
          rescue Exception => e
-           # page = e.page
            string = "https://bitcoin.toshi.io/api/v0/transactions/" + tx_id #  if webbtc.com is unavailable
            page = @agent.get string
          end
@@ -154,8 +172,8 @@ class UsersController < ApplicationController
        
        for k in 1..$PAYMENT_NODES_COUNT
          
-         @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
-         @recipient_node = @master.node_for_path "M/2/#{k}"
+         @master = MoneyTree::Master.from_bip32(@issuer.mpk)
+         @recipient_node = @master.node_for_path "M/2/#{k}" # using a capital "M" instead of a lowercase "m", we will receive a node that is stripped of its private key.
 
          t.output do |o|
            o.value @utxo_amount # in satoshis

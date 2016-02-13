@@ -18,10 +18,12 @@ class SessionsController < ApplicationController
         issuer_exist = true
       end
     end
-    unless (issuer_exist or (user.credit == 0))
+    unless issuer_exist
       @issuer = Issuer.create(:name => user.email, :mpk => Rails.application.secrets.mpk)
-      user.issuer_id = nil
-      user.save
+      if user.issuer_id.blank?
+        user.issuer_id = @issuer.id
+        user.save
+      end
     end
     
     redirect_to root_url, :notice => 'Signed in!'

@@ -24,7 +24,7 @@
 		<%= current_user.email %><span>  </span>
 	<% end %>
 	<% if @issuers.count > 1 %>
-		<%= f.collection_select :issuer_id, @issuers, :id, :name, :prompt => "#{@issuer.name}" %>
+		<%= f.collection_select :issuer_id, @issuers, :id, :name, {disabled: lambda{|issuer| issuer.name == current_user.email }} %>
 	<% end %>
   </div></br>
 

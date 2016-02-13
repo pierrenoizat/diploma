@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-md-8">
-            <h3><%= @deed.category.titleize %>:<%= @deed.issuer %></h3>
+            <h3><%= @deed.category.titleize %>:<%= Issuer.find_by_id(@deed.issuer_id).name if Issuer.find_by_id(@deed.issuer_id) %></h3>
             <p><%= @deed.description %></p>
             <h3>Deed Details</h3></br>
             <ul>

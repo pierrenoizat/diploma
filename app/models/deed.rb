@@ -1,22 +1,3 @@
-class DeedValidator < ActiveModel::Validator
-  
-  def validate(record)
-    
-    authorized_issuers = case record.issuer
-  	  when 'ESILV' then ['boussac.75011@gmail.com']
-  	  when 'TEST SCHOOL' then ['pierre.noizat@paymium.com']
-  	  else User.select("email").to_a
-  	end
-    
-   unless authorized_issuers.include?(User.find_by_id(record.user_id).email)
-     record.errors[:base] << "You are not authorized by #{record.issuer}."
-   end
-    
-  end # of validate method
-  
-end
-
-
 class Deed < ActiveRecord::Base
   enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video]
   belongs_to :user
@@ -49,7 +30,8 @@ class Deed < ActiveRecord::Base
      # Explicitly do not validate
      do_not_validate_attachment_file_type :avatar
      
-     # validates_with DeedValidator
+     validates :issuer_id, presence: true
+     validates :issuer_id, numericality: { only_integer: true }
      
      before_create :generate_access_key
 
@@ -95,11 +77,32 @@ class Deed < ActiveRecord::Base
       end
       
      end # of broadcast_tx method
+     
+     
+     def issuer_msk
+       # pick issuer-specific msk
+       msk = case Issuer.find_by_id(self.issuer_id).name
+       when "ESILV"
+        Rails.application.secrets.msk_esilv
+       when "TEST SCHOOL"
+        Rails.application.secrets.msk_esilv
+       when "TEST"
+        Rails.application.secrets.msk_esilv
+       when "CDI"
+        Rails.application.secrets.msk_esilv
+       else
+        Rails.application.secrets.msk
+       end
+     end
+     
 
      def op_return_tx
        
+       @issuer = Issuer.find_by_id(self.issuer_id)
        complete = false
-       @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
+       
+       @master = MoneyTree::Master.from_bip32(self.issuer_msk)
+       
        i = 1
        while ((i <= $PAYMENT_NODES_COUNT) and (complete == false))
          
@@ -118,14 +121,30 @@ class Deed < ActiveRecord::Base
 
        data = page.body
        result = JSON.parse(data)
-       # complete = (page.body[:data][:balance].to_f > ($NETWORK_FEE/100000000))
-       complete = (result['data']['balance'].to_f > ($NETWORK_FEE/100000000))
+       # look for payment address with sufficient balance
+       complete = (result['data']['balance'].to_f > ($NETWORK_FEE/100000000)) 
        i += 1
      end # while
      
      puts "Payment address: #{@payment_address}"
      # puts "Payment address balance: #{balance(@payment_address)} BTC"
      puts i-1
+     if i > $PAYMENT_NODES_COUNT - 5
+       text = "We are running out of utxos for #{Issuer.find_by_id(self.issuer_id).name}, it's time to create new utxos for future transactions."
+       # notify the administrator
+       user = User.find_by_uid(Rails.application.secrets.admin_uid.to_s)
+       client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
+        mail = SendGrid::Mail.new do |m|
+          m.to = user.email
+          m.from = 'Diploma Report'
+          m.subject = 'Low utxo count'
+          m.text = text
+        end
+
+        res = client.send(mail)
+        puts res.code
+        puts res.body
+     end 
          
      string = $BLOCKR_ADDRESS_UNSPENT_URL  + @payment_address
      tx_id = ""
@@ -196,9 +215,6 @@ class Deed < ActiveRecord::Base
          @send_notification = ( @address_balance < 100*$NETWORK_FEE )
        end # build_tx
 
-       # @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
-       # @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
-
        payment_private_key = @payment_node.private_key.to_hex
        payment_private_key = Bitcoin::Key.new(payment_private_key).to_base58
 
@@ -250,13 +266,13 @@ class Deed < ActiveRecord::Base
 
      end # of op_return_tx method
      
+     
      def confirmation_email
        user = User.find_by_id(self.user_id)
        client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
-       
        mail = SendGrid::Mail.new do |m|
          m.to = user.email
-         m.from = 'diploma.report'
+         m.from = 'Diploma Report'
          m.subject = 'Deed upload confirmation'
          m.text = "Your deed, #{self.name}, was uploaded successsfully to diploma.report ."
        end
@@ -268,62 +284,53 @@ class Deed < ActiveRecord::Base
      
      
      def signed_email(to_email)
-             msk = case self.issuer
-          	    when 'ESILV' then Rails.application.secrets.msk_esilv
-          	    when 'TEST SCHOOL' then Rails.application.secrets.msk
-          	    else Rails.application.secrets.msk
-          	  end
 
-          	  complete = false
-              @master = MoneyTree::Master.from_bip32(msk)
-              i = 1
-              while ((i <= $PAYMENT_NODES_COUNT) and (complete == false))
+       complete = false
+       @master = MoneyTree::Master.from_bip32(self.issuer_msk)
+       i = 1
+       while ((i <= $PAYMENT_NODES_COUNT) and (complete == false))
 
-                @payment_node = @master.node_for_path "m/2/#{i}"
+         @payment_node = @master.node_for_path "m/2/#{i}"
+         @payment_address = @payment_node.to_address
+         string = $BLOCKR_TX_URL + self.tx_hash
 
-                @payment_address = @payment_node.to_address
-                string = $BLOCKR_TX_URL + self.tx_hash
+         @agent = Mechanize.new
 
-                @agent = Mechanize.new
+         begin
+          page = @agent.get string
+          rescue Exception => e
+            page = e.page
+          end
 
-                begin
-                  page = @agent.get string
-                rescue Exception => e
-                  page = e.page
-                end
+          data = page.body
+          result = JSON.parse(data)
 
-                data = page.body
-                result = JSON.parse(data)
-
-                complete = (result['data']['trade']['vins'][0]['address'] == @payment_address )
-                i += 1
-                puts i.to_s
-                puts result['data']['trade']['vins'][0]['address']
-                puts complete
-              end # while
-              puts @payment_address
+          complete = (result['data']['trade']['vins'][0]['address'] == @payment_address )
+          i += 1
+          puts i.to_s
+          puts result['data']['trade']['vins'][0]['address']
+          puts complete
+        end # while
+        puts @payment_address
               
-              text = "Your deed, #{self.name}, was verified successfully by diploma.report. This message is signed by its issuer: #{self.issuer}."
-              key1 = Bitcoin::Key.new(@payment_node.private_key.to_hex) # priv key in hex
-              signature = key1.sign_message(text)
-              text = text + "\n Address: " + @payment_address + "\n " + "\n Signature: " + signature 
-              user = User.find_by_id(self.user_id)
-              # @current_user ||= User.find(session[:user_id]) if session[:user_id]
-              client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
+        text = "Your deed, #{self.name}, was verified successfully by diploma.report. This message is signed by its issuer: #{Issuer.find_by_id(self.issuer_id).name}."
+        key1 = Bitcoin::Key.new(@payment_node.private_key.to_hex) # priv key in hex
+        signature = key1.sign_message(text) # avoid new line caracters in text to prevent signature issues
+        text = text + "\n Address: " + @payment_address + "\n " + "\n Signature: " + signature 
+        user = User.find_by_id(self.user_id)
+        
+        client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
+        mail = SendGrid::Mail.new do |m|
+          m.to = to_email
+          m.cc = user.email
+          m.from = 'Diploma Report'
+          m.subject = 'Signed message'
+          m.text = text
+        end
 
-
-              mail = SendGrid::Mail.new do |m|
-                m.to = to_email
-                m.cc = user.email
-                m.from = 'Diploma Report'
-                m.subject = 'Signed message'
-                m.text = text
-              end
-
-              res = client.send(mail)
-              puts res.code
-              puts res.body
-           end
-     
+        res = client.send(mail)
+        puts res.code
+        puts res.body
+      end
 
   end

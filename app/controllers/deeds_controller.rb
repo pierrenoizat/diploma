@@ -83,12 +83,9 @@ class DeedsController < ApplicationController
   def new
     @deed = Deed.new
     @issuer = Issuer.find_by_id(current_user.issuer_id)
-    @issuers = []
-    @issuers << Issuer.find_by_name(current_user.email)
-    if @issuer
+    @issuers = [ Issuer.find_by_name(current_user.email) ]
+    unless @issuers.include?(@issuer)
       @issuers << @issuer
-    else
-      @issuer = Issuer.find_by_name(current_user.email)
     end
     
     if current_user.credit < 1
@@ -115,11 +112,6 @@ class DeedsController < ApplicationController
         
         current_user.credit -= 1
         current_user.save
-        # TODO use Digest::SHA256.file("X11R6.8.2-src.tar.bz2").hexdigest for now, using Paperclip MD5 fingerprint of the file.
-        # Digest::MD5.hexdigest(File.read("data"))
-        
-        # TODO send PGP signed message to prove origin/ownership of the OP_RETURN tx
-        # signing key must match the output spent to create the OP_RETURN tx
         
         s3 = AWS::S3.new(
         :access_key_id     => Rails.application.secrets.access_key_id,
@@ -193,13 +185,11 @@ class DeedsController < ApplicationController
   end
 
   private
-    # Use before_action callbacks to share common setup or constraints between actions.
+
     def set_deed
-      # @deed = Deed.find(params[:id])
       @deed = Deed.find_by_access_key(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def deed_params
       params.require(:deed).permit(:access_key,:issuer_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:access_key, :deed_id, :email])
     end

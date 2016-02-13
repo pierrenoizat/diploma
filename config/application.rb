@@ -23,7 +23,7 @@ module Diploma
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     
-    AWS.config(access_key_id: 'AKIAISHH6QIJ3R7Q2HXQ', secret_access_key: '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', region: 'eu-west-1', bucket: 'hashtree-assets')
+    AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-west-1', bucket: 'hashtree-assets')
     
     config.paperclip_defaults = {
                 :storage => :s3,
@@ -33,7 +33,7 @@ module Diploma
   end
 end
 
-$ADMIN_UID = "101654331331347806482" # André Boussac
+# Find admin_uid of André Boussac as env variable
 
 $BROADCAST = true # set to false to prevent transactions from being broadcast, only seen in the logs then.
 $MAX_SIZE = 3999 # maximum deed avatar file size, in kilobytes
@@ -78,7 +78,7 @@ $OP_RETURN_AMOUNT = 0.001 # in BTC, 1000 bits or 0.001 BTC or 0.50 € with 1 BT
 # usd_base_rate = result['data'][0]['rates']
 # $SUGGESTED_BTC_AMOUNT = $SUGGESTED_USD_AMOUNT*usd_base_rate["BTC"].to_f
 
-$PAYMENT_ADDRESS_PATH = "m/1/3" # address where txs are paid from, currently 13iriEcc5Bws3JLmx1NcRYe5rophT9xfdP in dev and prod
+$PAYMENT_ADDRESS_PATH = "m/1/3" # address where utxos are funded from, currently 13iriEcc5Bws3JLmx1NcRYe5rophT9xfdP in dev and prod
 $COLLECTION_ADDRESS_PATH = "m/1/4"
 @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
 @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
