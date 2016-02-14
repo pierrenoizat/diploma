@@ -23,15 +23,16 @@ class ApplicationController < ActionController::Base
     return result['data']['balance'].to_f
   end
   
-  def utxo_addresses
+  def utxo_addresses(id)
     # returns an array of unspent addresses available to fund OP_RETURN transactions
+    @issuer = Issuer.find_by_id(id)
     @addresses =[]
 
-    @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
+    @master = MoneyTree::Master.from_bip32(@issuer.mpk)
     i = 1
     while (i <= $PAYMENT_NODES_COUNT)
      
-      payment_node = @master.node_for_path "m/2/#{i}"
+      payment_node = @master.node_for_path "M/2/#{i}" # using capital M for public key only node
 
       payment_address = payment_node.to_address
       string = $BLOCKR_ADDRESS_BALANCE_URL + payment_address + "?confirmations=0"

@@ -84,7 +84,7 @@ class DeedsController < ApplicationController
     @deed = Deed.new
     @issuer = Issuer.find_by_id(current_user.issuer_id)
     @issuers = [ Issuer.find_by_name(current_user.email) ]
-    unless @issuers.include?(@issuer)
+    unless @issuers.include?(@issuer) or !@issuer
       @issuers << @issuer
     end
     

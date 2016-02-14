@@ -61,6 +61,24 @@
 </div>
 <!-- /.row -->
 
+<!-- Funded addresses (utxos) Row -->
+<div class="row">
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th><%= utxo_addresses(@issuer.id).count %> Available funded addresses (utxos): </th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	      <tr>
+	        <td><%= utxo_addresses(@issuer.id) %></td>
+	      </tr>
+	  </tbody>
+	</table>
+</div>
+<!-- /.row -->
+
 <%= link_to 'Edit', edit_issuer_path(@issuer) %> |
 <%= link_to 'Back', issuers_path %>
 </div>
