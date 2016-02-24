@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.2.0'
+ruby '2.3.0'
 gem 'rails', '4.2.5'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -13,9 +13,11 @@ gem 'aws-sdk', '1.6.9'
 # gem "paperclip", git: "git://github.com/thoughtbot/paperclip.git"
 gem 'paperclip', '4.2.1'
 
-# gem 'google-api-client', '0.9.pre4'
+gem 'google-api-client', '0.9.pre4'
 
-gem 'google-api-client', require: 'google/api_client'
+# gem 'google-api-client', require: 'google/api_client'
+
+# gem 'google-api-client'
 
 gem 'launchy', '>= 2.1.1'
 

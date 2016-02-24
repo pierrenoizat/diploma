@@ -323,7 +323,7 @@ class Deed < ActiveRecord::Base
         mail = SendGrid::Mail.new do |m|
           m.to = to_email
           m.cc = user.email
-          m.from = 'Diploma Report'
+          m.from = 'diploma.report'
           m.subject = 'Signed message'
           m.text = text
         end
