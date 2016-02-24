@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
     return result['data']['balance'].to_f
   end
   
+  
   def utxo_addresses(id)
     # returns an array of unspent addresses available to fund OP_RETURN transactions
     @issuer = Issuer.find_by_id(id)

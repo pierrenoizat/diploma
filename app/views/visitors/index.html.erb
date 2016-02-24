@@ -89,9 +89,9 @@
     <!-- Portfolio Section -->
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Sample of Blockchain Notarized Documents</h2>
+            <h2 class="page-header">Sample of Blockchain Notarized Document</h2>
         </div>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-12">
           <%= link_to page_path('portfolio-diploma') do %>
             <div class="fill" style="background-image" ><%= image_tag("U_Pacific_diploma.jpg") %></div>
           <% end %>
@@ -112,7 +112,7 @@
         <div class="col-md-6">
             <p>Diploma.report includes the following features: </p>
             <ul>
-                <li><strong>Compute the SHA256 hash of a file</strong></li>
+                <li>Compute the SHA256 hash of a file</li>
                 <li>Upload and optionally store the file in the Amazon cloud (AWS S3)</li>
                 <li>Supported file format: png, jpg, pdf</li>
                 <li>Maximum file size with free plan: <%= '%.0f' % ($MAX_SIZE/1.2) %>k.</li>

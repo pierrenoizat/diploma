@@ -3,7 +3,6 @@ class DeedsController < ApplicationController
   before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display]
   
   require 'google/api_client'
-  require 'google/api_client'
   require 'google/api_client/client_secrets'
   require 'google/api_client/auth/file_storage'
   require 'google/api_client/auth/installed_app'
@@ -13,6 +12,7 @@ class DeedsController < ApplicationController
       @deed.signed_email(current_user.email)
       redirect_to current_user, notice: "Signed email was sent successfully to #{current_user.email}."
   end
+  
   
   def download_sample
     
@@ -27,6 +27,7 @@ class DeedsController < ApplicationController
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
     
   end
+  
 
   def download
     
@@ -41,6 +42,7 @@ class DeedsController < ApplicationController
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
     
   end
+  
   
   def log_hash
     if @deed.tx_raw.blank?

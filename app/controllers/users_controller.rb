@@ -171,7 +171,7 @@ class UsersController < ApplicationController
        @utxo_amount = @new_balance/$PAYMENT_NODES_COUNT
        
        for k in 1..$PAYMENT_NODES_COUNT
-         
+         # TODO handle issuer specific mpk
          @master = MoneyTree::Master.from_bip32(@issuer.mpk)
          @recipient_node = @master.node_for_path "M/2/#{k}" # using a capital "M" instead of a lowercase "m", we will receive a node that is stripped of its private key.
 
@@ -186,7 +186,7 @@ class UsersController < ApplicationController
 
      end # build_tx
 
-     @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk)
+     @master = MoneyTree::Master.from_bip32(Rails.application.secrets.msk) # TODO handle issuer specific msk
      @payment_node = @master.node_for_path $PAYMENT_ADDRESS_PATH
 
      payment_private_key = @payment_node.private_key.to_hex

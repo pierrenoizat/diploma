@@ -16,12 +16,9 @@ class Deed < ActiveRecord::Base
      :s3_host_name => 's3-eu-west-1.amazonaws.com',
      :path => ":filename",
      :s3_storage_class => :standard
-     # :s3_options => { :server => "s3-eu-west-1.amazonaws.com" }
 
      validates_attachment :avatar,
        :size => { :in => 0..$MAX_SIZE.kilobytes }
-
-     # validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
      validates_attachment :avatar,
        :content_type => { :content_type => ["image/jpeg", "image/png", "application/pdf"] }
@@ -42,10 +39,12 @@ class Deed < ActiveRecord::Base
      def generate_access_key
        self.access_key = SecureRandom.hex(10)
      end
+     
 
      require 'money-tree'
 
      include Bitcoin::Builder
+     
      
      def broadcast_tx
        
@@ -323,7 +322,7 @@ class Deed < ActiveRecord::Base
         mail = SendGrid::Mail.new do |m|
           m.to = to_email
           m.cc = user.email
-          m.from = 'Diploma Report'
+          m.from = 'diploma.report'
           m.subject = 'Signed message'
           m.text = text
         end

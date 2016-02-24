@@ -19,16 +19,16 @@
   <div class="form-inputs">
 	<label for="issuer_id">Issuer</label><br />
 	<% if @issuer %>
-		<%= @issuer.name %><span>  </span>
+		<% if @issuers.count > 1 %>
+			<%= f.collection_select :issuer_id, @issuers, :id, :name, {disabled: lambda{|issuer| issuer.name == current_user.email }} %>
+		<% else %>
+			<%= @issuer.name %>
+		<% end %>
 	<% else %>
-		<%= current_user.email %><span>  </span>
+		<%= current_user.email %>
 	<% end %>
-	<% if @issuers.count > 1 %>
-		<%= f.collection_select :issuer_id, @issuers, :id, :name, {disabled: lambda{|issuer| issuer.name == current_user.email }} %>
-	<% end %>
-  </div></br>
-
 	
+  </div></br>
 
   <div class="form-inputs">
   <%= f.input :avatar, :label => 'Image File (jpg, png or pdf)', as: :file %>
