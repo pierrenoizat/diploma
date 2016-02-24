@@ -2,17 +2,16 @@ class DeedsController < ApplicationController
   before_action :authenticate_user!, except: [:new, :download_sample, :download, :show, :verify, :public_display]
   before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display]
   
-  require 'google/api_client'
-  require 'google/api_client/client_secrets'
-  require 'google/api_client/auth/file_storage'
-  require 'google/api_client/auth/installed_app'
-  require 'logger'
+  #require 'google/api_client'
+  #require 'google/api_client/client_secrets'
+  #require 'google/api_client/auth/file_storage'
+  #require 'google/api_client/auth/installed_app'
+  #require 'logger'
   
   def verify
       @deed.signed_email(current_user.email)
       redirect_to current_user, notice: "Signed email was sent successfully to #{current_user.email}."
   end
-  
   
   def download_sample
     
