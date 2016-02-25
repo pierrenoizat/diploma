@@ -43,8 +43,4 @@ Rails.application.configure do
   
   $ROOT_URL = "http://localhost:3000"
   
-  config.middleware.use OmniAuth::Builder do
-    provider :google_oauth2, Rails.application.secrets.google_omniauth_key, Rails.application.secrets.google_omniauth_secret, {:client_options => {:ssl => {:verify => false}}}
-  end
-  
 end
