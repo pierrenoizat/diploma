@@ -23,6 +23,7 @@
 			<%= f.collection_select :issuer_id, @issuers, :id, :name, {disabled: lambda{|issuer| issuer.name == current_user.email }} %>
 		<% else %>
 			<%= @issuer.name %>
+			<%= f.hidden_field :issuer_id , :value => @issuer.id %>
 		<% end %>
 	<% else %>
 		<%= current_user.email %>
