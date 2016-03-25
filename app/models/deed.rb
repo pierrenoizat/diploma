@@ -135,7 +135,7 @@ class Deed < ActiveRecord::Base
        client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
         mail = SendGrid::Mail.new do |m|
           m.to = user.email
-          m.from = 'Diploma Report'
+          m.from = 'diploma.report'
           m.subject = 'Low utxo count'
           m.text = text
         end
