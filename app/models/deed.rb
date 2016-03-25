@@ -20,8 +20,8 @@ class Deed < ActiveRecord::Base
      validates_attachment :avatar,
        :size => { :in => 0..$MAX_SIZE.kilobytes }
 
-     validates_attachment :avatar,
-       :content_type => { :content_type => ["image/jpeg", "image/png", "application/pdf"] }
+     # validates_attachment :avatar,
+     #  :content_type => { :content_type => ["image/jpeg", "image/png", "application/pdf"] }
 
      validates_attachment_file_name :avatar, :matches => [/png\Z/, /jpe?g\Z/,/pdf\Z/,/JPE?G\Z/,/PNG\Z/,/PDF\Z/]
      # Explicitly do not validate
@@ -271,7 +271,7 @@ class Deed < ActiveRecord::Base
        client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
        mail = SendGrid::Mail.new do |m|
          m.to = user.email
-         m.from = 'Diploma Report'
+         m.from = 'diploma.report'
          m.subject = 'Deed upload confirmation'
          m.text = "Your deed, #{self.name}, was uploaded successsfully to diploma.report ."
        end

@@ -36,7 +36,7 @@ end
 # Find admin_uid of André Boussac as env variable
 
 $BROADCAST = true # set to false to prevent transactions from being broadcast, only seen in the logs then.
-$MAX_SIZE = 3999 # maximum deed avatar file size, in kilobytes
+$MAX_SIZE = 7999 # maximum deed (avatar) file size, in kilobytes
 
 $NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
 
