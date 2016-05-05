@@ -1,5 +1,5 @@
 class Deed < ActiveRecord::Base
-  enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video]
+  enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video, :photo, :slides]
   belongs_to :user
   belongs_to :issuer
   has_many :viewers

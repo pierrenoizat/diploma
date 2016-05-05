@@ -52,6 +52,8 @@ class DeedsController < ApplicationController
     unless @deed.tx_hash.blank?
       redirect_to @deed, notice: "Deed was successfully logged. OP_RETURN Tx ID is: #{@deed.tx_hash}"
     else
+      @deed.tx_raw = ""
+      @deed.save
       redirect_to @deed, notice: "Our wallet is empty, a previous tx has yet to be confirmed or tx broadcast is temporarily disabled. Please broadcast tx again later."
     end
   end
