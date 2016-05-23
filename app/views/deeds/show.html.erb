@@ -28,7 +28,9 @@
             <p><%= @deed.description %></p>
             <h3>Deed Details</h3></br>
             <ul>
-				<li>File SHA256 Fingerprint: <%= @deed.upload %></li></br>
+				<li>File SHA256 Hash (string encoded): <%= @deed.upload %></li></br>
+				<li>File SHA256 Hash (hex encoded):</br>
+				<small><%= @deed.upload.unpack('H*') %></small></li></br>
 				<% unless @deed.tx_hash.blank? %>
 					<li>OP_RETURN Tx ID: <a href="<%= tx_link(@deed.tx_hash) %>"  target="blank"><%= @deed.tx_hash %></a></li></br>
 					<li>Public link: <a id='fe_text' href="<%= "#{public_display_deed_path(@deed)}" %> "  target="blank"><%= public_link(@deed.access_key) %></a></li></br>

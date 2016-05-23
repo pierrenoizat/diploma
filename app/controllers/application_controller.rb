@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   
   
   def utxo_addresses(id)
-    # returns an array of unspent addresses available to fund OP_RETURN transactions
+    # returns an array of $PAYMENT_NODES_COUNT unspent addresses available to fund OP_RETURN transactions
     @issuer = Issuer.find_by_id(id)
     @addresses =[]
 
