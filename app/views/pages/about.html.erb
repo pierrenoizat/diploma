@@ -21,13 +21,19 @@
         <div class="col-md-12">
             <h2>Check your file digest</h2>
 			<p> What makes diploma.report so powerful as a secure file certification mechanism, is that you can check your local file digest by yourself. </br>There is no need for a third party to verify that the digest (hash) of your local copy of the file matches the digest (hash) logged in the blockchain.</p>
-			<p> Only the digest of your file, not the file itself, is publicly visible in the blockchain as a transaction ouptput. </br>It is embedded as a special kind of Bitcoin transaction outputs known as "OP_RETURN" outputs. </br>Those outputs are not spendable, i.e carry zero monetary face value but are stored in the blockchain just as securely and permanently as any other transaction output.
-            <p>On OSX or Linux, open a terminal window and verify your local file sha256 digest (hash) by yourself (avoid space caracters in file names or folder names, if any, replace with underscore caracters):</br></br>
+			<p> Only the digest of your file, not the file itself, is publicly visible in the blockchain as a transaction ouptput. </br>It is embedded as a special kind of Bitcoin transaction outputs known as "OP_RETURN" outputs. </br>Those outputs are not spendable, i.e carry zero monetary face value but are stored in the blockchain just as securely and permanently as any other transaction output.</p>
+            <p>On OSX or Linux, open a terminal window and verify your local file sha256 digest (hash) by yourself (avoid space caracters in file names or folder names, if any, replace with underscore caracters, hash computation result is independent of file name):</br></br>
 			$ irb</br>
 			2.2.0 :001 > require 'digest'</br>
 			 => true </br>
 			2.2.0 :002 > sha256 = Digest::SHA256.file '/Users/noizat/Documents/Bitcoin_book_2012.pdf'</br>
-			 <%= "=> #<Digest::SHA256: 99368fbbbbb6cbebfcc436f97da3ef97dfb28f37c16ae13cd484a166f251dba0>" %></p>
+			 <%= "=> #<Digest::SHA256: 99368fbbbbb6cbebfcc436f97da3ef97dfb28f37c16ae13cd484a166f251dba0>" %></br>
+			2.2.0 :003 > sha256.to_s.unpack('H*').first</br>
+			 <%= "=> '39393336386662626262623663626562666363343336663937646133656639376466623238663337633136616531336364343834613136366632353164626130'" %></p>
+			<p> Most block explorers will display the "OP_RETURN" data as a 64-character hexadecimal string (e.g. above "99368fbbbbb6cbebfcc436f97da3ef97dfb28f37c16ae13cd484a166f251dba0")</br>
+				Be aware, however, that some other, less clever block explorers will display the same string only as a cumbersome 128-character hexadecimal encoded string</br>
+				(e.g "39393336386662626262623663626562666363343336663937646133656639376466623238663337633136616531336364343834613136366632353164626130").</br>
+				To prevent any confusion, diploma.report displays the file hash encoded in both string formats.</p>
         </div>
     </div>
     <!-- /.row -->
