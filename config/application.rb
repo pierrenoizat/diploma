@@ -81,11 +81,11 @@ $OP_RETURN_AMOUNT = 0.001 # in BTC, 1000 bits or 0.001 BTC or 0.50 € with 1 BT
 $PAYMENT_ADDRESS_PATH = "m/1/3" # address where utxos are funded from, currently 13iriEcc5Bws3JLmx1NcRYe5rophT9xfdP in dev and prod
 $COLLECTION_ADDRESS_PATH = "m/1/4" # we could be using capital M for "public-key only" node
 
-# @master = MoneyTree::Master.from_bip32(Rails.application.secrets.mpk)
-# @payment_node = @master.node_for_path "M/1/3"
-# $PAYMENT_ADDRESS = @payment_node.to_address
-# @collection_node = @master.node_for_path "M/1/4"
-# $COLLECTION_ADDRESS = @collection_node.to_address
+@master = MoneyTree::Master.from_bip32(Rails.application.secrets.mpk)
+@payment_node = @master.node_for_path "M/1/3"
+$PAYMENT_ADDRESS = @payment_node.to_address
+@collection_node = @master.node_for_path "M/1/4"
+$COLLECTION_ADDRESS = @collection_node.to_address
 
 $PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
 # Payment node i has path "m/2/#{i}"
