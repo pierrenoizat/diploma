@@ -38,7 +38,8 @@ end
 $BROADCAST = true # set to false to prevent transactions from being broadcast, only seen in the logs then.
 $MAX_SIZE = 7999 # maximum deed (avatar) file size, in kilobytes
 
-$NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
+# $NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
+$NETWORK_FEE = 10000 # in satoshis, around 10 cts with current € exchange rate as of 6/6/2016.
 
 $GOOGLE_DRIVE_URL = "https://www.googleapis.com/upload/drive/v2/files?uploadType=media" # simple file upload
 
@@ -88,6 +89,7 @@ $PAYMENT_ADDRESS = @payment_node.to_address
 $COLLECTION_ADDRESS = @collection_node.to_address
 
 $PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
+$STUDENTS_COUNT = 12 # number of utxos prepared for a school on a single address
 # Payment node i has path "m/2/#{i}"
 # TODO fund payment nodes and automate refill from master payment address
 # TODO cycle through payment nodes when creating op return txs

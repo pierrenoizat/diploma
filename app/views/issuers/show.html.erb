@@ -16,6 +16,16 @@
   <%= @issuer.mpk %>
 </p>
 
+<p>
+  <strong>Addresss funded with <%= unspent_address_utxo_count(@payment_address) %> utxos:</strong>
+  <%= @payment_address %>
+</p>
+
+<p>
+  <strong>(School) Raw signed init funding tx:</strong>
+  <%= @issuer.init_funding_tx %>
+</p>
+
 <!-- Authorized Users Row -->
 <div class="row">
 	<table class="table table-striped">

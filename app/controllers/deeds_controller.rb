@@ -44,8 +44,22 @@ class DeedsController < ApplicationController
   
   
   def log_hash
+    
     if @deed.tx_raw.blank?
-      @raw_transaction = @deed.op_return_tx
+        
+      @raw_transaction = case Issuer.find_by_id(@deed.issuer_id).name
+       when "ESILV 2014"
+        @deed.authentication_tx
+       when "TEST SCHOOL"
+        @deed.authentication_tx
+       when "TEST"
+        @deed.authentication_tx
+       when "CDI"
+        @deed.authentication_tx
+       else
+        @deed.op_return_tx
+       end
+
     else
       @deed.broadcast_tx
     end

@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+@issuers = UpdateMpkService.new.call
+string = 'UPDATED MPKS: '
+@issuers.each do |issuer|
+  string = string + ', '
+  string = string << issuer.mpk
+end
+puts string

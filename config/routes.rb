@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     
   resources :issuers do
     resources :users
-      end
+    collection do
+      get 'school_list'
+    end
+    end
     
   resources :deeds do
     resources :viewers

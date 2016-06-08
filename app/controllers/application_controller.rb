@@ -5,10 +5,11 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
   helper_method :user_signed_in?, :current_user_admin?
-  helper_method :correct_user?, :utxo_addresses, :balance
-  helper_method :setup
-  helper_method :insert_file
+  helper_method :correct_user?, :utxo_addresses, :balance, :unspent_address_utxo_count
+  # helper_method :setup
+  # helper_method :insert_file
   
+  include Bitcoin::Builder
   
   def balance(address)
     string = $BLOCKR_ADDRESS_BALANCE_URL + address + "?confirmations=0"
@@ -21,6 +22,30 @@ class ApplicationController < ActionController::Base
     data = page.body
     result = JSON.parse(data)
     return result['data']['balance'].to_f
+  end
+  
+  def unspent_address_utxo_count(address)
+  
+    # returns count ( < $STUDENTS_COUNT) of utxos available to fund OP_RETURN transactions from single address (school class diplomas).
+    # TODO publish this address next to school name and class (year)
+    string = $BLOCKR_ADDRESS_UNSPENT_URL  + address
+    puts string
+    @agent = Mechanize.new
+
+     begin
+       page = @agent.get string
+     rescue Exception => e
+       page = e.page
+     end
+
+     data = page.body
+     result = JSON.parse(data)
+     
+     if result['data']['unspent']
+       return result['data']['unspent'].count
+     else
+       return 0
+     end
   end
   
   

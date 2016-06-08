@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+<!-- Page Content -->
+<div class="container">
+       
+<h1>Schools</h1>
+
+<div class="row">
+	 <div class="col-lg-3">
+		<strong>School Name & Class Year
+	</div>
+	<div class="col-lg-2">
+		Diplomas Count
+	</div>
+	<div class="col-lg-1">
+		Block
+	</div>
+	<div class="col-lg-6">
+		School Address of Origin</strong>
+	</div>
+</div>
+</br >
+    <% @issuers.each do |issuer| %>
+	    <!-- Page Heading/Breadcrumbs -->
+	    <div class="row">
+			 <div class="col-lg-3">
+        		<%= issuer.name %>
+			</div>
+			<div class="col-lg-2">
+        		<%= issuer.deeds.count %>
+			</div>
+			<div class="col-lg-1">
+        		<%= first_block(issuer.address_matching_signature) %>
+			</div>
+			<div class="col-lg-6">
+        		<%= issuer.address_matching_signature %>
+			</div>
+	  </div>
+    <% end %>
