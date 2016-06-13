@@ -96,4 +96,5 @@ $PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and
 # TODO fund payment nodes and automate refill from master payment address
 # TODO cycle through payment nodes when creating op return txs
 # TODO option to send email to user upon op return tx logged successfully
-$PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_paymium_128x57.png"
+# $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_paymium_128x57.png"
+$PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_esilv_128x57.png"

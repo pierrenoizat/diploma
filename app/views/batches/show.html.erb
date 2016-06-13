@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Batch: 
-				<small><%= @batch.title %></small>
+				<small><%= @issuer.name %>, <%= @batch.title %></small>
             </h1>
             <ol class="breadcrumb">
                 <li><%= link_to 'Home', root_path %></li>
@@ -14,11 +14,6 @@
         </div>
     </div>
     <!-- /.row -->
-
-	<p>
-	  <strong>Issuer Name:</strong>
-	  <%= @issuer.name %>
-	</p>
 	
 	<p>
 	  <strong>Batch Address:</strong>
