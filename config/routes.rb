@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
     
   resources :issuers do
+    resources :batches
     resources :users
     collection do
       get 'school_list'
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
       get 'download'
       get 'download_sample'
       get 'log_hash'
+      get 'display_tx'
       get 'verify'
       get 'public_display'
     end
@@ -32,6 +34,20 @@ Rails.application.routes.draw do
         get 'show_authorized'
       end
     end
+    
+  resources :batches do
+    member do
+      get 'prepare_tx'
+      post 'generate_pdf'
+    end
+  end
+  
+  resources :batches do
+    resources :deeds
+    member do
+       post 'download_pdf'
+     end
+  end
   
   root to: 'visitors#index'
   get '/auth/:provider/callback' => 'sessions#create'

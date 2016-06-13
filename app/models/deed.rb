@@ -2,6 +2,7 @@ class Deed < ActiveRecord::Base
   enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video, :photo, :slides]
   belongs_to :user
   belongs_to :issuer
+  belongs_to :batch
   has_many :viewers
   
     attr_readonly :user_id
@@ -27,8 +28,9 @@ class Deed < ActiveRecord::Base
      # Explicitly do not validate
      do_not_validate_attachment_file_type :avatar
      
-     validates :issuer_id, presence: true
+     # validates :issuer_id, presence: true
      validates :issuer_id, numericality: { only_integer: true }
+     validates :description, uniqueness: true
      
      before_create :generate_access_key
 
@@ -76,16 +78,38 @@ class Deed < ActiveRecord::Base
       
      end # of broadcast_tx method
      
+     def utxo_available?(tx_hash, output_index)
+       # checks wheter or not an utxo is available to build an authentication tx for a given deed.
+       # returns false if utxo is already present as input of a (yet unbroadcast) authentication tx
+       boole = true
+       @deeds=self.batch.deeds
+       @deeds.each do |deed|
+         if deed.tx_raw
+           tx = Bitcoin::Protocol::Tx.new(deed.tx_raw.htb)
+         end
+         
+       if ((tx.in[0].prev_out_hash.reverse.unpack('H*').first == tx_hash) and (tx.in[0].prev_out_index == output_index ))
+         boole = false
+       end
+         
+       # find tx inputs
+       puts "prev_out_hash: #{tx.in[0].prev_out_hash.reverse.unpack('H*').first}"
+       puts "prev_out_index: #{tx.in[0].prev_out_index}"
+       puts "tx.hash: #{tx.hash}"
+       puts "tx_hash: #{tx_hash}"
+       puts "output_index: #{output_index}"
+       puts "deed.id: #{deed.id}"
+       end
+       puts "boole: #{boole}" 
+       boole
+     end
      
      def authentication_tx
        
-      # signed by a school's private key
+      # OP_RETURN tx signed by a school's private key
       @issuer = Issuer.find_by_id(self.issuer_id)
-
-      @master = MoneyTree::Master.from_bip32(@issuer.msk)
-      @payment_node = @master.node_for_path "m/3/#{@issuer.id}" # capital M for"public-key only" node, we could be using m for full "secret-key" node
-      @payment_address = @payment_node.to_address
-      puts "Payment address: #{@payment_address}"
+      @payment_address = self.batch.payment_address
+      puts "Payment address: #{@issuer.payment_address}"
       string = $BLOCKR_ADDRESS_BALANCE_URL + @payment_address + "?confirmations=0"
 
       @agent = Mechanize.new
@@ -121,10 +145,10 @@ class Deed < ActiveRecord::Base
 
       data = page.body
       result = JSON.parse(data)
-      n = result['data']['unspent'].count - 1
+      n = result['data']['unspent'].count
 
-      if n < 2
-        text = "We are running out of utxos for #{Issuer.find_by_id(self.issuer_id).name}, it's time to create new utxos for future transactions."
+      if n < 1
+        text = "We are running out of utxos for #{self.issuer.name}, #{self.batch.title}, it's time to create new utxos for future transactions."
         # notify the administrator
         user = User.find_by_uid(Rails.application.secrets.admin_uid.to_s)
         client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
@@ -135,15 +159,18 @@ class Deed < ActiveRecord::Base
            m.text = text
          end
 
-         res = client.send(mail)
-         puts res.code
-         puts res.body
-      end
+         # res = client.send(mail)
+         # puts res.code
+         # puts res.body
+         puts text
+         return nil
+       else
 
       new_tx = build_tx do |t|
-
-         tx_id = result['data']['unspent'][0]['tx'] # fetch the tx ID of the first unspent output available from address
-
+        k = 0
+        while k < n
+         tx_id = result['data']['unspent'][k]['tx'] # fetch the tx ID of the first unspent output available from address
+         
          string = $WEBBTC_TX_URL + "#{tx_id }.json" # $WEBBTC_TX_URL = "http://webbtc.com/tx/"
          @agent = Mechanize.new
 
@@ -159,9 +186,13 @@ class Deed < ActiveRecord::Base
          # TODO check that utxo is not already spent
 
          prev_tx = Bitcoin::P::Tx.from_json(data)
-         @address_balance += result['data']['unspent'][0]['amount'].to_f
-         prev_out_index = result['data']['unspent'][0]['n'].to_i
+         @address_balance += result['data']['unspent'][k]['amount'].to_f
+         prev_out_index = result['data']['unspent'][k]['n'].to_i
          # use that utxo as input
+         ################################################
+         if self.utxo_available?(tx_id, prev_out_index)
+           k = n # put an end to while loop
+         
 
          t.input do |i|
            i.prev_out prev_tx
@@ -183,13 +214,15 @@ class Deed < ActiveRecord::Base
               o.value 0
             end
             
+          else
+            k += 1
+          end
+           #################################################
+          end # of while loop
         end # build_tx
 
-        payment_private_key = @payment_node.private_key.to_hex
-        payment_private_key = Bitcoin::Key.new(payment_private_key).to_base58
-
-        @payment_keypair = Bitcoin::Key.from_base58(payment_private_key)
-        payment_key = Bitcoin.open_key Bitcoin::Key.from_base58(payment_private_key).priv # private key corresponding to payment address (standard address only, TODO: handle multisigs)
+        @payment_keypair = Bitcoin::Key.from_base58(self.batch.payment_private_key)
+        payment_key = Bitcoin.open_key Bitcoin::Key.from_base58(self.batch.payment_private_key).priv # private key corresponding to payment address (standard address only, TODO: handle multisigs)
 
         signature = Bitcoin.sign_data(payment_key, new_tx.signature_hash_for_input(0, prev_tx)) # sign first input in new tx
         new_tx.in[0].script_sig = Bitcoin::Script.to_pubkey_script_sig(signature, @payment_keypair.pub.htb) # add signature and public key to first input in new tx
@@ -231,12 +264,13 @@ class Deed < ActiveRecord::Base
         self.tx_raw = @raw_transaction
         self.save
         @raw_transaction
+      end
        
      end # of authentication_tx method
      
 
      def op_return_tx
-       # signed with a user's private key
+       # OP_RETURN tx signed with a user's private key
        @issuer = Issuer.find_by_id(self.issuer_id)
          complete = false
 
@@ -425,7 +459,7 @@ class Deed < ActiveRecord::Base
      def signed_email(to_email)
 
        complete = false
-       @master = MoneyTree::Master.from_bip32(self.issuer_msk)
+       @master = MoneyTree::Master.from_bip32(self.issuer.msk)
        i = 1
        while ((i <= $PAYMENT_NODES_COUNT) and (complete == false))
 
@@ -470,6 +504,34 @@ class Deed < ActiveRecord::Base
         res = client.send(mail)
         puts res.code
         puts res.body
-      end
+      end # of signed_email method
+      
+      def school_signed_email(to_email)
+
+         complete = false
+         @master = MoneyTree::Master.from_bip32(self.issuer.msk)
+
+         @payment_node = @master.node_for_path "m/3/#{self.issuer_id}"
+         @payment_address = @payment_node.to_address
+
+         puts @payment_address
+
+         text = "Your deed, #{self.name}, was verified successfully by diploma.report. This message is signed by its issuer: #{Issuer.find_by_id(self.issuer_id).name}."
+         key1 = Bitcoin::Key.new(@payment_node.private_key.to_hex) # priv key in hex
+         signature = key1.sign_message(text) # avoid new line caracters in text to prevent signature issues
+         text = text + "\n Address: " + @payment_address + "\n " + "\n Signature: " + signature 
+         user = User.find_by_id(self.user_id)
+
+         client = SendGrid::Client.new(api_key: Rails.application.secrets.sendgrid_api_key)
+         mail = SendGrid::Mail.new do |m|
+           m.to = to_email
+           m.cc = user.email
+           m.from = 'diploma.report'
+           m.subject = 'Signed message'
+           m.text = text
+         end
+
+         res = client.send(mail)
+        end # of school_signed_email method
 
   end

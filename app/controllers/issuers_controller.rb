@@ -12,17 +12,18 @@ class IssuersController < ApplicationController
   
   def school_list
    @issuers = []
-   @issuer = Issuer.find_by_name("ESILV 2014")
-   @issuers << @issuer
+   puts $SCHOOLS
+   $SCHOOLS.each do |school|
+     if Issuer.find_by_name(school)
+       @issuers << Issuer.find_by_name(school)
+     end
+   end
     
   end
 
   # GET /issuers/1
   # GET /issuers/1.json
   def show
-    @master = MoneyTree::Master.from_bip32(@issuer.mpk)
-    @payment_node = @master.node_for_path "M/3/#{@issuer.id}" # capital M for"public-key only" node, we could be using m for full "secret-key" node
-    @payment_address = @payment_node.to_address # TODO publish this address next to school name and class (year)
   end
 
   # GET /issuers/new

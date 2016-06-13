@@ -78,6 +78,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   
   $ROOT_URL = "http://diploma.report"
+  $SCHOOLS = ["ESILV 2015", "CDI"]
+  $STUDENTS_COUNT = 55
   
   # config.middleware.use OmniAuth::Builder do
   #  provider :google_oauth2, Rails.application.secrets.google_omniauth_key, Rails.application.secrets.google_omniauth_secret, {:skip_jwt => true, :scope => 'email,profile'}

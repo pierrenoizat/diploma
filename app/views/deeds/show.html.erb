@@ -10,6 +10,7 @@
             <ol class="breadcrumb">
                 <li><%= link_to 'Home', root_path %></li>
 				<li><%= link_to "#{current_user.name}", current_user %></li>
+				<li><%= link_to "Uploads", deeds_path %></li>
                 <li class="active"><%= @deed.category.titleize %></li>
             </ol>
         </div>
@@ -24,7 +25,7 @@
         </div>
 
         <div class="col-md-8">
-            <h3><%= @deed.category.titleize %>:<%= Issuer.find_by_id(@deed.issuer_id).name if Issuer.find_by_id(@deed.issuer_id) %></h3>
+            <h3><%= @deed.category.titleize %>: <%= @deed.issuer.name if @deed.issuer %><%= ", #{@deed.batch.title}" if @deed.batch %></h3>
             <p><%= @deed.description %></p>
             <h3>Deed Details</h3></br>
             <ul>
@@ -39,7 +40,13 @@
 			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a>
 			<% if @deed.tx_hash.blank? %>
 			<span> </span>
-			<a class="btn btn-default btn-xs btn-success" href="<%= "#{log_hash_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Log hash in Blockchain</a>
+				<% if $SCHOOLS.include?(@issuer.name)%>
+					<% if @deed.tx_raw.blank? %>
+					<a class="btn btn-default btn-xs btn-success" href="<%= "#{display_tx_deed_path(@deed)}" %> "><i class="fa fa-database"></i>Display Raw Signed Tx</a>
+					<% end %>
+				<% else %>
+				<a class="btn btn-default btn-xs btn-success" href="<%= "#{log_hash_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Log hash in Blockchain</a>
+				<% end %>
 			<% else %>
 			<span> </span>
 			<button class="btn btn-default btn-xs btn-success" data-clipboard-target='fe_text' data-clipboard-text='Default clipboard text from attribute' id='d_clip_button' title='Click me to copy the deed public link to clipboard.'><i class="fa fa-files-o"></i> Copy public link to clipboard</button>
@@ -102,6 +109,24 @@
 	<% end %>
 	</div>
     <!-- /.row -->
+	<% if @deed.tx_raw %>
+	<div class="row">
+	<table class="table table-striped">
+		<thead>
+		    <tr>
+		      <th>Raw signed tx:</th>
+		    </tr>
+		  </thead>
+	  <tbody>
+		<tr>
+	    	<td><%= @deed.tx_raw %></td>
+		</tr>
+		  </tbody>
+		</table>
+
+	</div>
+    <!-- /.row -->
+	<% end %>
 
 </div>
 <!-- /.container -->

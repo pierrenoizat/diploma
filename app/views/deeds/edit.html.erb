@@ -27,7 +27,10 @@
 			  </div></br>
 			  <div class="form-inputs">
 			    <%= f.input :name, :label => 'Title' %>
-				<%= f.input :issuer %>
+				<h5>Issuer</h5>
+				<%= f.collection_select :issuer_id, Issuer.all, :id, :name %></br></br>
+				<h5>Batch</h5>
+				<%= f.collection_select :batch_id, @batches, :id, :title %></br></br>
 				<%= f.input :description %>
 			  </div>
 			

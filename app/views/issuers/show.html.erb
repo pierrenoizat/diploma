@@ -7,18 +7,13 @@
 </p>
 
 <p>
-  <strong>Batch:</strong>
-  <%= @issuer.batch %>
-</p>
-
-<p>
   <strong>Mpk:</strong>
   <%= @issuer.mpk %>
 </p>
 
 <p>
-  <strong>Addresss funded with <%= unspent_address_utxo_count(@payment_address) %> utxos:</strong>
-  <%= @payment_address %>
+  <strong>Addresss funded with <%= address_utxo_count(@issuer.payment_address) %> utxos:</strong>
+  <%= @issuer.payment_address %>
 </p>
 
 <p>

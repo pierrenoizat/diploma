@@ -13,3 +13,15 @@ string = 'UPDATED MPKS: '
   string = string << issuer.mpk
 end
 puts string
+
+$SCHOOLS.each do |school|
+   unless Issuer.find_by_name(school)
+     Issuer.create(name: school)
+   end
+ end
+
+@deeds=Deed.all
+@deeds.each do |deed|
+     deed.tx_id = deed.tx_hash
+     deed.save
+ end

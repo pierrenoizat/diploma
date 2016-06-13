@@ -80,8 +80,11 @@ module ApplicationHelper
             puts block
           end
         end
-
-       block
+        if block < 840000
+          return block
+        else
+          return "In no Block as input yet"
+        end
      else
        puts "virgin address: " + address
        return nil

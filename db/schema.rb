@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160212114913) do
+ActiveRecord::Schema.define(version: 20160612203155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "batches", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "issuer_id"
+    t.string   "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text     "tx_raw"
+    t.string   "root_hash"
+  end
 
   create_table "deeds", force: :cascade do |t|
     t.string   "name"
@@ -28,7 +38,7 @@ ActiveRecord::Schema.define(version: 20160212114913) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.string   "avatar_fingerprint"
-    t.integer  "tx_id"
+    t.string   "tx_id"
     t.string   "tx_hash"
     t.string   "avatar_url"
     t.string   "extension"
@@ -36,11 +46,11 @@ ActiveRecord::Schema.define(version: 20160212114913) do
     t.string   "upload"
     t.integer  "issuer_id"
     t.string   "access_key"
+    t.integer  "batch_id"
   end
 
   create_table "issuers", force: :cascade do |t|
     t.string   "name"
-    t.string   "batch"
     t.string   "mpk"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -1,1 +1,1 @@
-json.extract! @issuer, :id, :name, :batch, :mpk, :created_at, :updated_at
+json.extract! @issuer, :id, :name, :mpk, :created_at, :updated_at

@@ -27,7 +27,7 @@ gem 'money-tree'
 gem 'sendgrid-ruby'
 
 gem 'zeroclipboard-rails'
-
+gem 'prawn', :git => "https://github.com/prawnpdf/prawn.git", :ref => '8028ca0cd2'
 
 group :development, :test do
   gem 'byebug'

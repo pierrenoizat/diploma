@@ -5,9 +5,21 @@ GIT
   specs:
     bitcoin-ruby (0.0.8)
 
+GIT
+  remote: https://github.com/prawnpdf/prawn.git
+  revision: 8028ca0cd2aae8c72df9fc4bf16388948423bcb2
+  ref: 8028ca0cd2
+  specs:
+    prawn (1.0.0.rc2)
+      afm
+      pdf-reader (~> 1.2)
+      ruby-rc4
+      ttfunk (~> 1.0.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
+    Ascii85 (1.0.2)
     actionmailer (4.2.5)
       actionpack (= 4.2.5)
       actionview (= 4.2.5)
@@ -44,6 +56,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    afm (0.2.2)
     arel (6.0.3)
     autoparse (0.3.3)
       addressable (>= 2.3.1)
@@ -102,6 +115,7 @@ GEM
       retriable (>= 1.4)
       signet (>= 0.5.0)
       uuidtools (>= 2.1.0)
+    hashery (2.1.2)
     hashie (3.4.4)
     high_voltage (3.0.0)
     http-cookie (1.0.2)
@@ -171,6 +185,12 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    pdf-reader (1.4.0)
+      Ascii85 (~> 1.0.0)
+      afm (~> 0.2.1)
+      hashery (~> 2.0)
+      ruby-rc4
+      ttfunk
     pg (0.18.4)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
@@ -210,6 +230,7 @@ GEM
     raindrops (0.16.0)
     rake (11.1.2)
     retriable (2.1.0)
+    ruby-rc4 (0.1.5)
     sass (3.4.22)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -241,6 +262,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.2)
+    ttfunk (1.0.3)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -284,6 +306,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   paperclip (= 4.2.1)
   pg
+  prawn!
   quiet_assets
   rails (= 4.2.5)
   rails_12factor

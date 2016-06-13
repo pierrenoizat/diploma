@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+<!-- Page Content -->
+<div class="container">
+       
+<h1>Batches</h1>
+
+<div class="row">
+	 <div class="col-lg-2">
+		<strong>Title
+	</div>
+	<div class="col-lg-2">
+		Issuer
+	</div>
+	<div class="col-lg-1">
+		Deeds count</strong>
+	</div>
+	<div class="col-lg-1">
+	</div>
+	<div class="col-lg-1">
+	</div>
+	<div class="col-lg-1">
+	</div>
+	<div class="col-lg-4">
+	</div>
+</div>
+    <% @batches.each do |batch| %>
+	    <!-- Page Heading/Breadcrumbs -->
+	    <div class="row">
+			 <div class="col-lg-2">
+        		<%= batch.title %>
+			</div>
+			<div class="col-lg-2">
+				<%= batch.issuer.name %>
+			</div>
+			<div class="col-lg-1">
+				<%= batch.deeds.count %>
+			</div>
+			<div class="col-lg-1">
+        		<%= link_to 'Show', batch %>
+			</div>
+			<div class="col-lg-1">
+        		<%= link_to 'Edit', edit_batch_path(batch) %>
+			</div>
+			<div class="col-lg-1">
+        		<%= link_to 'Destroy', batch, method: :delete, data: { confirm: 'Are you sure?' } %>
+			</div>
+			</div>
+			<div class="col-lg-4">
+	  </div>
+    <% end %>
+
+<br>
+
+<%= link_to 'New Batch', new_batch_path %>

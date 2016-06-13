@@ -1,6 +1,6 @@
 class DeedsController < ApplicationController
   before_action :authenticate_user!, except: [:new, :download_sample, :download, :show, :verify, :public_display]
-  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display]
+  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display, :display_tx]
   
   #require 'google/api_client'
   #require 'google/api_client/client_secrets'
@@ -47,18 +47,7 @@ class DeedsController < ApplicationController
     
     if @deed.tx_raw.blank?
         
-      @raw_transaction = case Issuer.find_by_id(@deed.issuer_id).name
-       when "ESILV 2014"
-        @deed.authentication_tx
-       when "TEST SCHOOL"
-        @deed.authentication_tx
-       when "TEST"
-        @deed.authentication_tx
-       when "CDI"
-        @deed.authentication_tx
-       else
-        @deed.op_return_tx
-       end
+      @raw_transaction = @deed.op_return_tx
 
     else
       @deed.broadcast_tx
@@ -69,6 +58,17 @@ class DeedsController < ApplicationController
       @deed.tx_raw = ""
       @deed.save
       redirect_to @deed, notice: "Our wallet is empty, a previous tx has yet to be confirmed or tx broadcast is temporarily disabled. Please broadcast tx again later."
+    end
+  end
+  
+  def address_utxo_count
+        
+      @deed.tx_raw = @deed.authentication_tx
+      @deed.save
+    unless @deed.tx_raw.blank?
+      redirect_to @deed, notice: "Tx was successfully built."
+    else
+      redirect_to @deed, notice: "Our wallet is empty, a previous tx has yet to be confirmed or something else prevented us from building the tx. Please try again later."
     end
   end
 
@@ -86,6 +86,7 @@ class DeedsController < ApplicationController
   # GET /deeds/1.json
   def show
     @user = User.find_by_id(@deed.user_id)
+    @issuer = Issuer.find_by_id(@deed.issuer_id)
     if @deed.upload.blank?
       @deed.update(upload: @deed.avatar_fingerprint)
     end
@@ -100,9 +101,10 @@ class DeedsController < ApplicationController
   def new
     @deed = Deed.new
     @issuer = Issuer.find_by_id(current_user.issuer_id)
+    
     @issuers = [ Issuer.find_by_name(current_user.email) ]
-    unless @issuers.include?(@issuer) or !@issuer
-      @issuers << @issuer
+    if @issuer.blank?
+      @issuer = Issuer.find_by_name(current_user.email)
     end
     
     if current_user.credit < 1
@@ -113,6 +115,8 @@ class DeedsController < ApplicationController
 
   # GET /deeds/1/edit
   def edit
+    @issuer = @deed.issuer
+    @batches = @issuer.batches
   end
 
   # POST /deeds
@@ -142,13 +146,6 @@ class DeedsController < ApplicationController
         puts symmetric_key
 
         options = { :encryption_key => symmetric_key }
-        # s3_object = s3.buckets[bucket].objects[key]
-
-        # Writing an encrypted object to S3
-        # s3_object.write(data, options)
-
-        # Reading the object from S3 and decrypting
-        # puts s3_object.read(options)
 
         bucket = s3.buckets['hashtree-assets']
         object = bucket.objects[@deed.avatar_file_name]
@@ -208,7 +205,7 @@ class DeedsController < ApplicationController
     end
 
     def deed_params
-      params.require(:deed).permit(:access_key,:issuer_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:access_key, :deed_id, :email])
+      params.require(:deed).permit(:access_key,:issuer_id, :batch_id, :user_id, :name, :category, :description, :avatar, :avatar_fingerprint, :issuer, :tx_hash, :tx_raw, :upload, viewers_attributes: [:access_key, :deed_id, :email])
     end
     
 end

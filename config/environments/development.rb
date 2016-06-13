@@ -42,5 +42,7 @@ Rails.application.configure do
   Paperclip.options[:command_path] = "/usr/local/bin/"
   
   $ROOT_URL = "http://localhost:3000"
+  $SCHOOLS = ["TEST SCHOOL", "ESILV", "CDI", "TEST", "ESILV 2014", "ESILV 2015"]
+  $STUDENTS_COUNT = 4
   
 end

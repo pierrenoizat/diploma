@@ -17,6 +17,7 @@
               <% if current_user_admin? %>
 				<li><%= link_to pluralize(User.all.count, "User"), users_path %></li>
 				<li><%= link_to pluralize(Issuer.all.count, "Issuer"), issuers_path %></li>
+				<li><%= link_to pluralize(Batch.all.count, "Batch"), batches_path %></li>
 				<li><%= link_to 'Admin Dashboard', dashboard_user_path(current_user) %></li>
 			  <% end %>
             </ul>
