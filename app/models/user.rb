@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
   private
   
   def set_credit
-    self.credit = 0
+    self.credit = 1
   end
 
 end

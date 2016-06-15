@@ -20,7 +20,7 @@ class DeedsController < ApplicationController
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets['hashtree-assets']
+    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
     object = bucket.objects[@deed.avatar_file_name]
     
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
@@ -35,7 +35,7 @@ class DeedsController < ApplicationController
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets['hashtree-assets']
+    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
     object = bucket.objects[@deed.avatar_file_name]
     
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
@@ -116,7 +116,13 @@ class DeedsController < ApplicationController
   # GET /deeds/1/edit
   def edit
     @issuer = @deed.issuer
-    @batches = @issuer.batches
+
+    @issuer.batches.each do |batch|
+      if first_block(batch.payment_address) < 840000  # if batch is already logged in the blockchain
+        # remove batch from @batches: no more deeds can be added to this batch
+        @issuer.batches.delete(batch)
+      end
+    end
   end
 
   # POST /deeds
@@ -147,7 +153,7 @@ class DeedsController < ApplicationController
 
         options = { :encryption_key => symmetric_key }
 
-        bucket = s3.buckets['hashtree-assets']
+        bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
         object = bucket.objects[@deed.avatar_file_name]
 
         @deed.upload = Digest::SHA256.hexdigest object.read
@@ -157,8 +163,19 @@ class DeedsController < ApplicationController
         format.html { redirect_to @deed, notice: 'Deed was successfully created.' }
         format.json { render :show, status: :created, location: @deed }
       else
+        @deed = Deed.new
+        @issuer = Issuer.find_by_id(current_user.issuer_id)
+
+        @issuers = [ Issuer.find_by_name(current_user.email) ]
+        if @issuer.blank?
+          @issuer = Issuer.find_by_name(current_user.email)
+        end
+
+        if current_user.credit < 1
+          redirect_to current_user, alert: 'Insufficient credit: please contact the administrator.'
+        end
         flash[:error] = @deed.errors[:base]
-        format.html { render :new, notice: 'Deed could not be saved: user not authorized by issuer.' }
+        format.html { redirect_to current_user, alert: 'Deed could not be saved: invalid/empty deed or user not authorized by issuer.' }
         format.json { render json: @deed.errors, status: :unprocessable_entity }
       end
     end

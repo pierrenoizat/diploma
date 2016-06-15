@@ -6,14 +6,15 @@ class Deed < ActiveRecord::Base
   has_many :viewers
   
     attr_readonly :user_id
-
+    
+    # after_create :check_upload_presence
     
     has_attached_file :avatar,
      :default_url => "/images/:style/missing.png",
      :storage => :s3,
      :s3_permissions => :public_read,
      :s3_credentials => "#{Rails.root}/config/aws.yml",
-     :bucket => 'hashtree-assets',
+     :bucket => $AWS_S3_BUCKET_NAME,
      :s3_host_name => 's3-eu-west-1.amazonaws.com',
      :path => ":filename",
      :s3_storage_class => :standard
@@ -28,8 +29,9 @@ class Deed < ActiveRecord::Base
      # Explicitly do not validate
      do_not_validate_attachment_file_type :avatar
      
-     # validates :issuer_id, presence: true
+     validates :issuer_id, presence: true
      validates :issuer_id, numericality: { only_integer: true }
+     validates :description, presence: true
      validates :description, uniqueness: true
      
      before_create :generate_access_key
@@ -533,5 +535,13 @@ class Deed < ActiveRecord::Base
 
          res = client.send(mail)
         end # of school_signed_email method
+        
+      private
+        
+      # def check_upload_presence
+      #  if self.upload.blank?
+      #    self.delete
+      #  end
+      # end
 
   end

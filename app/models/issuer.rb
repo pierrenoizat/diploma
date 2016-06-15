@@ -32,6 +32,8 @@ class Issuer < ActiveRecord::Base
      msk = case self.name
      when "ESILV 2014"
       Rails.application.secrets.msk_esilv
+     when "ESILV"
+        Rails.application.secrets.msk_esilv
      when "TEST SCHOOL"
       Rails.application.secrets.msk_esilv
      when "TEST"

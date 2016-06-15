@@ -29,8 +29,15 @@
 			    <%= f.input :name, :label => 'Title' %>
 				<h5>Issuer</h5>
 				<%= f.collection_select :issuer_id, Issuer.all, :id, :name %></br></br>
-				<h5>Batch</h5>
-				<%= f.collection_select :batch_id, @batches, :id, :title %></br></br>
+				<% unless @batches.blank? %>
+					<h5>Batch</h5>
+					<% if @batches.count > 1 %>
+						<%= f.collection_select :batch_id, @batches, :id, :title %></br></br>
+					<% else %>
+						<%= @batches.first.name if @batches %></br></br>
+						<%= f.hidden_field :batch_id , :value => @batches.first.id %>
+					<% end  %>
+				<% end %>
 				<%= f.input :description %>
 			  </div>
 			

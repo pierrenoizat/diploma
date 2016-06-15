@@ -45,4 +45,6 @@ Rails.application.configure do
   $SCHOOLS = ["TEST SCHOOL", "ESILV", "CDI", "TEST", "ESILV 2014", "ESILV 2015"]
   $STUDENTS_COUNT = 4
   
+  $AWS_S3_BUCKET_NAME = "hashtree-assets"
+  
 end

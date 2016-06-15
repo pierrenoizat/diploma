@@ -18,16 +18,12 @@
 
   <div class="form-inputs">
 	<label for="issuer_id">Issuer</label><br />
-	<% if @issuer %>
-		<% if @issuers.count > 1 %>
+		<% if @issuers.count > 1 and current_user_admin? %>
 			<%= f.collection_select :issuer_id, @issuers, :id, :name, {disabled: lambda{|issuer| issuer.name == current_user.email }} %>
 		<% else %>
 			<%= @issuer.name %>
 			<%= f.hidden_field :issuer_id , :value => @issuer.id %>
 		<% end %>
-	<% else %>
-		<%= current_user.email %>
-	<% end %>
 	
   </div></br>
 

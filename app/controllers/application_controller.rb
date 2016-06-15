@@ -6,10 +6,88 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :user_signed_in?, :current_user_admin?
   helper_method :correct_user?, :utxo_addresses, :balance, :address_utxo_count
-  helper_method :broadcast
+  helper_method :broadcast, :first_block, :block_height, :input?
   # helper_method :insert_file
   
   include Bitcoin::Builder
+  
+  def input?(address, tx_hash)
+    # returns true if address is an input of tx
+    boole = false
+    string = "http://btc.blockr.io/api/v1/tx/info/" + tx_hash
+    @agent = Mechanize.new
+
+     begin
+       page = @agent.get string
+     rescue Exception => e
+       page = e.page
+     end
+
+     data = page.body
+     result = JSON.parse(data)
+     result["data"]["vins"].each do |vin|
+       if (vin["address"] == address)
+         boole = true
+       end
+     end
+    boole
+  end
+  
+  def first_block(address)
+    # returns first block (oldest) where address can be found in a transaction input
+    # fetch all txs for address
+    string = "http://btc.blockr.io/api/v1/address/txs/" + address
+    # string = "https://blockchain.info/address/" + address + "?format=json"
+    
+    @agent = Mechanize.new
+
+     begin
+       page = @agent.get string
+     rescue Exception => e
+       page = e.page
+     end
+
+     data = page.body
+     result = JSON.parse(data)
+     n = result["data"]["nb_txs"]
+     block = 840000
+     if n > 0 # address was used
+
+        result["data"]["txs"].each do |tx|
+          tx_hash = tx["tx"]
+          if  input?(address, tx_hash)
+            block = [ block, block_height(tx_hash)].min
+            puts block
+          end
+        end
+        if block < 840000
+          return block
+        else
+          return "In no Block as input yet"
+        end
+     else
+       puts "virgin address: " + address
+       return nil
+     end
+    
+  end # of first_block helper
+  
+  def block_height(tx_hash)
+    
+    string = "http://btc.blockr.io/api/v1/tx/info/" + tx_hash
+    @agent = Mechanize.new
+
+     begin
+       page = @agent.get string
+     rescue Exception => e
+       page = e.page
+     end
+
+     data = page.body
+     result = JSON.parse(data)
+     result["data"]["block"]
+     
+  end # of block_height helper
   
   def broadcast(signed_raw_transaction)
     # TODO check that this method is unused

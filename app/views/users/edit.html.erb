@@ -9,7 +9,7 @@
             <ol class="breadcrumb">
                 <li><%= link_to 'Home', root_path %></li>
 				<li><%= link_to "Users", users_path %></li>
-                <li class="active">Edit <%= @user.name %></li>
+                <li class="active">Edit</li>
             </ol>
         </div>
     </div>
@@ -52,7 +52,7 @@
 			  </div>
 			
 			  <div class="form-actions">
-			    <%= f.button :submit %>   <%= link_to 'Cancel', @users, :class => 'btn btn-default' %>
+			    <%= f.button :submit %>   <%= link_to 'Cancel', @user, :class => 'btn btn-default' %>
 			  </div>
 			<% end %>
         </div>

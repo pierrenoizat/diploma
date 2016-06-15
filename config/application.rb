@@ -1,7 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-
+require 'money-tree'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -97,4 +97,4 @@ $PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and
 # TODO cycle through payment nodes when creating op return txs
 # TODO option to send email to user upon op return tx logged successfully
 # $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_paymium_128x57.png"
-$PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_esilv_128x57.png"
+$PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/Logo_ESILV_275x85.png"

@@ -36,7 +36,8 @@ class BatchesController < ApplicationController
        Prawn::Document.generate("tmp/#{root_file_name}.pdf") do
          
          logopath = $PRINT_PDF_LOGO_PATH # warning: Prawn does NOT handle interlace png image
-          image logopath, :width => 128, :height => 57
+          # image logopath, :width => 128, :height => 57
+          image logopath, :width => 275, :height => 85
 
           move_down 50
 

@@ -9,6 +9,8 @@ module ApplicationHelper
   
   def public_link(string)
     $ROOT_URL + "/deeds/#{string}/public_display"
+    # ::Rails.root.to_s + "/deeds/#{string}/public_display"
+    # Rails.root.to_s + "/deeds/#{string}/public_display"
   end
   
   def first_block_old(address)

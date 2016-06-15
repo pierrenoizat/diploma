@@ -6,6 +6,11 @@ class UsersController < ApplicationController
   require 'money-tree'
 
   include Bitcoin::Builder
+  
+  def show_profile
+    @user = User.find(params[:id])
+    @issuer = @user.issuer
+  end
 
   def index
     @users = User.all

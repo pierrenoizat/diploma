@@ -32,6 +32,7 @@ Rails.application.routes.draw do
         get'refund_payment_address'
         get 'dashboard'
         get 'show_authorized'
+        get 'show_profile'
       end
     end
     

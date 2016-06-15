@@ -20,8 +20,31 @@ $SCHOOLS.each do |school|
    end
  end
 
-@deeds=Deed.all
-@deeds.each do |deed|
+Deed.all.each do |deed|
      deed.tx_id = deed.tx_hash
      deed.save
+ end
+
+@users = User.all
+@users.each do |user|
+ @issuer_exist = false
+ @issuers=Issuer.all
+ @issuers.each do |issuer|
+   if (issuer.name == user.email)
+     @issuer_exist = true
+     user.issuer_id = issuer.id
+     user.save
+   end
+ end
+ puts user.issuer_id
+ puts @issuer_exist
+ unless @issuer_exist
+   @issuer = Issuer.create(:name => user.email, :mpk => Rails.application.secrets.mpk)
+   puts @issuer.name
+   puts @issuer.id
+   if user.issuer_id.blank?
+     user.issuer_id = @issuer.id
+     user.save
+   end
+ end
  end
