@@ -20,7 +20,7 @@ class DeedsController < ApplicationController
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets['hashtree-assets']
+    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
     object = bucket.objects[@deed.avatar_file_name]
     
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
