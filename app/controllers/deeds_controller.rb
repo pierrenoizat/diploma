@@ -20,7 +20,7 @@ class DeedsController < ApplicationController
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+    bucket = s3.buckets['hashtree-assets']
     object = bucket.objects[@deed.avatar_file_name]
     
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
@@ -149,7 +149,7 @@ class DeedsController < ApplicationController
 
         # Creates a string key - store this!
         symmetric_key = OpenSSL::Cipher::AES256.new(:CBC).random_key
-        puts symmetric_key
+        # puts symmetric_key
 
         options = { :encryption_key => symmetric_key }
 
