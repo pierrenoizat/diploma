@@ -20,9 +20,12 @@ class DeedsController < ApplicationController
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets['hahstree-assets']
+    bucket = s3.buckets['hashtree-assets']
     object = bucket.objects[@deed.avatar_file_name]
-    
+    unless object
+      bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+      object = bucket.objects[@deed.avatar_file_name]
+    end
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
     
   end
@@ -35,8 +38,12 @@ class DeedsController < ApplicationController
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+    bucket = s3.buckets['hashtree-assets']
     object = bucket.objects[@deed.avatar_file_name]
+    unless object
+      bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+      object = bucket.objects[@deed.avatar_file_name]
+    end
     
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
     
@@ -153,8 +160,12 @@ class DeedsController < ApplicationController
 
         options = { :encryption_key => symmetric_key }
 
-        bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+        bucket = s3.buckets['hashtree-assets']
         object = bucket.objects[@deed.avatar_file_name]
+        unless object
+          bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+          object = bucket.objects[@deed.avatar_file_name]
+        end
 
         @deed.upload = Digest::SHA256.hexdigest object.read
         @deed.save
