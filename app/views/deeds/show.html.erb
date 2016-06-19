@@ -59,7 +59,8 @@
 			<span> </span>
 			<a class="btn btn-default btn-xs btn-success" href="<%= "#{edit_deed_path(@deed)}" %> "><i class="fa fa-pencil-square-o"></i> Edit</a>
 			<span> </span>
-			<%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %></p>
+			<%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %>
+			<a class="btn btn-default btn-xs btn-info" href="<%= "#{new_deed_path}" %> "><i class="fa fa-upload"></i> Upload new deed</a></p>
         </div>
 
     </div>
