@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     end
 
     @deeds = @user.deeds
-    @deeds = @deeds.paginate(:page => params[:page], :per_page => 2)
+    @deeds = @deeds.paginate(:page => params[:page], :per_page => $PER_PAGE)
   end
   
   def show_authorized

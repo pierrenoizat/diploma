@@ -33,6 +33,7 @@ module Diploma
   end
 end
 
+$PER_PAGE = 50
 # Find admin_uid of André Boussac as env variable
 
 $BROADCAST = true # set to false to prevent transactions from being broadcast, only seen in the logs then.
