@@ -25,6 +25,7 @@ class BatchesController < ApplicationController
     	temps = " #{temps} - " + "#{@current_time.strftime("%H:%M")}"
 
     	count = @deeds.count
+    	page_count = count/20 # get remainder with count % 20
       
       @issuer = @batch.issuer
       school_name = @issuer.name
@@ -60,22 +61,60 @@ class BatchesController < ApplicationController
               :column_widths => [380])
               #:position => :right )
           font_size 10
+          
           j = 0
-          while j < compteur
-        
-            batchinfo = [[rows[j][0]]]
+          
+          if page_count > 0
+            k = 0
+            page_count.times do
+              start_new_page
+              while k < 20
+                batchinfo = [[rows[k][0]]]
 
-            table(batchinfo, 
+                table(batchinfo, 
                   :column_widths => [380], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
                   :cell_style => { :align => :right })
-          j += 1
-          end
+                k += 1
+              end
+              j += 1
+            end
+          else
+            while j < compteur
+              
+                batchinfo = [[rows[j][0]]]
+
+                table(batchinfo, 
+                  :column_widths => [380], 
+                  :row_colors => ["d2e3ed", "FFFFFF"],
+                  :cell_style => { :align => :right })
+                      
+                j += 1
+              end
+
+            end
+            
+          
           font_size 10
           move_down 20
           text "School Address: " + " #{school_address}", :align => :left
           move_down 10
           text "School & Year: " + " #{school_name}" + ", #{batch_title}", :align => :left
+          
+          string = "page <page> of <total>"
+          # Green page numbers 1 to 7
+          options = { :at => [bounds.right - 150, 0],
+                      :width => 150,
+                      :align => :right,
+                      :page_filter => (1..7),
+                      # :color => "007700",
+                      :start_count_at => 1 }
+          number_pages string, options
+          # Gray page numbers from 8 on up
+          options [:page_filter] = lambda { |pg| pg > 7 }
+          options[:start_count_at] = 8
+          # options[:color] = "333333"
+          number_pages string, options
         
         end # of Prawn::Document.generate
        redirect_to @batch, notice: 'PDF File was successfully created.'
