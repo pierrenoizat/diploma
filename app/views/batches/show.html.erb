@@ -24,15 +24,59 @@
 	  <strong>Diploma Count:</strong>
 	  <%= @batch.deeds.count %>
 	</p>
-	
+
+	<div class="row">
+		 <div class="col-lg-2">
+			<strong>Title
+		</div>
+		<div class="col-lg-3">
+			Description
+		</div>
+		<div class="col-lg-4">
+			File Hash</strong>
+		</div>
+		<div class="col-lg-1">
+		</div>
+		<div class="col-lg-1">
+		</div>
+		<div class="col-lg-1">
+		</div>
+	</div>
+	    <% @batch.deeds.each do |deed| %>
+		    <!-- Page Heading/Breadcrumbs -->
+		    <div class="row">
+				 <div class="col-lg-2">
+	        		<%= deed.name %>
+				</div>
+				<div class="col-lg-3">
+					<%= deed.description %>
+				</div>
+				<div class="col-lg-4">
+					<%= deed.truncated_hash %>
+				</div>
+				<div class="col-lg-1">
+	        		<%= link_to 'Show', deed %>
+				</div>
+				<div class="col-lg-1">
+	        		<%= link_to 'Edit', edit_deed_path(deed) %>
+				</div>
+				<div class="col-lg-1">
+	        		<%= link_to 'Destroy', deed, method: :delete, data: { confirm: 'Are you sure?' } %>
+				</div>
+		  </div>
+	    <% end %>
+	<p>
 	<div class="row">
 		<div class="col-lg-4">
-	<% if first_block(@batch.payment_address) < 840000 %>
+	<% if first_block(@batch.payment_address).to_i < 840000 and first_block(@batch.payment_address).to_i > 0 %>
 	OP_RETURN Tx in Block # <%= first_block(@batch.payment_address) %>
 	<% else %>
-	<a class="btn btn-default btn-xs btn-success" href="<%= "#{prepare_tx_batch_path(@batch)}" %> "><i class="fa fa-database"></i>Prepare Raw Signed Tx</a>
+		<% if @batch.deeds.count > 0 %>
+			<a class="btn btn-default btn-xs btn-success" href="<%= "#{prepare_tx_batch_path(@batch)}" %> "><i class="fa fa-database"></i>Prepare Raw Signed Tx</a>
+		<% end %>
 	<% end %>
 		</div>
+		<% if @batch.deeds.count > 0 %>
         <div class="col-lg-4">
 	<%= button_to t('.generate_pdf', :default => "Generate PDF"),
 	            generate_pdf_batch_path(@batch), :action => :generate_pdf, :class => "btn btn-success btn-xs" %>
@@ -42,7 +86,9 @@
 				            download_pdf_batch_path(@batch), :action => :download_pdf, :class => "btn btn-success btn-xs" %>
 	
 		</div>
+		<% end %>
 	</div>
     <!-- /.row -->
+	</p>
 </div>
 <!-- /.container -->

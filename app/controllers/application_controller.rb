@@ -63,11 +63,12 @@ class ApplicationController < ActionController::Base
         if block < 840000
           return block
         else
-          return "In no Block as input yet"
+          puts "In no Block as input yet"
+          return block
         end
      else
-       puts "virgin address: " + address
-       return nil
+       puts "Virgin address: " + address
+       return 0
      end
     
   end # of first_block helper

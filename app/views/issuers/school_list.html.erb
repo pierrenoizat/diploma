@@ -36,7 +36,12 @@
         		<%= batch.deeds.count %>
 			</div>
 			<div class="col-lg-2">
-        		<%= first_block(batch.payment_address) %>
+				<% first_block = first_block(batch.payment_address) %>
+				<% if first_block.to_i < 840000 and first_block.to_i > 0 %>
+        			<%= first_block %>
+				<% else %>
+					N/A
+				<% end %>
 			</div>
 			<div class="col-lg-4">
         		<%= batch.payment_address %>

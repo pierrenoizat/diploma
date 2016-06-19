@@ -35,6 +35,23 @@ class Deed < ActiveRecord::Base
      validates :description, uniqueness: true
      
      before_create :generate_access_key
+     
+     include ActionView::Helpers::NumberHelper
+     include ActionView::Helpers::TextHelper
+     
+     def truncated_hash
+       string = self.upload # file hash
+       if string and string.size >25
+         end_string = string[-4,4] # keeps only last 4 caracters
+         truncated_string = truncate(string, length: 8, omission: '...') + end_string # keeps only first 5 caracters, with 3 dots (total length 8)
+       else
+         if string 
+           truncated_string = string
+         else
+           truncated_string = ''
+         end
+       end
+     end
 
      def to_param
        self.access_key

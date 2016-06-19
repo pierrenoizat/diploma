@@ -6,7 +6,7 @@ class BatchesController < ApplicationController
   
   
   def generate_pdf
-
+    # generate pdf file in tmp/diploma_batch_+ @batch.id.to_s.pdf"
      @deeds = @batch.deeds
      rows = []
      compteur = 0
@@ -110,6 +110,11 @@ class BatchesController < ApplicationController
   
   def index
     @batches = Batch.all
+    @batches.each do |batch|
+      unless batch.issuer_id
+        @batches.delete(batch)
+      end
+    end
   end
   
   def new

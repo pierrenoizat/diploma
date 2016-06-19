@@ -123,13 +123,26 @@ class DeedsController < ApplicationController
   # GET /deeds/1/edit
   def edit
     @issuer = @deed.issuer
-
+    @batches = []
     @issuer.batches.each do |batch|
-      if first_block(batch.payment_address) < 840000  # if batch is already logged in the blockchain
-        # remove batch from @batches: no more deeds can be added to this batch
-        @issuer.batches.delete(batch)
+      first_block = first_block(batch.payment_address)
+      
+      # remove batch if that file is already included in batch
+      a = batch.deeds.select { |m| m.upload == @deed.upload }
+      if a.count > 0
+        # @issuer.batches.delete(batch)
+        puts 'Diploma is already included in a batch of the School.'
+        redirect_to @deed, alert: "Diploma is already included in the "+"#{batch.title} batch of the School."
       end
+      
+      unless (first_block < 840000 and first_block > 0) # unless batch is already logged in the blockchain
+        # include batch in @batches: deeds can be added to this batch
+        @batches << batch
+      end
+      
     end
+    
+    @batches
   end
 
   # POST /deeds
