@@ -42,7 +42,7 @@
 			<span> </span>
 				<% if $SCHOOLS.include?(@issuer.name)%>
 					<% if @deed.tx_raw.blank? %>
-					<a class="btn btn-default btn-xs btn-success" href="<%= "#{display_tx_deed_path(@deed)}" %> "><i class="fa fa-database"></i>Display Raw Signed Tx</a>
+					<a class="btn btn-default btn-xs btn-success" href="<%= "#{display_tx_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Display Raw Signed Tx</a>
 					<% end %>
 				<% else %>
 				<a class="btn btn-default btn-xs btn-success" href="<%= "#{log_hash_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Log hash in Blockchain</a>
@@ -59,7 +59,11 @@
 			<span> </span>
 			<a class="btn btn-default btn-xs btn-success" href="<%= "#{edit_deed_path(@deed)}" %> "><i class="fa fa-pencil-square-o"></i> Edit</a>
 			<span> </span>
-			<%= link_to "Delete", deed_path(@deed), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger' %>
+			<%= link_to(deed_path(@deed), {:controller =>"deeds", :action =>"destroy", :id =>"#{@deed.id}", :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-xs btn-danger'}) do %>
+			   <i class="fa fa-remove"></i> Delete
+			<% end %>
+
+
 			<a class="btn btn-default btn-xs btn-info" href="<%= "#{new_deed_path}" %> "><i class="fa fa-upload"></i> Upload new deed</a></p>
         </div>
 
