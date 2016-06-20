@@ -56,31 +56,72 @@ class BatchesController < ApplicationController
           move_down 20
           
           j = 0
+          p = 0
           
           if page_count > 0
             
             page_count.times do
-              k = 0
+              
+              k = p*20
               start_new_page
-              table_header = [ ["Diploma Digest"] ]
-
-                table(table_header, 
-                  :column_widths => [380])
+              table_header = [ ["Diploma SHA256 Digest"] ]
+              table(table_header, 
+                :column_widths => [480])
                   #:position => :right )
               font_size 10
 
-            while j < compteur
+            while k < (p+1)*20
               
-                batchinfo = [[rows[j][0]]]
-
+                batchinfo = [[rows[k][0]]]
                 table(batchinfo, 
-                  :column_widths => [380], 
+                  :column_widths => [480], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
-                  :font_size => 10,
                   :cell_style => { :align => :right })
                       
-                j += 1
+                k += 1
               end
+              p += 1
+            end
+            
+            k = page_count*20 + 1
+            start_new_page
+            table_header = [ ["Diploma SHA256 Digest"] ]
+
+              table(table_header, 
+                :column_widths => [480])
+                #:position => :right )
+            font_size 10
+
+          while k < (page_count*20 + (count % 20))
+            
+              batchinfo = [[rows[k][0]]]
+
+              table(batchinfo, 
+                :column_widths => [480], 
+                :row_colors => ["d2e3ed", "FFFFFF"],
+                :cell_style => { :align => :right })
+                    
+              k += 1
+            end
+            
+          else
+            k = 0
+            table_header = [ ["Diploma SHA256 Digest"] ]
+
+              table(table_header, 
+                :column_widths => [480])
+            while k < compteur
+              
+                batchinfo = [[rows[k][0]]]
+
+                table(batchinfo, 
+                  :column_widths => [480], 
+                  :row_colors => ["d2e3ed", "FFFFFF"],
+                  :cell_style => { :align => :right })
+                      
+                k += 1
+              end
+          end
             
           
           font_size 10
