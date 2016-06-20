@@ -91,3 +91,11 @@ footer {
         height: 70%;
     }
 }
+
+/* Custom styles */ 
+.diploma-report {
+  font-size: 24px;
+  color: black !important;
+  padding-left: 7px !important;
+}
+
