@@ -83,14 +83,14 @@ class BatchesController < ApplicationController
               start_new_page
             end
             
-            k = page_count*25 + 1
+            k = page_count*25
             table_header = [ ["Diploma SHA256 Digest"] ]
             table(table_header, 
                 :column_widths => [400])
                 #:position => :right )
             font_size 10
 
-          while k <= (page_count*25 + (count % 25))
+          while k < (page_count*25 + (count % 25))
             
               batchinfo = [[rows[k][0]]]
 
