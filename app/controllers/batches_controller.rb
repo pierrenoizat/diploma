@@ -65,7 +65,7 @@ class BatchesController < ApplicationController
               
               table_header = [ ["Diploma SHA256 Digest"] ]
               table(table_header, 
-                :column_widths => [410])
+                :column_widths => [400])
                   #:position => :right )
               font_size 10
 
@@ -73,7 +73,7 @@ class BatchesController < ApplicationController
               
                 batchinfo = [[rows[k][0]]]
                 table(batchinfo, 
-                  :column_widths => [410], 
+                  :column_widths => [400], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
                   :cell_style => { :align => :right })
                       
@@ -86,16 +86,16 @@ class BatchesController < ApplicationController
             k = page_count*25 + 1
             table_header = [ ["Diploma SHA256 Digest"] ]
             table(table_header, 
-                :column_widths => [410])
+                :column_widths => [400])
                 #:position => :right )
             font_size 10
 
-          while k < (page_count*25 + (count % 25))
+          while k <= (page_count*25 + (count % 25))
             
               batchinfo = [[rows[k][0]]]
 
               table(batchinfo, 
-                :column_widths => [410], 
+                :column_widths => [400], 
                 :row_colors => ["d2e3ed", "FFFFFF"],
                 :cell_style => { :align => :right })
                     
@@ -106,13 +106,13 @@ class BatchesController < ApplicationController
             k = 0
             table_header = [ ["Diploma SHA256 Digest"] ]
             table(table_header, 
-                :column_widths => [410])
+                :column_widths => [400])
             font_size 10
             while k < compteur
               
                 batchinfo = [[rows[k][0]]]
                 table(batchinfo, 
-                  :column_widths => [410], 
+                  :column_widths => [400], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
                   :cell_style => { :align => :right })
                       
