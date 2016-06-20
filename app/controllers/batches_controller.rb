@@ -54,32 +54,21 @@ class BatchesController < ApplicationController
           move_down 20
           font_size 12
           move_down 20
-
-          table_header = [ ["Diploma Digest"] ]
-
-            table(table_header, 
-              :column_widths => [380])
-              #:position => :right )
-          font_size 10
           
           j = 0
           
           if page_count > 0
-            k = 0
+            
             page_count.times do
+              k = 0
               start_new_page
-              while k < 20
-                batchinfo = [[rows[k][0]]]
+              table_header = [ ["Diploma Digest"] ]
 
-                table(batchinfo, 
-                  :column_widths => [380], 
-                  :row_colors => ["d2e3ed", "FFFFFF"],
-                  :cell_style => { :align => :right })
-                k += 1
-              end
-              j += 1
-            end
-          else
+                table(table_header, 
+                  :column_widths => [380])
+                  #:position => :right )
+              font_size 10
+
             while j < compteur
               
                 batchinfo = [[rows[j][0]]]
@@ -87,12 +76,11 @@ class BatchesController < ApplicationController
                 table(batchinfo, 
                   :column_widths => [380], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
+                  :font_size => 10,
                   :cell_style => { :align => :right })
                       
                 j += 1
               end
-
-            end
             
           
           font_size 10
