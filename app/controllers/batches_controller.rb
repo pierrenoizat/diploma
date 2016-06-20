@@ -63,10 +63,10 @@ class BatchesController < ApplicationController
             page_count.times do
               
               k = p*20
-              start_new_page
+              
               table_header = [ ["Diploma SHA256 Digest"] ]
               table(table_header, 
-                :column_widths => [480])
+                :column_widths => [450])
                   #:position => :right )
               font_size 10
 
@@ -74,21 +74,21 @@ class BatchesController < ApplicationController
               
                 batchinfo = [[rows[k][0]]]
                 table(batchinfo, 
-                  :column_widths => [480], 
+                  :column_widths => [450], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
                   :cell_style => { :align => :right })
                       
                 k += 1
               end
               p += 1
+              start_new_page
             end
             
             k = page_count*20 + 1
-            start_new_page
             table_header = [ ["Diploma SHA256 Digest"] ]
 
               table(table_header, 
-                :column_widths => [480])
+                :column_widths => [450])
                 #:position => :right )
             font_size 10
 
@@ -97,7 +97,7 @@ class BatchesController < ApplicationController
               batchinfo = [[rows[k][0]]]
 
               table(batchinfo, 
-                :column_widths => [480], 
+                :column_widths => [450], 
                 :row_colors => ["d2e3ed", "FFFFFF"],
                 :cell_style => { :align => :right })
                     
@@ -109,13 +109,13 @@ class BatchesController < ApplicationController
             table_header = [ ["Diploma SHA256 Digest"] ]
 
               table(table_header, 
-                :column_widths => [480])
+                :column_widths => [450])
             while k < compteur
               
                 batchinfo = [[rows[k][0]]]
 
                 table(batchinfo, 
-                  :column_widths => [480], 
+                  :column_widths => [450], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
                   :cell_style => { :align => :right })
                       
