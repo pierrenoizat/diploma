@@ -25,7 +25,7 @@ class BatchesController < ApplicationController
     	temps = " #{temps} - " + "#{@current_time.strftime("%H:%M")}"
 
     	count = @deeds.count
-    	page_count = count/20 # get remainder with count % 20
+    	page_count = count/25 # get remainder with count % 20
       
       @issuer = @batch.issuer
       school_name = @issuer.name
@@ -40,20 +40,19 @@ class BatchesController < ApplicationController
           # image logopath, :width => 128, :height => 57
           image logopath, :width => 275, :height => 85
 
-          move_down 50
+          move_down 20
 
           font "Helvetica"
           font_size 18
-          text_box "#{school_name}"+", #{batch_title}", :align => :right          
-
-          move_down 20
-
-          font_size 10
-          # text "#{school_name}", :align => :left
-          text "#{count} diplomas", :align => :left
-          move_down 20
+          text_box "#{school_name}"+", #{batch_title}"+ "\n" + "#{count} diplomas", :align => :right          
           font_size 12
-          move_down 20
+          # text_box "#{count} diplomas", :at => [100, 100], :width => 200, :height => 100
+
+          # font_size 10
+          # text_box "#{count} diplomas", :align => :right
+          # move_down 20
+          # font_size 12
+          # move_down 20
           
           j = 0
           p = 0
@@ -62,19 +61,19 @@ class BatchesController < ApplicationController
             
             page_count.times do
               
-              k = p*20
+              k = p*25
               
               table_header = [ ["Diploma SHA256 Digest"] ]
               table(table_header, 
-                :column_widths => [450])
+                :column_widths => [410])
                   #:position => :right )
               font_size 10
 
-            while k < (p+1)*20
+            while k < (p+1)*25
               
                 batchinfo = [[rows[k][0]]]
                 table(batchinfo, 
-                  :column_widths => [450], 
+                  :column_widths => [410], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
                   :cell_style => { :align => :right })
                       
@@ -84,20 +83,19 @@ class BatchesController < ApplicationController
               start_new_page
             end
             
-            k = page_count*20 + 1
+            k = page_count*25 + 1
             table_header = [ ["Diploma SHA256 Digest"] ]
-
-              table(table_header, 
-                :column_widths => [450])
+            table(table_header, 
+                :column_widths => [410])
                 #:position => :right )
             font_size 10
 
-          while k < (page_count*20 + (count % 20))
+          while k < (page_count*25 + (count % 25))
             
               batchinfo = [[rows[k][0]]]
 
               table(batchinfo, 
-                :column_widths => [450], 
+                :column_widths => [410], 
                 :row_colors => ["d2e3ed", "FFFFFF"],
                 :cell_style => { :align => :right })
                     
@@ -107,22 +105,20 @@ class BatchesController < ApplicationController
           else
             k = 0
             table_header = [ ["Diploma SHA256 Digest"] ]
-
-              table(table_header, 
-                :column_widths => [450])
+            table(table_header, 
+                :column_widths => [410])
+            font_size 10
             while k < compteur
               
                 batchinfo = [[rows[k][0]]]
-
                 table(batchinfo, 
-                  :column_widths => [450], 
+                  :column_widths => [410], 
                   :row_colors => ["d2e3ed", "FFFFFF"],
                   :cell_style => { :align => :right })
                       
                 k += 1
               end
           end
-            
           
           font_size 10
           move_down 20
