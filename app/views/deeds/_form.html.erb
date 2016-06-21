@@ -33,7 +33,8 @@
   <p>Maximum file size with free plan: <%= '%.0f' % ($MAX_SIZE/1.2) %>k.</p></br></br>
 
   <div class="form-inputs">
-    <%= f.input :name, :label => 'Title' %>
+    <%= f.input :name, :label => 'Title', input_html: {value: f.object.name || "Diplome #{@issuer.name} 2015"} %>
+
 	<%= f.input :description %>
 	
 	<%= f.hidden_field :user_id , :value => current_user.id %>
