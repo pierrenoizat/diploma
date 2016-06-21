@@ -38,7 +38,7 @@
 						<%= f.hidden_field :batch_id , :value => @batches.first.id %>
 					<% end  %>
 				<% end %>
-				<%= f.input :description %>
+				<%= f.input :description, input_html: {value: f.object.avatar_file_name} %>
 			  </div>
 			
 			  <div class="form-actions">
