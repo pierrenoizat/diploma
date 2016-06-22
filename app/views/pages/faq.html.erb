@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">FAQ
-                <small>Subheading</small>
+                <small>for students and recruiters</small>
             </h1>
             <ol class="breadcrumb">
                 <li><%= link_to 'Home', root_path %>
@@ -23,12 +23,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Lorem ipsum dolor sit amet, consectetur adipiscing elit?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Student: What kind of information should I send along with my diploma to prove it's authentic?</a>
                         </h4>
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            Aside from the original image of your diploma (a pdf file), you should send the official diploma report of your class (another pdf file).</br> With these two files, the recipient (most likely a recruiting HR person) will be able to verify that your diploma image was signed by the School.
                         </div>
                     </div>
                 </div>
@@ -36,12 +36,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue iaculis vitae at risus?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Recruiter: How can I check the authenticity of the diploma I received, using the diploma report that was sent along with it?</a>
                         </h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            You can use an open source, free software application, soon to be available from the diploma.report website.</br>The application is scheduled to be released in september 2016. Alternatively, you can do the verification yourself (see below).
                         </div>
                     </div>
                 </div>
@@ -49,12 +49,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Aenean consequat lorem ut felis ullamcorper?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Recruiter: How can I verifiy the authenticity of a diploma independently from Paymium ?</a>
                         </h4>
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            First, compute the SHA256 hash of the diploma image and check that it is listed in the diploma report.</br> Second, visit the School's website and get the Bitcoin address corresponding to the class of the diploma.</br> Third, visit a Bitcoin blockchain explorer and search the transaction history of this address (paste the address in the search field displayed on the blockchain explorer page).</br> In the transaction history, look for the first (oldest) transaction where the address appears as an input.</br> There should be two outputs to this transaction, one bearing a zero amount and a data hash.</br> Last but not least, compute the SHA256 hash of the diploma report (pdf) file and check that it matches the data hash you just found in the blockchain: that's it !
                         </div>
                     </div>
                 </div>
@@ -62,12 +62,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Lorem ipsum dolor sit amet, consectetur adipiscing elit?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Recruiter: Can you illustrate the independent verification process with an example?</a>
                         </h4>
                     </div>
                     <div id="collapseFour" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            The Bitcoin address for the 2015 class of ESILV is 1awv74dvcA6kUp3QHMJfVvyP8BpVyTRjv.</br> This address is available on multiple websites including diploma.report and esilv.fr. You can search this address on blocktrail.com.</br> The first transaction where it appears as an input is hgfuyff (TODO: replace with actual tx id and link).</br> The ESILV 2015 diploma report can be downloaded here (TODO: add download link).</br> The hash of the diploma report file is hgfhfhfhgfjh (TODO: replace with actual hash).</br> Check that this hash can be found in the zero amount transaction ouptput.
                         </div>
                     </div>
                 </div>
@@ -75,12 +75,18 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue iaculis vitae at risus?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">Recruiter: How can I compute the SHA256 hash of a file?</a>
                         </h4>
                     </div>
                     <div id="collapseFive" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            On a Mac or Linux computer, launch the Terminal application and type the following commands:</br>
+							$ irb</br>
+							2.2.0 :001 > require 'digest'</br>
+							2.2.0 :002 > sha256 = Digest::SHA256.file '/Users/noizat/Documents/Bitcoin_book_2012.pdf'</br></br>
+							To enter the file path, simply drag and drop the file icon on the Terminal window.
+							The result of the computation should look like something like this:</br>
+							99368fbbbbb6cbebfcc436f97da3ef97dfb28f37c16ae13cd484a166f251dba0</br>
                         </div>
                     </div>
                 </div>
@@ -88,12 +94,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">Aenean consequat lorem ut felis ullamcorper?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">What if someone steals a School's private key?</a>
                         </h4>
                     </div>
                     <div id="collapseSix" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            Only the first (oldest) Bitcoin transaction signed with the School private key is used to verify the authenticity of the diploma report.</br> The key is generated right before the transaction and can only be stolen after it: the thieve can sign a subsequent transaction with the same key but the fraudulent transaction will NOT appear as the first in the Bitcoin blockchain, therefore will be simply ignored in the verification process.
                         </div>
                     </div>
                 </div>
@@ -101,12 +107,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">Lorem ipsum dolor sit amet, consectetur adipiscing elit?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">Is there a new address for a new class?</a>
                         </h4>
                     </div>
                     <div id="collapseSeven" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            Yes a new Bitcoin address is generated for each diploma report. The School must publish a list a addresses, each corresponding to a specific class (year).
                         </div>
                     </div>
                 </div>
@@ -114,12 +120,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">Curabitur eget leo at velit imperdiet varius. In eu ipsum vitae velit congue iaculis vitae at risus?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseEight">Student: What if I lose my original diploma (pdf file)?</a>
                         </h4>
                     </div>
                     <div id="collapseEight" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            In this unfortunate situation, you would lose the ability to prove the authenticity of your diploma with your School's diploma report.<br> However, you would lose nothing else, in particular you would keep the ability to prove your diploma is authentic by contacting the School the old fashioned way.</br> Furthermore, the situation is very unlikely because your original diploma will be kept by multiple entities such as your School, Paymium and Paymium's trusted partners. These entities will be able to send you a copy of your original file if you so request it.
                         </div>
                     </div>
                 </div>
@@ -127,12 +133,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseNine">Aenean consequat lorem ut felis ullamcorper?</a>
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseNine">Where can I get the diploma report of a School for a specific year?</a>
                         </h4>
                     </div>
                     <div id="collapseNine" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                            All the diploma reports of the School will be available through a download link from the School as well as from Paymium website and from Paymium trusted partners. Class years prior to 2015 will not be available unless the School decides to authenticate diplomas from past years.
                         </div>
                     </div>
                 </div>
