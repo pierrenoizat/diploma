@@ -7,9 +7,9 @@ class ApplicationController < ActionController::Base
   helper_method :user_signed_in?, :current_user_admin?
   helper_method :correct_user?, :utxo_addresses, :balance, :address_utxo_count
   helper_method :broadcast, :first_block, :block_height, :input?
-  # helper_method :insert_file
   
   include Bitcoin::Builder
+  
   
   def input?(address, tx_hash)
     # returns true if address is an input of tx

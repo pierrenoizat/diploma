@@ -151,6 +151,13 @@ class DeedsController < ApplicationController
 
     @deed = Deed.new(deed_params)
     
+    if deed_params["category"] == "diploma_report"
+      unless (deed_params["description"] =~ /^[a-zA-Z1-9]{27,35}$/)
+        redirect_to current_user, alert: 'Description of a diploma report must be a Bitcoin address.'
+        return
+      end
+    end
+    
     require 'digest'
     require 'openssl'
 
