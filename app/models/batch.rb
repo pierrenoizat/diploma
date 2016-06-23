@@ -226,7 +226,8 @@ class Batch < ActiveRecord::Base
 
        prev_tx = Bitcoin::P::Tx.from_json(data)
        @input_amount = result['data']['unspent'][0]['amount'].to_f
-       prev_out_index = result['data']['unspent'][0]['n'].to_i
+       # prev_out_index = result['data']['unspent'][0]['n'].to_i
+       prev_out_index = 0  # ????
        # use that utxo as input
        ################################################
        t.input do |i|
