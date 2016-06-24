@@ -11,7 +11,7 @@ class ViewersController < ApplicationController
   def index
     @viewers = Viewer.all
     unless current_user.admin?
-      redirect_to current_user, alert: 'Access reserved to admin only.'
+      redirect_to current_user # , alert: 'Access reserved to admin only.'
     end
   end
 
@@ -25,7 +25,7 @@ class ViewersController < ApplicationController
   def new
     @viewer = Viewer.new
     unless current_user.admin?
-      redirect_to current_user, alert: 'Access reserved to admin only.'
+      redirect_to current_user # , alert: 'Access reserved to admin only.'
     end
   end
 

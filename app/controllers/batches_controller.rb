@@ -208,6 +208,7 @@ class BatchesController < ApplicationController
   
   def show
     @issuer = @batch.issuer
+    @first_block = first_block(@batch.payment_address)
   end
   
   def edit

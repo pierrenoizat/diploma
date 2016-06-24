@@ -55,13 +55,18 @@
 					<%= deed.truncated_hash %>
 				</div>
 				<div class="col-lg-1">
-	        		<%= link_to 'Show', deed %>
+	        		<%= link_to 'Show', public_display_deed_path(deed) %>
 				</div>
 				<div class="col-lg-1">
-	        		<%= link_to 'Edit', edit_deed_path(deed) %>
+					<% unless @first_block.to_i < 840000 and @first_block.to_i > 0 %>
+					<%= link_to 'Edit', edit_deed_path(deed) %>
+					<% end %>
+	        		
 				</div>
 				<div class="col-lg-1">
+					<% unless @first_block.to_i < 840000 and @first_block.to_i > 0 %>
 	        		<%= link_to 'Destroy', deed, method: :delete, data: { confirm: 'Are you sure?' } %>
+					<% end %>
 				</div>
 		  </div>
 	    <% end %>

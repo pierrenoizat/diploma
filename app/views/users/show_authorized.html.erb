@@ -29,11 +29,16 @@
 				
 				<li>Uploaded by: <%= User.find_by_id(deed.user_id).email %></li></br>
 				<li>File SHA256 Fingerprint: <%= deed.upload %></li></br>
-				<% unless deed.tx_hash.blank? %>
-                	<li>OP_RETURN Tx ID: <a href="<%= tx_link(deed.tx_hash) %>"  target="blank"><%= deed.tx_hash %></a></li>
+				<% if deed.batch %>
+					<li>Diploma Report File SHA256 Fingerprint: <%= deed.batch.root_hash %></li></br>
+					<li>Diploma Report OP_RETURN Tx ID: <a href="<%= tx_link(deed.batch.tx_hash) %>"  target="blank"><%= deed.batch.tx_hash %></a></li></br>
+				<% else %>
+					<% unless deed.tx_hash.blank? %>
+                		<li>OP_RETURN Tx ID: <a href="<%= tx_link(deed.tx_hash) %>"  target="blank"><%= deed.tx_hash %></a></li>
+					<% end %>
 				<% end %>
             </ul></br></br>
-			<a class="btn btn-default btn-xs btn" href="<%= "#{download_deed_path(deed)}" %> "><i class="fa fa-download"></i><%= " #{deed.avatar_file_name}" %></a> <% unless deed.tx_hash.blank? %><a class="btn btn-default btn-xs btn" href="<%= "#{verify_deed_path(deed)}" %> "><i class="fa fa-send"></i> Send signed email</a><% end %>
+			<a class="btn btn-default btn-xs btn" href="<%= "#{download_deed_path(deed)}" %> "><i class="fa fa-download"></i><%= " #{deed.avatar_file_name}" %></a> <% if deed.batch %><a class="btn btn-default btn-xs btn" href="<%= "#{download_report_deed_path(deed)}" %> "><i class="fa fa-download"></i>Download Diploma Report</a><% end %> <% unless deed.tx_hash.blank? %><a class="btn btn-default btn-xs btn" href="<%= "#{verify_deed_path(deed)}" %> "><i class="fa fa-send"></i> Send signed email</a><% end %>
         </div>
     </div>
     <!-- /.row -->

@@ -45,7 +45,8 @@
 					<a class="btn btn-default btn-xs btn-success" href="<%= "#{display_tx_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Display Raw Signed Tx</a>
 					<% end %>
 				<% else %>
-				<a class="btn btn-default btn-xs btn-success" href="<%= "#{log_hash_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Log hash in Blockchain</a>
+				<% unless @deed.category == 9 %>
+				<a class="btn btn-default btn-xs btn-success" href="<%= "#{log_hash_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Log hash in Blockchain</a><% end %>
 				<% end %>
 			<% else %>
 			<span> </span>

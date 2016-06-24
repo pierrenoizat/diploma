@@ -28,12 +28,18 @@
             <h3>Deed Details</h3></br>
             <ul>
 				<li>File SHA256 Fingerprint: <%= @deed.upload %></li></br>
-				<% unless @deed.tx_hash.blank? %>
-					<li>OP_RETURN Tx ID: <a href="<%= tx_link(@deed.tx_hash) %>"  target="blank"><%= @deed.tx_hash %></a></li></br>
+				<% if @deed.batch %>
+					<li>Diploma Report File SHA256 Fingerprint: <%= @deed.batch.root_hash %></li></br>
+					<li>Diploma Report OP_RETURN Tx ID: <a href="<%= tx_link(@deed.batch.tx_hash) %>"  target="blank"><%= @deed.batch.tx_hash %></a></li></br>
+				<% else %>
+					<% unless @deed.tx_hash.blank? %>
+						<li>OP_RETURN Tx ID: <a href="<%= tx_link(@deed.tx_hash) %>"  target="blank"><%= @deed.tx_hash %></a></li></br>
+					<% end %>
 				<% end %>
             </ul></br></br>
 			<p>
 			<a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a>
+			<% if @deed.batch %><a class="btn btn-default btn-xs btn" href="<%= "#{download_report_deed_path(@deed)}" %> "><i class="fa fa-download"></i>Download Diploma Report</a><% end %>
 			</p>
         </div>
 

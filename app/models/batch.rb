@@ -17,6 +17,14 @@ class Batch < ActiveRecord::Base
     payment_private_key = Bitcoin::Key.new(payment_private_key).to_base58
   end
   
+  def tx_hash
+    Deed.all.each do |deed|
+      if deed.description == self.payment_address
+        return deed.tx_hash
+      end
+    end
+  end
+  
   
   def root_file_hash
     # hash of batch root pdf file
@@ -45,6 +53,12 @@ class Batch < ActiveRecord::Base
       @tx_id = "Due to malleability issue, Tx ID is not confirmed yet. Broadcast tx again later: #{self.tx_raw}"
     else
       @tx_id = "Confirmed Tx ID: #{post_response["tx"]["hash"]}"
+      Deed.all.each do |deed|
+        if deed.description == self.payment_address
+          deed.tx_hash = post_response["tx"]["hash"]
+          deed.save
+        end
+      end
     end
     puts @tx_id
 

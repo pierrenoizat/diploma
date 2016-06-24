@@ -79,14 +79,21 @@ class ApplicationController < ActionController::Base
     @agent = Mechanize.new
 
      begin
+       blockr = true
        page = @agent.get string
      rescue Exception => e
-       page = e.page
+       blockr = false
+       string = "http://api.blockcypher.com/v1/btc/main/txs/" + tx_hash #  if blockr.io is unavailable, use blockcypher
+       page = @agent.get string
      end
 
      data = page.body
      result = JSON.parse(data)
-     result["data"]["block"]
+     if blockr
+       result["data"]["block"]
+     else
+       result["block_height"]
+     end
      
   end # of block_height helper
   

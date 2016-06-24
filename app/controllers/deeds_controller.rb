@@ -1,6 +1,6 @@
 class DeedsController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :download_sample, :download, :show, :verify, :public_display]
-  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display, :display_tx]
+  before_action :authenticate_user!, except: [:new, :download_sample, :download, :show, :verify, :public_display, :download_report]
+  before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display, :display_tx, :download_report]
   
   #require 'google/api_client'
   #require 'google/api_client/client_secrets'
@@ -28,6 +28,30 @@ class DeedsController < ApplicationController
     end
     send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
     
+  end
+  
+  def download_report
+    
+    if @deed.batch
+      Deed.all.each do |deed|
+        if deed.description == @deed.batch.payment_address
+    
+          s3 = AWS::S3.new(
+          :access_key_id     => Rails.application.secrets.access_key_id,
+          :secret_access_key => Rails.application.secrets.secret_access_key
+          )
+
+          bucket = s3.buckets['hashtree-assets']
+          object = bucket.objects[deed.avatar_file_name]
+          unless object
+            bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+            object = bucket.objects[deed.avatar_file_name]
+          end
+    
+          send_data object.read, filename: deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
+        end
+      end
+    end 
   end
   
 
@@ -86,7 +110,12 @@ class DeedsController < ApplicationController
     redirect_to current_user
   end
   
+  def display_tx
+    redirect_to @deed # TODO code method
+  end
+  
   def public_display
+    
   end
 
   # GET /deeds/1
