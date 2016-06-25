@@ -5,16 +5,19 @@
 <h1>Schools</h1>
 
 <div class="row">
+	<div class="col-lg-2">
+		
+	</div>
 	 <div class="col-lg-2">
 		<strong>School Name
 	</div>
 	<div class="col-lg-2">
 		Class Year
 	</div>
-	<div class="col-lg-2">
+	<div class="col-lg-1">
 		Diplomas Count
 	</div>
-	<div class="col-lg-2">
+	<div class="col-lg-1">
 		<span data-toggle="tooltip" data-placement="top" title="Height of Block where registered address first appears as a transaction input.">Block</span>
 	</div>
 	<div class="col-lg-4">
@@ -26,16 +29,19 @@
 		<% issuer.batches.each do |batch| %>
 	    <!-- Page Heading/Breadcrumbs -->
 	    <div class="row">
+			<div class="col-lg-2">
+        		<%= image_tag batch.issuer.logo_path %>
+			</div>
 			 <div class="col-lg-2">
         		<%= issuer.name %>
 			</div>
 			<div class="col-lg-2">
 				<a href="<%= "#{search_batch_path(batch)}" %> "><%= batch.title %></a>
 			</div>
-			<div class="col-lg-2">
+			<div class="col-lg-1">
         		<%= batch.deeds.count %>
 			</div>
-			<div class="col-lg-2">
+			<div class="col-lg-1">
 				<% first_block = first_block(batch.payment_address) %>
 				<% if first_block.to_i < 840000 and first_block.to_i > 0 %>
         			<%= first_block %>
