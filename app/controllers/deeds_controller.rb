@@ -1,5 +1,5 @@
 class DeedsController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :download_sample, :download, :show, :verify, :public_display, :download_report]
+  before_action :authenticate_user!, except: [:new, :download_sample, :download, :show, :verify, :public_display, :download_report, :index]
   before_action :set_deed, only: [:show, :edit, :update, :destroy, :download, :log_hash, :download_sample, :verify, :public_display, :display_tx, :download_report]
   
   #require 'google/api_client'
@@ -107,7 +107,30 @@ class DeedsController < ApplicationController
   # GET /deeds.json
   def index
     @deeds = Deed.all
-    redirect_to current_user
+    result = 0
+    # deed description must be "John DOE"
+    unless params[:search].blank?
+      @deeds = Deed.search(params[:search]).order("created_at DESC")
+      if @deeds.count > 0
+        @deeds.each do |deed|
+          if deed.description ==  params[:search] and deed.batch_id == params[:batch_id][0].to_i # keep only exact match WITHIN batch
+            result += 1
+            @deed = deed
+            # render :public_display
+          end
+        end
+        if result == 1
+          render :public_display, notice: "Successfull search."
+        else 
+          redirect_to root_url, alert: "Search result: zero match or duplicates found."
+        end
+      else
+        redirect_to root_url, alert: "Search result: not found."
+      end
+    else
+      redirect_to root_url, alert: "Search result: invalid query."
+    end
+    
   end
   
   def display_tx
@@ -128,7 +151,11 @@ class DeedsController < ApplicationController
     end
     
     if @user != current_user
-      redirect_to current_user, alert: 'Access denied: you are not authorized to edit this deed.'
+      if current_user
+        redirect_to current_user, alert: 'Access denied: you are not authorized to edit this deed.'
+      else
+        redirect_to root_url, alert: 'Access denied: you are not authorized to edit this deed.'
+      end
     end
     
   end

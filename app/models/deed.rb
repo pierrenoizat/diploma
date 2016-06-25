@@ -52,6 +52,13 @@ class Deed < ActiveRecord::Base
          end
        end
      end
+     
+     def self.search(query)
+       
+       
+       where("description like ?", "%#{query}%")
+       # where("access_key like ?", "%#{query}%") 
+     end
 
      def to_param
        self.access_key

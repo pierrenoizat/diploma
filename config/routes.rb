@@ -41,6 +41,8 @@ Rails.application.routes.draw do
     member do
       get 'prepare_tx'
       post 'generate_pdf'
+      get 'search'
+      post 'search'
     end
   end
   

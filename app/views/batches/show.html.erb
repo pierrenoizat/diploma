@@ -73,9 +73,8 @@
 	<p>
 	<div class="row">
 		<div class="col-lg-4">
-	<% first_block = first_block(@batch.payment_address) %>
-	<% if first_block.to_i < 840000 and first_block.to_i > 0 %>
-	OP_RETURN Tx in Block # <%= first_block %>
+	<% if @first_block.to_i < 840000 and @first_block.to_i > 0 %>
+	OP_RETURN Tx in Block # <%= @first_block %>
 	<% else %>
 		<% if @batch.deeds.count > 0 %>
 			<a class="btn btn-default btn-xs btn-success" href="<%= "#{prepare_tx_batch_path(@batch)}" %> "><i class="fa fa-database"></i> Prepare Raw Signed Tx</a>

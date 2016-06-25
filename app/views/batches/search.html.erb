@@ -1,0 +1,37 @@
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Batch: 
+				<small><%= @issuer.name %>, <%= @batch.title %></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><%= link_to 'Home', root_path %></li>
+				<li><%= link_to 'Batches', school_list_issuers_path %></li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+	
+	<p>
+	  <strong>Batch Address:</strong>
+	  <%= @batch.payment_address %>
+	</p>
+	
+	<p>
+	  <strong>Diploma Count:</strong>
+	  <%= @batch.deeds.count %>
+	</p>
+
+	<p><h4>Search for your diploma with your first name and last name: </h4>
+
+	<%= form_tag(deeds_path, :method => "get", id: "search-form") do %>
+	  <%= text_field_tag :search, params[:search], placeholder: "John DOE", style: "width:300px;" %>
+	  <%= hidden_field :batch_id, params[:batch_id], value: @batch.id %>
+	  <%= submit_tag "Search", :name => nil, :class => 'btn btn-default btn-xs' %>
+	<% end %></p>
+
+</div>
+<!-- /.container -->

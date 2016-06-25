@@ -1,9 +1,13 @@
 class BatchesController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :show]
-  before_action :set_batch, only: [:show, :edit, :update, :destroy, :prepare_tx, :download_pdf, :generate_pdf]
+  before_action :authenticate_user!, except: [:new, :show, :search]
+  before_action :set_batch, only: [:show, :edit, :update, :destroy, :prepare_tx, :download_pdf, :generate_pdf, :search]
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TextHelper
   
+  def search
+    @issuer = @batch.issuer
+    @first_block = first_block(@batch.payment_address)
+  end
   
   def generate_pdf
     # generate pdf file in tmp/diploma_batch_+ @batch.id.to_s.pdf"
