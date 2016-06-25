@@ -106,14 +106,14 @@ class DeedsController < ApplicationController
   # GET /deeds
   # GET /deeds.json
   def index
+    @batch = Batch.find(params[:batch_id])
     @deeds = Deed.all
     result = 0
-    # deed description must be "John DOE"
-    unless params[:search].blank?
+    unless params[:search].size < 10
       @deeds = Deed.search(params[:search]).order("created_at DESC")
       if @deeds.count > 0
         @deeds.each do |deed|
-          if deed.description ==  params[:search] and deed.batch_id == params[:batch_id][0].to_i # keep only exact match WITHIN batch
+          if deed.upload.include? params[:search] and deed.batch_id == params[:batch_id][0].to_i # keep only match over 10 chars min WITHIN batch
             result += 1
             @deed = deed
             # render :public_display
@@ -122,13 +122,13 @@ class DeedsController < ApplicationController
         if result == 1
           render :public_display, notice: "Successfull search."
         else 
-          redirect_to root_url, alert: "Search result: zero match or duplicates found."
+          redirect_to search_batch_path(@batch), alert: "Search result: zero match or duplicates found."
         end
       else
-        redirect_to root_url, alert: "Search result: not found."
+        redirect_to search_batch_path(@batch), alert: "Search result: not found."
       end
     else
-      redirect_to root_url, alert: "Search result: invalid query."
+      redirect_to search_batch_path(@batch), alert: "Search result: invalid query."
     end
     
   end

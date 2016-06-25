@@ -25,12 +25,12 @@
 	  <%= @batch.deeds.count %>
 	</p>
 
-	<p><h4>Search for your diploma with your first name and last name: </h4>
+	<p><h4>Search for your diploma page with your diploma file SHA256 hash: </h4>
 
 	<%= form_tag(deeds_path, :method => "get", id: "search-form") do %>
-	  <%= text_field_tag :search, params[:search], placeholder: "John DOE", style: "width:300px;" %>
+	  <%= text_field_tag :search, params[:search], placeholder: "0adfc78a9899c2194ca2ecc5237a10d1ee7eb3d7974a8f84bdbb5e222320413e", style: "width:550px;" %>
 	  <%= hidden_field :batch_id, params[:batch_id], value: @batch.id %>
-	  <%= submit_tag "Search", :name => nil, :class => 'btn btn-default btn-xs' %>
+	  <%= submit_tag "Search", :name => nil, :class => "btn btn-default btn-xs btn-success" %>
 	<% end %></p>
 
 </div>

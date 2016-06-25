@@ -43,7 +43,7 @@ class Deed < ActiveRecord::Base
        string = self.upload # file hash
        if string and string.size >25
          end_string = string[-4,4] # keeps only last 4 caracters
-         truncated_string = truncate(string, length: 8, omission: '...') + end_string # keeps only first 5 caracters, with 3 dots (total length 8)
+         truncated_string = truncate(string, length: 14, omission: '...') + end_string # keeps only first 11 caracters, with 3 dots (total length 14)
        else
          if string 
            truncated_string = string
@@ -54,9 +54,9 @@ class Deed < ActiveRecord::Base
      end
      
      def self.search(query)
-       
-       
-       where("description like ?", "%#{query}%")
+       # search is handled in controllers/deeds_controller.rb, index method
+       where("upload like ?", "%#{query}%")  # search by file hash (SHA256)
+       # where("description like ?", "%#{query}%")
        # where("access_key like ?", "%#{query}%") 
      end
 
