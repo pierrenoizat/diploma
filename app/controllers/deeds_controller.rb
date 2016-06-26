@@ -20,7 +20,7 @@ class DeedsController < ApplicationController
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets['hashtree-assets']
+    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
     object = bucket.objects[@deed.avatar_file_name]
     unless object
       bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
@@ -41,7 +41,7 @@ class DeedsController < ApplicationController
           :secret_access_key => Rails.application.secrets.secret_access_key
           )
 
-          bucket = s3.buckets['hashtree-assets']
+          bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
           object = bucket.objects[deed.avatar_file_name]
           unless object
             bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
@@ -56,13 +56,13 @@ class DeedsController < ApplicationController
   
 
   def download
-    
+    # Ruby SDK - Version 1
     s3 = AWS::S3.new(
     :access_key_id     => Rails.application.secrets.access_key_id,
     :secret_access_key => Rails.application.secrets.secret_access_key
     )
 
-    bucket = s3.buckets['hashtree-assets']
+    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
     object = bucket.objects[@deed.avatar_file_name]
     unless object
       bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
@@ -236,7 +236,7 @@ class DeedsController < ApplicationController
 
         options = { :encryption_key => symmetric_key }
 
-        bucket = s3.buckets['hashtree-assets']
+        bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
         object = bucket.objects[@deed.avatar_file_name]
         unless object
           bucket = s3.buckets[$AWS_S3_BUCKET_NAME]

@@ -44,7 +44,7 @@ $(document).ready(function() {
     if (!html5) {
       return;
     }
-    explain.html(translate('Loading document...'));
+    explain.html(translate('Loading file...'));
     var output = '';
     output = translate('Preparing to hash ') + escape(f.name) + ' (' + (f.type || translate('n/a')) + ') - ' + f.size + translate(' bytes, last modified: ') + (f.lastModifiedDate ? f.lastModifiedDate
       .toLocaleDateString() : translate('n/a')) + '';
@@ -135,8 +135,8 @@ $(document).ready(function() {
 
   var crypto_finish = function(hash) {
     bar.width(100 + '%');
-    explain.html(translate('Document hash: ') + hash);
-    $.post('./api/v1/register/' + hash, onRegisterSuccess);
+    explain.html(translate('Your file hash: ') + hash);
+    // $.post('./api/v1/register/' + hash, onRegisterSuccess);
   };
 
 
