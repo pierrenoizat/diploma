@@ -30,7 +30,10 @@
 	    <!-- Page Heading/Breadcrumbs -->
 	    <div class="row">
 			<div class="col-lg-2">
-        		<%= image_tag batch.issuer.logo_path %>
+				<%= link_to "http://esilv.fr", :target => "_blank" do %>
+		            <div class="fill" style="background-image" ><%= image_tag batch.issuer.logo_path %></div>
+		          <% end %>
+        		
 			</div>
 			 <div class="col-lg-2">
         		<%= issuer.name %>

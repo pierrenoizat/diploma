@@ -53,11 +53,14 @@ class Deed < ActiveRecord::Base
        end
      end
      
-     def self.search(query)
+     def self.search(first, last)
        # search is handled in controllers/deeds_controller.rb, index method
-       where("upload like ?", "%#{query}%")  # search by file hash (SHA256)
+       # where("description like ?", "%#{last}%")  # search by file hash (SHA256)
        # where("description like ?", "%#{query}%")
-       # where("access_key like ?", "%#{query}%") 
+       # where("access_key like ?", "%#{query}%")
+       return scoped unless first.present? || last.present?
+         where(['description LIKE ?', "%#{last}%"])
+         
      end
 
      def to_param
@@ -70,8 +73,7 @@ class Deed < ActiveRecord::Base
 
      require 'money-tree'
 
-     include Bitcoin::Builder
-     
+     include Bitcoin::Builder  
      
      def broadcast_tx
        

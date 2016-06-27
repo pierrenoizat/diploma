@@ -109,18 +109,21 @@ class DeedsController < ApplicationController
     @batch = Batch.find(params[:batch_id])
     @deeds = Deed.all
     result = 0
-    unless params[:search].size < 10
-      @deeds = Deed.search(params[:search]).order("created_at DESC")
+    unless params[:first].size < 2 or params[:last].size < 2
+      @deeds = Deed.search(params[:first], params[:last]).order("created_at DESC")
       if @deeds.count > 0
         @deeds.each do |deed|
-          if deed.upload.include? params[:search] and deed.batch_id == params[:batch_id][0].to_i # keep only match over 10 chars min WITHIN batch
-            result += 1
-            @deed = deed
+          if deed.description.include? params[:last] and deed.batch_id == params[:batch_id][0].to_i # keep only match over 10 chars min WITHIN batch
+            subs = deed.description.slice! params[:last]
+            if subs.include? params[:first]
+              result += 1
+              @deed = deed
+            end
             # render :public_display
           end
         end
         if result == 1
-          render :public_display, notice: "Successfull search."
+          render :public_display # Successfull search
         else 
           redirect_to search_batch_path(@batch), alert: "Search result: zero match or duplicates found."
         end
