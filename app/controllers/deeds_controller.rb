@@ -129,7 +129,7 @@ class DeedsController < ApplicationController
           redirect_to search_batch_path(@batch), alert: "Search result: zero match or duplicates found."
         end
       else
-        redirect_to search_batch_path(@batch), alert: "Search result: not found."
+        redirect_to search_batch_path(@batch), alert: "Search result: not found. Make sure that first name is in lowercase, last name in uppercase (capital letters)."
       end
     else
       redirect_to search_batch_path(@batch), alert: "Search result: invalid query."
