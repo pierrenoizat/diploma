@@ -114,7 +114,7 @@ class DeedsController < ApplicationController
       if @deeds.count > 0
         @deeds.each do |deed|
           if deed.description.include? params[:last] and deed.batch_id == params[:batch_id][0].to_i # keep only match over 10 chars min WITHIN batch
-            subs = deed.description
+            subs = deed.description.dup # dup will keep deed.description from being modified by slice!
             subs.slice! params[:last]
             if subs.include? params[:first]
               result += 1
