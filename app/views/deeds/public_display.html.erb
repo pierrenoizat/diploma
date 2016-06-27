@@ -42,7 +42,7 @@
 						<li>OP_RETURN Tx ID: <a href="<%= tx_link(@deed.tx_hash) %>"  target="blank"><%= @deed.tx_hash %></a></li></br>
 					<% end %>
 				<% end %>
-            </ul></br></br>
+            </ul></br>
 			<p>
 			<a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> <%= @deed.avatar_file_name %></a>
 			<% if @deed.batch %><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_report_deed_path(@deed)}" %> "><i class="fa fa-download"></i>Download Diploma Report</a> <button class="btn btn-default btn-xs btn-success" data-clipboard-target='fe_text' data-clipboard-text='Default clipboard text from attribute' id='d_clip_button' title='Click me to copy the deed public link to clipboard.'><i class="fa fa-files-o"></i> Copy public link to clipboard</button>
@@ -57,10 +57,10 @@
 
     </div>
     <!-- /.row -->
-
+</br></br>
 	<div class="row">
-        <div class="col-lg-12">
-
+        <div class="col-lg-6">
+			<div class="well">
 				<form id="upload_form" style="display: none;" method="POST" enctype="multipart/form-data" action="api/document/upload">
 		          <fieldset>
 		            <input id='file' type="file" name="d" />
@@ -69,13 +69,16 @@
 		        </form>
 
 		        <div id="filedrag" style="display: none;" class="dropbox">
-					<p>Verify the SHA256 hash of any file:</br>
+					Compute the SHA256 hash of any file:</br>
 		          		Click <strong>HERE</strong> to select the file in your computer hard drive.</br></br>
-		          		The file will NOT be uploaded. The file hash computation is performed client-side.</br></p>
+		          		The file will NOT be uploaded. The file hash computation is performed client-side.
 		        </div>
 
 		        <div id="explain"></div>
+			</div>
         </div>
+		<div class="col-lg-6">
+		</div>
     </div>
     <!-- /.row -->
 

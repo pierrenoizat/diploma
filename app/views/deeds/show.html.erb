@@ -39,7 +39,7 @@
 				<% if @deed.batch %>
 					<li>Public link: <a id='fe_text' href="<%= "#{public_display_deed_path(@deed)}" %> "  target="blank"><%= public_link(@deed.access_key) %></a></li></br>
 				<% end %>
-            </ul></br></br>
+            </ul></br>
 			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a>
 			<% if @deed.tx_hash.blank? %>
 			<span> </span>

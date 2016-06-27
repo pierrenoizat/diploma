@@ -28,15 +28,15 @@
 	</div>
 	</div>
 	<div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
 	<!-- Blog Search Well -->
     <div class="well">
         <h4>Search for your diploma page:</h4>
 
 	<%= form_tag(deeds_path, :method => "get", id: "search-form") do %>
 	<div class="input-group">
-	  <%= text_field_tag :first, params[:first], placeholder: "John", style: "width:550px;height:30px;" %>
-	<%= text_field_tag :last, params[:last], placeholder: "DOE", style: "width:550px;height:30px;" %>
+	  <%= text_field_tag :first, params[:first], placeholder: "John", style: "width:200px;height:30px;" %>
+	<%= text_field_tag :last, params[:last], placeholder: "DOE", style: "width:200px;height:30px;" %>
 	
 	  <%= hidden_field :batch_id, params[:batch_id], value: @batch.id %>
 	<button class="btn btn-default btn-info" type="submit"><i class="fa fa-search"></i></button>
@@ -44,12 +44,15 @@
 	<% end %>
 	</div><!-- /.input-group -->
     </div>
+	</div>
+	<div class="col-lg-6">
+	</div>
 </div>
-</div>
+</br></br></br>
 	
 	<div class="row">
-        <div class="col-lg-12">
-
+        <div class="col-lg-6">
+			<div class="well">
 				<form id="upload_form" style="display: none;" method="POST" enctype="multipart/form-data" action="api/document/upload">
 		          <fieldset>
 		            <input id='file' type="file" name="d" />
@@ -58,13 +61,16 @@
 		        </form>
 
 		        <div id="filedrag" style="display: none;" class="dropbox">
-					<p>Compute the SHA256 hash of any file:</br>
+					Compute the SHA256 hash of any file:</br>
 		          		Click <strong>HERE</strong> to select the file in your computer hard drive.</br></br>
-		          		The file will NOT be uploaded. The file hash computation is performed client-side.</br></p>
+		          		The file will NOT be uploaded. The file hash computation is performed client-side.
 		        </div>
 
 		        <div id="explain"></div>
+			</div>
         </div>
+		<div class="col-lg-6">
+		</div>
     </div>
     <!-- /.row -->
 

@@ -38,10 +38,10 @@
 
     </div>
     <!-- /.row -->
-
+</br></br>
 	<div class="row">
-        <div class="col-lg-12">
-
+        <div class="col-lg-6">
+			<div class="well">
 				<form id="upload_form" style="display: none;" method="POST" enctype="multipart/form-data" action="api/document/upload">
 		          <fieldset>
 		            <input id='file' type="file" name="d" />
@@ -50,13 +50,16 @@
 		        </form>
 
 		        <div id="filedrag" style="display: none;" class="dropbox">
-					<p>Verify the SHA256 hash of any file:</br>
+					Compute the SHA256 hash of any file:</br>
 		          		Click <strong>HERE</strong> to select the file in your computer hard drive.</br></br>
-		          		The file will NOT be uploaded. The file hash computation is performed client-side.</br></p>
+		          		The file will NOT be uploaded. The file hash computation is performed client-side.
 		        </div>
 
 		        <div id="explain"></div>
+			</div>
         </div>
+		<div class="col-lg-6">
+		</div>
     </div>
     <!-- /.row -->
 
