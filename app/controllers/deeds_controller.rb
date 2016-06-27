@@ -109,14 +109,14 @@ class DeedsController < ApplicationController
     @batch = Batch.find(params[:batch_id])
     @deeds = Deed.all
     result = 0
-    unless params[:first].size < 2 or params[:last].size < 2
+    unless (params[:first].size < 2 or params[:last].size < 2)
       @deeds = Deed.search(params[:first], params[:last]).order("created_at DESC")
       if @deeds.count > 0
         @deeds.each do |deed|
           if deed.description.include? params[:last] and deed.batch_id == params[:batch_id][0].to_i # keep only match over 10 chars min WITHIN batch
             subs = deed.description.dup # dup will keep deed.description from being modified by slice!
             subs.slice! params[:last]
-            if subs.include? params[:first]
+            if ((subs.include? params[:first]) and ((params[:first].size + params[:last].size) > deed.description.size - 6))
               result += 1
               @deed = deed
             end
