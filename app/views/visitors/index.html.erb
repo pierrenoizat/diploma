@@ -73,7 +73,10 @@
                     <h4><i class="fa fa-fw fa-compass"></i> Easy to Use</h4>
                 </div>
                 <div class="panel-body">
-                    <p>No sign up is required.</br>Alice, a student, will simply visit our "Schools" page and click on her Class year.</br>The page will enable Alice to compute the digest of her diploma and to search for her diploma page using her first and last name.</br>Likewise, any recruiter receiving her diploma can search for her diploma page and verify her diploma.</p></br></br></br></br></br></br>
+                    <p>No sign up is required.</br>Alice, a student, will simply visit our "Schools" page and click on her Class year.</br>The page will enable Alice to compute the digest of her diploma and to search for her diploma page using her first and last name.</br>An HR recruiter receiving her diploma can search for her diploma page and verify her diploma like so:</p>
+					1. Compute the hash of the diploma</br>
+					2. Verify that the Class Report includes the hash
+</br></br></br></br></br>
 				
                     <a href="<%= page_path('blog-post') %>" class="btn btn-default">Sample Diploma Page</a>
 
@@ -87,7 +90,7 @@
     <!-- Portfolio Section -->
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Sample of Blockchain Notarized Document</h2>
+            <h2 class="page-header">Samples of Blockchain Notarized Document</h2>
         </div>
         <div class="col-md-4 col-sm-6">
           <%= link_to page_path('portfolio-diploma') do %>
