@@ -31,6 +31,10 @@ gem 'prawn', :git => "https://github.com/prawnpdf/prawn.git", :ref => '8028ca0cd
 gem 'mail_form' # for contact form
 gem 'email_validator'
 gem 'figaro'
+gem "resque", :require => 'resque/server'
+gem 'redis'
+gem 'redis-store'
+gem 'resque_mailer'
 
 group :development, :test do
   gem 'byebug'

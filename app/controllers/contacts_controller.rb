@@ -16,7 +16,7 @@ class ContactsController < ApplicationController
     else
       @contact.email = ""
       # render :new
-      redirect_to page_path('contact'), alert: 'There was a problem with the email address you entered.'
+      redirect_to root_path, alert: 'There was a problem with the email address you entered.'
     end
     
   end
