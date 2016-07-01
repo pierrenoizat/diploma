@@ -6,6 +6,7 @@ class VisitorsController < ApplicationController
         deed.update(access_key: SecureRandom.hex(10))
       end
     end
+    
   end
   
 end

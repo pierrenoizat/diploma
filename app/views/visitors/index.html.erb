@@ -51,7 +51,7 @@
                     <h4><i class="fa fa-fw fa-check"></i> Secured by the Blockchain</h4>
                 </div>
                 <div class="panel-body">
-                    <p>The School Class report digest is stored in the Bitcoin blockchain.</br>Upon receiving a diploma, Bob, a recruiter, can verify that the diploma digest is listed in the Class report.</br>Using any blockchain explorer, Bob can search transactions from the Bitcoin address shown on the Class report: one of them should display the Class report digest as an output and the School address as an input.</br> By checking a reliable source, such as paymium.com or the School website, Bob can verify that the Bitcoin address was used by the School to authenticate the diplomas of the Class.</p>
+                    <p>Diploma.report allows any school to publish a <strong>Class report</strong>, that is an authenticated list of all the diplomas, showing only the hash of each diploma belonging to the Class.</br>The School Class report digest is stored in the Bitcoin blockchain.</br>Upon receiving a diploma, Bob, a recruiter, can verify that the diploma digest is listed in the Class report.</br>Using any blockchain explorer, Bob can search transactions from the Bitcoin address shown on the Class report: one of them should display the Class report digest as an output and the School address as an input.</br> By checking a reliable source, such as diploma.report or the School website, Bob can verify that the Bitcoin address was used by the School to authenticate the diplomas of the Class.</p>
                     <a href="<%= page_path('blog-post') %>" class="btn btn-default">Learn More</a>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                     <h4><i class="fa fa-fw fa-gift"></i> Based on Free Software</h4>
                 </div>
                 <div class="panel-body">
-                    <p>Diploma.report is meant to serve the needs of graduates, schools, universities and recruiters.</br>Diploma.report was developped using free software, notably ruby-on-rails, bitcoin-ruby and money-tree.</br>Free blockchain explorers such as blockcypher.com or blocktrail.com can be used to check bitcoin OP_RETURN transactions.</br>We should all be very grateful for the work of the free software developpers who are building such great tools and making them available to us.</p></br></br></br></br>
+                    <p>Diploma.report is meant to serve the needs of graduates, schools, universities and recruiters.</br>Diploma.report was developped using free software, notably ruby-on-rails, bitcoin-ruby and money-tree.</br>Free blockchain explorers such as blockcypher.com or blocktrail.com can be used to check the signature of the School bitcoin on a transaction showing the hash of the class report.</p></br></br></br></br></br></br></br></br></br></br>
                     <a href="<%= page_path('about') %>" class="btn btn-default">Learn More</a>
                 </div>
             </div>
@@ -73,12 +73,12 @@
                     <h4><i class="fa fa-fw fa-compass"></i> Easy to Use</h4>
                 </div>
                 <div class="panel-body">
-                    <p>No sign up is required.</br>Alice, a student, will simply visit our "Schools" page and click on her Class year.</br>The page will enable Alice to compute the digest of her diploma and to search for her diploma page using her first and last name.</br>An HR recruiter receiving her diploma can search for her diploma page and verify her diploma like so:</p>
+                    <p>No sign up is required.</br>Alice, a student, will simply visit our "Schools" page and click on her Class year.</br>The page will enable Alice to compute the digest of her diploma and to search for her diploma page using her first and last name.</br>An HR recruiter receiving her diploma can search for her diploma page and verify her diploma like so:</p><strong>
 					1. Compute the hash of the diploma</br>
-					2. Verify that the Class Report includes the hash
-</br></br></br></br></br>
+					2. Verify that the Class Report includes the hash</strong>
+</br></br></br></br></br></br></br></br></br>
 				
-                    <a href="<%= page_path('blog-post') %>" class="btn btn-default">Sample Diploma Page</a>
+                    <a href="<%= page_path('blog-post') %>" class="btn btn-default">How to Verify a Diploma</a>
 
 
                 </div>

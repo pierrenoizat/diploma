@@ -1,0 +1,21 @@
+# Add configuration values here, as shown below.
+#
+# pusher_app_id: "2954"
+# pusher_key: 7381a978f7dd7f9a1117
+# pusher_secret: abdc3b896a0ffb85d373
+# stripe_api_key: sk_test_2J0l093xOyW72XUYJHE4Dv2r
+# stripe_publishable_key: pk_test_ro9jV5SNwGb1yYlQfzG17LHK
+# recaptcha site key for microbitcoin.net
+
+
+default: &default
+
+development:
+  <<: *default
+  mail_password: '9974800057590488400653131798!'
+
+production:
+  <<: *default
+  mail_password: '9974800057590488400653131798!'
+#  omniauth_provider_key: nQqzGa1YpyS0tJjiyafJyw2eW  previous deployment on heroku
+# omniauth_provider_secret: P3HwYhtrVQv8rXTZEWbe6VQF1WERgrq9OPAPmUEowz6cqce1xy

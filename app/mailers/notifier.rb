@@ -12,4 +12,9 @@ class Notifier < ActionMailer::Base
     mail :to => "noizat@hotmail.com", :from => "diploma.report", :subject => 'Diploma.report Notification'
   end
   
+  def form_received(contact_form)
+    @contact_form = contact_form
+    mail :to => "noizat@hotmail.com", :from => "diploma.report", :subject => 'Diploma.report Contact Form'
+  end
+  
 end

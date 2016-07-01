@@ -28,6 +28,9 @@ gem 'sendgrid-ruby'
 
 gem 'zeroclipboard-rails'
 gem 'prawn', :git => "https://github.com/prawnpdf/prawn.git", :ref => '8028ca0cd2'
+gem 'mail_form' # for contact form
+gem 'email_validator'
+gem 'figaro'
 
 group :development, :test do
   gem 'byebug'
@@ -36,12 +39,14 @@ group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
+
 gem 'bootstrap-sass'
 gem 'high_voltage'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'pg'
 gem 'simple_form'
+
 group :development do
   gem 'better_errors'
   gem 'quiet_assets'

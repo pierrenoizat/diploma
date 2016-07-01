@@ -53,6 +53,10 @@ Rails.application.routes.draw do
      end
   end
   
+  match '/contacts',     to: 'contacts#new',             via: 'get'
+  match '/contacts',     to: 'contacts#create',          via: 'post'
+  resources "contacts", only: [:new, :create]
+  
   root to: 'visitors#index'
   get '/auth/:provider/callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
