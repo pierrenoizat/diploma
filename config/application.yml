@@ -9,13 +9,15 @@
 
 
 default: &default
+  recaptcha_public_key: 6Le4VgMTAAAAAG8kuI-hjaqnwBwdCqB6T-G5-CNo
+  recaptcha_private_key: 6Le4VgMTAAAAAL2BVqT3VCegcGWXHKsrzGOWwPf_
 
 development:
   <<: *default
-  mail_password: '9974800057590488400653131798!'
+  mail_password: AVZCmkJutGeueyrpK8JH2x
 
 production:
   <<: *default
-  mail_password: '9974800057590488400653131798!'
+  mail_password: AVZCmkJutGeueyrpK8JH2x
 #  omniauth_provider_key: nQqzGa1YpyS0tJjiyafJyw2eW  previous deployment on heroku
 # omniauth_provider_secret: P3HwYhtrVQv8rXTZEWbe6VQF1WERgrq9OPAPmUEowz6cqce1xy

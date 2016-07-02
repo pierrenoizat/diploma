@@ -36,7 +36,7 @@
 				<% if @deed.batch %>
 					<li>Diploma Report File SHA256 Digest: <%= @deed.batch.root_hash %></li></br>
 					<li>Diploma Report OP_RETURN Tx ID: <a href="<%= tx_link(@deed.batch.tx_hash) %>"  target="blank"><%= @deed.batch.tx_hash %></a></li></br>
-					<li>School signature verifiable with the following address: <%= @deed.batch.payment_address %></li></br>
+					<li><%= @deed.issuer.name if @deed.issuer %> <%= @deed.batch.title if @deed.batch %> address: <%= @deed.batch.payment_address %></li></br>
 					<li>Public link: <a id='fe_text' href="<%= "#{public_display_deed_path(@deed)}" %> "  target="blank"><%= public_link(@deed.access_key) %></a></li></br>
 				<% else %>
 					<% unless @deed.tx_hash.blank? %>

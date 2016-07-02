@@ -68,14 +68,15 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
   
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
 
   config.action_mailer.smtp_settings = {
     :address => "smtp.gmail.com",
     :port => 587,
     :domain => "google.com",
     :authentication => "plain",
-    :user_name => "btcloans", # email will be sent from btcloans@gmail.com
-    :password => ENV["GMAIL_PASSWORD"],
+    :user_name => "authenticated.diplomas", # email will be sent from btcloans@gmail.com
+    :password => Figaro.env.mail_password,
     :enable_starttls_auto  => true # changed from true 27 april 2013
   }
 

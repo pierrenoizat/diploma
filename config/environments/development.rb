@@ -14,8 +14,8 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = true
-  
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.perform_deliveries = true
   # Uncomment this to test e-mails in development mode
    config.action_mailer.delivery_method = :smtp
 
@@ -23,12 +23,12 @@ Rails.application.configure do
   
   # ActionMailer::Base.smtp_settings = {
   config.action_mailer.smtp_settings = {
-    :address        => 'smtp.sendgrid.net',
-    :port           => '587',
-    :authentication => :plain,
-    :user_name      => ENV['SENDGRID_USERNAME'],
-    :password       => ENV['SENDGRID_PASSWORD'],
-    :domain         => 'heroku.com',
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :domain => "google.com",
+    :authentication => "plain",
+    :user_name      => "authenticated.diplomas",
+    :password => Figaro.env.mail_password,
     :enable_starttls_auto => true
   }
 
