@@ -19,7 +19,7 @@ Rails.application.configure do
   # Uncomment this to test e-mails in development mode
    config.action_mailer.delivery_method = :smtp
 
-
+  config.exceptions_app = self.routes
   
   # ActionMailer::Base.smtp_settings = {
   config.action_mailer.smtp_settings = {

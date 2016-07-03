@@ -93,6 +93,8 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   
+  config.exceptions_app = self.routes
+  
   $ROOT_URL = "http://diploma.report"
   $SCHOOLS = ["ESILV 2015","ESILV", "CDI"]
   $STUDENTS_COUNT = 110
