@@ -1,17 +1,12 @@
 <!-- Page Content -->
 <div class="container">
-
-    <!-- Page Heading/Breadcrumbs -->
+	
+	<!-- Page Heading/Breadcrumbs -->
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">About
                 <small>Diploma.report</small>
             </h1>
-            <ol class="breadcrumb">
-                <li><%= link_to 'Home', root_path %>
-                </li>
-                <li class="active">About</li>
-            </ol>
         </div>
     </div>
     <!-- /.row -->
@@ -20,7 +15,9 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Based on free software</h2>
-			<p> Diploma.report is meant to serve the needs of graduates, schools, universities and recruiters.</br>
+			<p> Diploma.report is a Blockchain authentication service developped and operated by <a href="https://paymium.com" target="blank">Paymium</a>.</br>Diploma.report is meant to serve the needs of graduates, schools, universities and recruiters.</br>
+			Authenticating electronic copies of a diploma saves the energy and paper consumed by the process of sending and verifying a paper document.</br>
+			In addition, diplomas authenticated in the Blockchain are much less prone to counterfeiting attempts.</br>
 			Diploma.report was developped using free software, notably ruby-on-rails, bitcoin-ruby and money-tree.</br>
 			Free blockchain explorers such as blockcypher.com or blocktrail.com can be used to check bitcoin OP_RETURN transactions.
 			We should all be very grateful for the work of the free software developpers who are building such great tools and making them available to us.</p>		
@@ -68,52 +65,6 @@
 		        <strong><div id="explain"></div></strong>
         </div>
     </div>
-    <!-- /.row -->
-
-	<!-- Message verification Content -->
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Verify the signature of a message</h2>
-			<p>Diploma.report can send an email message signed by the same key that was used to sign the blockchain transaction.</br>
-			The verifier can use any wallet application such as <a href="https://electrum.org/#home" target="blank">Electrum</a> or <a href="https://multibit.org/" target="blank">Multibit</a>, allowing the verification of a signed message</br>
-			The signed message sent by diploma.report will look like this:</p>
-			<p>	Your deed, CE Diploma, was verified successfully by diploma.report. This message is signed by its issuer: Cadiz Universidad.</p>
-			<p>	<a href="https://live.blockcypher.com/btc/address/1JmcGRqLJheYNMKrWv8qbCUAu9c317WEKV/" target="blank">Address: </a>1JmcGRqLJheYNMKrWv8qbCUAu9c317WEKV</p>
-			<p>	Signature: H6TxQEQsciE03oF/efm3tqgJMpG7LpEPL6WRIrLFSMfTNIUzthN9XDnaA22WWyRSU+KyFs2/x00F8iKo5/WeaBE=</p>
-        </div>
-    </div>
-    <!-- /.row -->
-
-    <!-- Team Members -->
-    <div class="row">
-        <div class="col-lg-12">
-            <h2 class="page-header">Contact</h2>
-        </div>
-        <div class="col-md-4 text-center">
-            <div class="thumbnail">
-                <div class="img-responsive"><%= image_tag("Pierre_Noizat_Photo.jpg") %></div>
-                <div class="caption">
-                    <h3>Pierre Noizat<br>
-                        <small>contact@paymium.com</small>
-                    </h3>
-                    <p>Questions, comments, suggestions ? Your feedback will be appreciated. Please drop me a note via email or social network.</p>
-                    <ul class="list-inline">
-                        <li><a href="https://www.facebook.com/Paymium/"><i class="fa fa-2x fa-facebook-square"></i></a>
-                        </li>
-                        <li><a href="https://fr.linkedin.com/in/pierrenoizat"><i class="fa fa-2x fa-linkedin-square"></i></a>
-                        </li>
-                        <li><a href="https://twitter.com/PierreNoizat"><i class="fa fa-2x fa-twitter-square"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-		</div>
-		<div class="col-md-4 text-center">
-		</div>
-		<div class="col-md-4 text-center">
-		</div>
-    </div>
-        
     <!-- /.row -->
 
 </div>
