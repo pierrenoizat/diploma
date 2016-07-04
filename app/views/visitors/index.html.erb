@@ -94,7 +94,7 @@
         </div>
         <div class="col-md-4 col-sm-6">
           <%= link_to page_path('portfolio-diploma') do %>
-            <div class="fill" style="background-image" ><%= image_tag("meyers_washingtonU_diploma.jpg") %></div>
+            <div class="fill" style="background-image" ><%= image_tag("meyers_washingtonU_diploma_resized.png") %></div>
           <% end %>
         </div>
         <div class="col-md-4 col-sm-6">
@@ -113,7 +113,7 @@
         <div class="col-md-6">
             <p>Diploma.report includes the following features: </p>
             <ul>
-                <li>Compute the SHA256 hash of a file</li>
+                <li>Compute the SHA256 digest of a file</li>
                 <li>Upload and optionally store the file in the Amazon cloud (AWS S3)</li>
                 <li>Supported file format: png, jpg, pdf</li>
                 <li>Maximum file size with free plan: <%= '%.0f' % ($MAX_SIZE/1.2) %>k.</li>
