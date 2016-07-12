@@ -27,9 +27,9 @@ Rails.application.configure do
     :port => 587,
     :domain => "google.com",
     :authentication => "plain",
-    :user_name      => "authenticated.diplomas",
+    :user_name => "authenticated.diplomas", # email will be sent from btcloans@gmail.com
     :password => Figaro.env.mail_password,
-    :enable_starttls_auto => true
+    :enable_starttls_auto  => true # changed from true 27 april 2013
   }
 
   # Print deprecation notices to the Rails logger.

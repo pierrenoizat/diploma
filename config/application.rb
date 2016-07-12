@@ -85,11 +85,11 @@ $COLLECTION_ADDRESS_PATH = "m/1/4" # we could be using capital M for "public-key
 
 # comment out these lines if problems with rake or rails generate in dev mode
 
-@master = MoneyTree::Master.from_bip32(Rails.application.secrets.mpk)
-@payment_node = @master.node_for_path "M/1/3"
-$PAYMENT_ADDRESS = @payment_node.to_address
-@collection_node = @master.node_for_path "M/1/4"
-$COLLECTION_ADDRESS = @collection_node.to_address
+# @master = MoneyTree::Master.from_bip32(Rails.application.secrets.mpk) # comment out this line if problems
+# @payment_node = @master.node_for_path "M/1/3" # comment out this line if problems
+# $PAYMENT_ADDRESS = @payment_node.to_address # comment out this line if problems
+# @collection_node = @master.node_for_path "M/1/4" # comment out this line if problems
+# $COLLECTION_ADDRESS = @collection_node.to_address # comment out this line if problems
 
 $PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
 # number of utxos prepared for a school on a single address
@@ -99,3 +99,13 @@ $PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and
 # TODO option to send email to user upon op return tx logged successfully
 # $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_paymium_128x57.png"
 $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/Logo_ESILV_275x85.png"
+
+module RailsPatch22584
+  def insert_fixture(fixture, table_name)
+    # A regression with rails 4.2.5 breaks fixtures with symbol keys, specifically this one method.
+    # So, stringify keys in the fixture hash being sent to this method.
+    super(fixture.stringify_keys, table_name)
+  end
+end
+
+ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.include(RailsPatch22584)

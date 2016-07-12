@@ -27,8 +27,9 @@ class Batch < ActiveRecord::Base
   
   
   def root_file_hash
-    # hash of batch root pdf file
-    # root pdf file is manually uploaded as a batch deed with the batch Bitcoin address as description.
+    # batch root pdf file is a list showing the hashes of all the diplomas
+    # root_file_hash is the hash of this batch root pdf file
+    # root pdf file is manually uploaded as a batch deed with the batch Bitcoin address (payment_address) as description.
     Deed.all.each do |deed|
       if deed.description == self.payment_address
         return deed.upload

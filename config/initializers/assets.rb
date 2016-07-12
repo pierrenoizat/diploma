@@ -8,4 +8,7 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-Rails.application.config.serve_static_assets = true
+# Rails.application.config.serve_static_assets = true
+
+# The configuration option `config.serve_static_assets` has been renamed to `config.serve_static_files`
+Rails.application.config.serve_static_files = true

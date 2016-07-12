@@ -15,9 +15,11 @@ default: &default
 development:
   <<: *default
   mail_password: AVZCmkJutGeueyrpK8JH2x
+  diploma_email_contact_form_password: SoMad5TLGZHuqXRqma4M
 
 production:
   <<: *default
   mail_password: AVZCmkJutGeueyrpK8JH2x
+  diploma_email_contact_form_password: SoMad5TLGZHuqXRqma4M
 #  omniauth_provider_key: nQqzGa1YpyS0tJjiyafJyw2eW  previous deployment on heroku
 # omniauth_provider_secret: P3HwYhtrVQv8rXTZEWbe6VQF1WERgrq9OPAPmUEowz6cqce1xy

@@ -1,11 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  batch: MyString
-  mpk: MyString
+  name: MySchool
+  mpk: 'xpub661MyMwAqRbcG55r8ZsYPqywS8iK4endA313Q3xbSrn7gaJAjNM6yyviKLtfcp8KGLWRyPjh3utXYG6sqixndA6sbY6N4VEzPnJmR6ShMWG'
 
 two:
   name: MyString
-  batch: MyString
   mpk: MyString

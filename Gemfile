@@ -23,6 +23,7 @@ gem 'mechanize'
 
 gem 'bitcoin-ruby', git: 'https://github.com/lian/bitcoin-ruby', branch: 'master', require: 'bitcoin'
 gem 'money-tree'
+gem 'btcruby', '~> 1.6'
 
 gem 'sendgrid-ruby'
 
@@ -36,12 +37,20 @@ gem 'redis'
 gem 'redis-store'
 gem 'resque_mailer'
 
+gem "activerecord-postgis-adapter", "3.0.0.beta1" 
+
 group :development, :test do
   gem 'byebug'
+  gem "factory_girl_rails", "~> 4.0"
 end
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  gem 'guard-minitest', '~> 2.3.2' # https://github.com/guard/guard-minitest
+  # Colorize minitest output and show failing tests instantly.
+  gem 'minitest-colorize', git: 'https://github.com/ysbaddaden/minitest-colorize'
+  gem 'terminal-notifier-guard', '~> 1.6.4' # https://github.com/Springest/terminal-notifier-guard
+  gem 'terminal-notifier', '~> 1.6.2' # https://github.com/alloy/terminal-notifier
 end
 
 gem 'bootstrap-sass'

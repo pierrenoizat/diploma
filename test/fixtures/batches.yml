@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  issuer_id: 1
+  title: '2008'
+  issuer: one
   address: MyString
 
 two:
   title: MyString
-  issuer_id: 1
+  issuer: one
   address: MyString
