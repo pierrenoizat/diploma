@@ -7,8 +7,10 @@ factory :issuer do
   factory :issuer_with_batch do
     after(:create) do |issuer|
       create(:batch, issuer: issuer)
+      create(:deed, issuer: issuer)
     end
   end
+  
 end
 
 factory :batch do
@@ -16,4 +18,11 @@ factory :batch do
   address '1KgM2Ffk3ENkJzGjQD2vf1Jxv4PJnkt5Em'
   id '88'
 end
+
+factory :deed do
+  name 'My Diploma'
+  description 'ESILV 1945'
+  category 'paper'
+end
+
 end

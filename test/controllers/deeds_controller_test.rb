@@ -2,7 +2,8 @@ require 'test_helper'
 
 class DeedsControllerTest < ActionController::TestCase
   setup do
-    @deed = deeds(:one)
+    @issuer = FactoryGirl.create(:issuer_with_batch)
+    @deed= FactoryGirl.create(:deed_with_batch)
   end
 
   test "should get index" do
