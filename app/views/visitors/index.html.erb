@@ -128,70 +128,7 @@
     </div>
     <!-- /.row -->
 
-	<!-- CONTACT US
-      ============================== -->
-      <div class="container" id="contact">
 
-        <div class="row">
-			<div class="col-lg-12">
-	            <h2 class="page-header">Contact us</h2>
-	        </div>
-            <p class="heading__sub">
-              If you would like your School to authenticate its diplomas as pdf files, saving time and trees, feel free to contact us: we will get back to you as soon as possible.
-            </p>
-          </div>
-        </div> <!-- / .row -->
-
-        <div class="row">
-          <div class="col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
-
-            <!-- Alert message -->
-            <div class="alert contact-form__alert" id="form_message" role="alert"></div>
-
-            <!-- Contact form -->
-
-
-	<%= simple_form_for @contact, :html => {:class => 'contact__form', :id =>"form_sendemail" } do |f| %>
-	<div class="row">
-        <div class="col-sm-6">
-	<div class="form-group">
-        <label for="name" class="sr-only">Your name</label>
-        <%= f.input :name, :required => true, :name =>"name", :class => "form-control", :id => "name" , :placeholder => "Full Name" %>
-        <span class="help-block"></span>
-      </div>
-	    
-		<div class="form-group">
-          <label for="email" class="sr-only">Your email address</label>
-          <%= f.input :email, :required => true, :name => "email", :class => "form-control", :id => "email", :placeholder => "E-mail" %>
-          <span class="help-block"></span>
-        </div>
-	
-	    </div>
-	
-	<div class="col-sm-6">
-		<div class="form-group">
-            <label for="message" class="sr-only">Your message</label>
-	    <%= f.input :message, :as => :text, :required => true, :name => "message", :class => "form-control", :rows => "9", :id => "message", :placeholder => "Message" %>
-		<span class="help-block"></span>
-      </div>
-    </div>
-
-  </div> <!-- / .row -->
-	
-	
-	    <div class= "hidden">
-	      <%= f.input :nickname, :hint => 'Leave this field blank!' %>
-	    </div>
-	    <div>
-		
-	      <div class="text-center">
-	      <%= f.button :submit, 'Send message', :class=> "btn btn-primary", :controller => "contacts", :action => "create" %>
-			<div class="clearfix"></div>
-        </div>
-	</div>
-   </div>
-  </div>
-	  <% end %>
 
 </div>
 <!-- /.container -->
