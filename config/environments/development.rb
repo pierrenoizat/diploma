@@ -58,7 +58,7 @@ Rails.application.configure do
   Paperclip.options[:command_path] = "/usr/local/bin/"
   
   $ROOT_URL = "http://localhost:3000"
-  $SCHOOLS = ["TEST SCHOOL", "ESILV", "CDI", "TEST", "ESILV 2014", "ESILV 2015"]
+  $SCHOOLS = ["TEST SCHOOL", "ESILV", "CDI", "TEST", "ESILV 2014", "ESILV 2015", "Test School"]
   $STUDENTS_COUNT = 4
   
   # $AWS_S3_BUCKET_NAME = "hashtree-assets"

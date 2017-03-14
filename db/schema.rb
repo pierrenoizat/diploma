@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 20160627130907) do
     t.string   "avatar_fingerprint"
     t.string   "tx_id"
     t.string   "tx_hash"
-    t.string   "avatar_url"
     t.string   "extension"
     t.string   "tx_raw"
     t.string   "upload"

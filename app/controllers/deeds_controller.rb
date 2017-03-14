@@ -249,7 +249,7 @@ class DeedsController < ApplicationController
 
         @deed.upload = Digest::SHA256.hexdigest object.read
         @deed.save
-        @deed.confirmation_email
+        # @deed.confirmation_email # TODO fix issue with mailchimp (or revert to sendgrid)
         
         format.html { redirect_to @deed, notice: 'Deed was successfully created.' }
         format.json { render :show, status: :created, location: @deed }
