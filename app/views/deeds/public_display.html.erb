@@ -20,7 +20,7 @@
 
         <div class="col-md-4">
 			<% if @deed.batch %>
-				<%= image_tag @deed.batch.issuer.logo_path %>
+				<%= image_tag image_path(@deed.batch.issuer.logo_path) %>
 			<% else %>
 				<%= image_tag @deed.avatar.url %>
 			<% end %>

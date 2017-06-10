@@ -36,12 +36,10 @@ class BatchesController < ApplicationController
       batch_title = @batch.title
       school_address = @batch.payment_address
       root_file_name = "diploma_batch_"+ @batch.id.to_s
+      logopath = "#{::Rails.root.to_s}/public/" + @issuer.logo_path # warning: Prawn does NOT handle interlace png image
      
-       # Prawn::Document.new do
        Prawn::Document.generate("tmp/#{root_file_name}.pdf") do
-         
-         logopath = $PRINT_PDF_LOGO_PATH # warning: Prawn does NOT handle interlace png image
-          # image logopath, :width => 128, :height => 57
+
           image logopath, :width => 275, :height => 85
 
           move_down 20
@@ -50,13 +48,6 @@ class BatchesController < ApplicationController
           font_size 18
           text_box "#{school_name}"+", #{batch_title}"+ "\n" + "#{count} diplomas", :align => :right          
           font_size 12
-          # text_box "#{count} diplomas", :at => [100, 100], :width => 200, :height => 100
-
-          # font_size 10
-          # text_box "#{count} diplomas", :align => :right
-          # move_down 20
-          # font_size 12
-          # move_down 20
           
           j = 0
           p = 0
@@ -70,7 +61,6 @@ class BatchesController < ApplicationController
               table_header = [ ["Diploma SHA256 Digest"] ]
               table(table_header, 
                 :column_widths => [400])
-                  #:position => :right )
               font_size 10
 
             while k < (p+1)*25
@@ -91,7 +81,6 @@ class BatchesController < ApplicationController
             table_header = [ ["Diploma SHA256 Digest"] ]
             table(table_header, 
                 :column_widths => [400])
-                #:position => :right )
             font_size 10
 
           while k < (page_count*25 + (count % 25))
@@ -131,7 +120,7 @@ class BatchesController < ApplicationController
           text "School & Year: " + " #{school_name}" + ", #{batch_title}", :align => :left
           
           string = "page <page> of <total>"
-          # Green page numbers 1 to 7
+
           options = { :at => [bounds.right - 150, 0],
                       :width => 150,
                       :align => :right,
@@ -139,10 +128,8 @@ class BatchesController < ApplicationController
                       # :color => "007700",
                       :start_count_at => 1 }
           number_pages string, options
-          # Gray page numbers from 8 on up
           options [:page_filter] = lambda { |pg| pg > 7 }
           options[:start_count_at] = 8
-          # options[:color] = "333333"
           number_pages string, options
         
         end # of Prawn::Document.generate
@@ -150,10 +137,11 @@ class BatchesController < ApplicationController
      end # of generate_pdf method
      
      
-     def download_pdf
-       root_file_name = "diploma_batch_"+ @batch.id.to_s
-       send_file "#{Rails.root.join('tmp').to_s}/#{root_file_name}.pdf"
-     end
+  def download_pdf
+    root_file_name = "diploma_batch_"+ @batch.id.to_s
+    send_file "#{Rails.root.join('tmp').to_s}/#{root_file_name}.pdf"
+  end
+  
   
   def prepare_tx
     if address_utxo_count(@batch.payment_address) == 0

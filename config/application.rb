@@ -80,25 +80,25 @@ $OP_RETURN_AMOUNT = 0.001 # in BTC, 1000 bits or 0.001 BTC or 0.50 € with 1 BT
 # usd_base_rate = result['data'][0]['rates']
 # $SUGGESTED_BTC_AMOUNT = $SUGGESTED_USD_AMOUNT*usd_base_rate["BTC"].to_f
 
-$PAYMENT_ADDRESS_PATH = "m/1/3" # address where utxos are funded from, currently 13iriEcc5Bws3JLmx1NcRYe5rophT9xfdP in dev and prod
+$PAYMENT_ADDRESS_PATH = "m/1/3" # address where utxos are funded from, currently 1Axoqagyjn5RXcNyLP144dzzYUppTKkB6L in dev and 13iriEcc5Bws3JLmx1NcRYe5rophT9xfdP in prod
 $COLLECTION_ADDRESS_PATH = "m/1/4" # we could be using capital M for "public-key only" node
 
 # comment out these lines if problems with rake or rails generate in dev mode
 
-# @master = MoneyTree::Master.from_bip32(Rails.application.secrets.mpk) # comment out this line if problems
-# @payment_node = @master.node_for_path "M/1/3" # comment out this line if problems
-# $PAYMENT_ADDRESS = @payment_node.to_address # comment out this line if problems
-# @collection_node = @master.node_for_path "M/1/4" # comment out this line if problems
-# $COLLECTION_ADDRESS = @collection_node.to_address # comment out this line if problems
+@master = MoneyTree::Master.from_bip32(Rails.application.secrets.mpk) # comment out this line if problems
+@payment_node = @master.node_for_path "M/1/3" # comment out this line if problems
+$PAYMENT_ADDRESS = @payment_node.to_address # comment out this line if problems
+@collection_node = @master.node_for_path "M/1/4" # comment out this line if problems
+$COLLECTION_ADDRESS = @collection_node.to_address # comment out this line if problems
 
-$PAYMENT_NODES_COUNT = 50 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
+$PAYMENT_NODES_COUNT = 2 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
 # number of utxos prepared for a school on a single address
 # Payment node i has path "m/2/#{i}"
 # TODO fund payment nodes and automate refill from master payment address
 # TODO cycle through payment nodes when creating op return txs
 # TODO option to send email to user upon op return tx logged successfully
 # $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_paymium_128x57.png"
-$PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/Logo_ESILV_275x85.png"
+# $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/Logo_ESILV_275x85.png"
 
 module RailsPatch22584
   def insert_fixture(fixture, table_name)

@@ -75,10 +75,12 @@ class DeedsController < ApplicationController
   
   
   def log_hash
-    
     if @deed.tx_raw.blank?
-        
-      @raw_transaction = @deed.op_return_tx
+      if @deed.batch
+        @raw_transaction = @deed.batch_tx
+      else
+        @raw_transaction = @deed.op_return_tx
+      end
 
     else
       @deed.broadcast_tx
@@ -89,17 +91,6 @@ class DeedsController < ApplicationController
       @deed.tx_raw = ""
       @deed.save
       redirect_to @deed, notice: "Our wallet is empty, a previous tx has yet to be confirmed or tx broadcast is temporarily disabled. Please broadcast tx again later."
-    end
-  end
-  
-  def address_utxo_count
-        
-      @deed.tx_raw = @deed.authentication_tx
-      @deed.save
-    unless @deed.tx_raw.blank?
-      redirect_to @deed, notice: "Tx was successfully built."
-    else
-      redirect_to @deed, notice: "Our wallet is empty, a previous tx has yet to be confirmed or something else prevented us from building the tx. Please try again later."
     end
   end
 

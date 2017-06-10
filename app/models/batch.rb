@@ -18,11 +18,14 @@ class Batch < ActiveRecord::Base
   end
   
   def tx_hash
+    string = ""
     Deed.all.each do |deed|
       if deed.description == self.payment_address
-        return deed.tx_hash
+        string = deed.tx_hash
+        return
       end
     end
+    string
   end
   
   
@@ -31,8 +34,8 @@ class Batch < ActiveRecord::Base
     # root_file_hash is the hash of this batch root pdf file
     # root pdf file is manually uploaded as a batch deed with the batch Bitcoin address (payment_address) as description.
     Deed.all.each do |deed|
-      if deed.description == self.payment_address
-        return deed.upload
+      if deed.description == self.payment_address  # caracterize a batch root file
+        return deed.upload  # deed.upload is the hash of the deed file
       end
     end
   end
@@ -145,7 +148,7 @@ class Batch < ActiveRecord::Base
          # i.signature_key key
        end
 
-        @output_amount = @input_amount*100000000 - 10000 # in satoshis, fee is around 5 cts as of june 2016
+        @output_amount = @input_amount*100000000 - 100000 # in satoshis
 
         t.output do |o|
           o.value @output_amount
@@ -221,72 +224,41 @@ class Batch < ActiveRecord::Base
       return nil
     else
 
-    new_tx = build_tx do |t|
-
-       tx_id = result['data']['unspent'][0]['tx'] # fetch the tx ID of the first unspent output available from address
-       
-       string = $WEBBTC_TX_URL + "#{tx_id }.json" # $WEBBTC_TX_URL = "http://webbtc.com/tx/"
-       @agent = Mechanize.new
-
-       begin
-         page = @agent.get string
-       rescue Exception => e
-         # page = e.page
-         string = "https://bitcoin.toshi.io/api/v0/transactions/" + tx_id #  if webbtc.com is unavailable
-         page = @agent.get string
-       end
-
-       data = page.body
-       # TODO check that utxo is not already spent
-
-       prev_tx = Bitcoin::P::Tx.from_json(data)
+       @previous_id = result['data']['unspent'][0]['tx'] # fetch the tx ID of the first unspent output available from address
        @input_amount = result['data']['unspent'][0]['amount'].to_f
-       prev_out_index = result['data']['unspent'][0]['n'].to_i
-       # use that utxo as input
-       ################################################
-       t.input do |i|
-         i.prev_out prev_tx
-         i.prev_out_index prev_out_index
-         # i.signature_key key
-       end
+       @previous_index = result['data']['unspent'][0]['n'].to_i
+       
+       ##########################
+       
+       @batch_key = BTC::Key.new(wif:self.payment_private_key)
+       @batch_address = self.payment_address
+       # @value = (self.amount.to_f * BTC::COIN).to_i - $NETWORK_FEE # in satoshis, amount MUST be 200 000 satoshis (~ 2 €)
+       @value = (@input_amount * BTC::COIN).to_i - 100000
+       BTC::Network.default = BTC::Network.mainnet
+       @op_return_script = BTC::Script.new(op_return: self.deeds.last.upload)
 
-        @output_amount = @input_amount*100000000 - $NETWORK_FEE # in satoshis
-
-        t.output do |o|
-          o.value @output_amount
-          o.script {|s| s.recipient $COLLECTION_ADDRESS }
-        end
-        
-        t.output do |o|
-            # specify the deed hash to encode in the blockchain    
-            o.to self.root_hash.unpack("H*"), :op_return
-            # specify the value of this output (zero)
-            o.value 0
-        end
-        
-        
-        # self.deeds.each do |deed|
-        #  t.output do |o|
-            # specify the deed hash to encode in the blockchain    
-        #    o.to deed.upload.unpack("H*"), :op_return
-            # specify the value of this output (zero)
-       #     o.value 0
-       #   end
-       # end
-      #################################################
-
-      end # build_tx
+       tx = BTC::Transaction.new
+       tx.lock_time = 1471199999 # some time in the past (2016-08-14)
+       tx.add_input(BTC::TransactionInput.new( previous_id: @previous_id, # UTXO has been funded by Alice
+                                               previous_index: @previous_index,
+                                               sequence: 0))
+       tx.add_output(BTC::TransactionOutput.new(value: @value, 
+                                               script: BTC::Address.parse($COLLECTION_ADDRESS).script))
+       tx.add_output(BTC::TransactionOutput.new(value: 0, script: @op_return_script))
+       hashtype = BTC::SIGHASH_ALL
+       sighash = tx.signature_hash(input_index: 0,
+                                   output_script: BTC::PublicKeyAddress.new(string:@batch_address).script,
+                                   hash_type: hashtype)
+       tx.inputs[0].signature_script = BTC::Script.new    
+       @batch_key = BTC::Key.new(wif:self.payment_private_key)   
+       tx.inputs[0].signature_script << (@batch_key.ecdsa_signature(sighash) + BTC::WireFormat.encode_uint8(hashtype))
+       tx.inputs[0].signature_script << @batch_key.compressed_public_key
+       return tx.to_s
       
       puts "Root Hash: "+ self.root_hash
 
-      @payment_keypair = Bitcoin::Key.from_base58(self.payment_private_key)
-      payment_key = Bitcoin.open_key Bitcoin::Key.from_base58(self.payment_private_key).priv # private key corresponding to payment address (standard address only, TODO: handle multisigs)
-
-      signature = Bitcoin.sign_data(payment_key, new_tx.signature_hash_for_input(0, prev_tx)) # sign first input in new tx
-      new_tx.in[0].script_sig = Bitcoin::Script.to_pubkey_script_sig(signature, @payment_keypair.pub.htb) # add signature and public key to first input in new tx
-
-      @raw_transaction = new_tx.to_payload.unpack('H*')[0] # 166-character hex string, signed raw transaction
-      @json_tx = JSON.parse(new_tx.to_json)
+      @raw_transaction = tx.to_s # 166-character hex string, signed raw transaction
+      @json_tx = JSON.parse(tx.to_json)
 
       # print hex version of new signed transaction
       puts "Hex Encoded Transaction:\n\n"

@@ -1,4 +1,5 @@
 class Deed < ActiveRecord::Base
+  include Utxo
   enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video, :photo, :slides, :diploma_report]
   belongs_to :user
   belongs_to :issuer
@@ -293,6 +294,31 @@ class Deed < ActiveRecord::Base
       end
        
      end # of authentication_tx method
+     
+     
+     def batch_tx
+       @batch = self.batch
+       if address_utxo_count(@batch.payment_address) == 0
+         address_balance = balance($PAYMENT_ADDRESS)
+         if address_balance < 2*$NETWORK_FEE
+           puts address_balance
+           puts "Network fee is " + $NETWORK_FEE.to_s + " Satoshis"
+           puts "We need to fund " + $PAYMENT_ADDRESS + " with " + (2*$NETWORK_FEE).to_s + " Satoshis"
+         else
+           @batch.batch_init_tx
+           puts address_balance
+           puts "Everything OK with " + $PAYMENT_ADDRESS
+         end
+         puts 'No utxo available yet. Try again later'
+       else
+         @batch.root_hash = @batch.root_file_hash
+         @batch.tx_raw = @batch.batch_authentification_tx
+         @batch.save
+         
+         puts 'Raw signed batch tx was successfully created.'
+       end
+
+      end # of batch_tx method
      
 
      def op_return_tx
