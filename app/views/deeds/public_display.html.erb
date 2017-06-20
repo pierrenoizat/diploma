@@ -34,7 +34,7 @@
 				<% if @deed.batch %>
 					<li>Diploma Report Digest: <%= @deed.batch.root_hash %></li></br>
 					<li>Diploma Report OP_RETURN Tx ID: <a href="<%= tx_link(@deed.batch.tx_hash) %>"  target="blank"><%= @deed.batch.tx_hash %></a></li></br>
-					<li><%= @deed.issuer.name if @deed.issuer %> <%= @deed.batch.title if @deed.batch %> address:  <a href="http://www.esilv.fr/lecole/certification-blockchain-diplomes-esilv/" target="_blank"><%= @deed.batch.payment_address %></a></li></br>
+					<li><%= @deed.issuer.name if @deed.issuer %> <%= @deed.batch.title if @deed.batch %> address:  <a href='<%= @deed.batch.address_url %>' target="_blank"><%= @deed.batch.payment_address %></a></li></br>
 					<li>Public link: <a id='fe_text' href="<%= "#{public_display_deed_path(@deed)}" %> "  target="blank"><%= public_link(@deed.access_key) %></a></li></br>
 				<% else %>
 					<% unless @deed.tx_hash.blank? %>

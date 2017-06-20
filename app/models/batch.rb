@@ -216,7 +216,7 @@ class Batch < ActiveRecord::Base
     n = result['data']['unspent'].count
 
     if n < 1
-      text = "Not enough utxos for #{self.issuer.name}, #{self.batch.title}."
+      text = "Not enough utxos for #{self.issuer.name}, #{self.title}."
       puts text
       return nil
     else
