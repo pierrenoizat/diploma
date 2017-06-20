@@ -10,16 +10,23 @@ class IssuersController < ApplicationController
     @issuers = Issuer.all
   end
   
+  
   def school_list
    @issuers = []
-   puts $SCHOOLS
-   $SCHOOLS.each do |school|
+   @batches = []
+   puts Issuer::SCHOOLS
+   Issuer::SCHOOLS.each do |school|
      if Issuer.find_by_name(school)
        @issuers << Issuer.find_by_name(school)
      end
    end
-    
+   @issuers.each do |issuer|
+     issuer.batches.each do |batch|
+       @batches << batch
+     end
+   end
   end
+
 
   # GET /issuers/1
   # GET /issuers/1.json

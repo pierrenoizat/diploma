@@ -3,62 +3,34 @@
 <div class="container">
        
 <h1>Schools</h1>
-
-<div class="row">
-	<div class="col-lg-2">
-	</div>
-	 <div class="col-lg-2">
-		<strong>School Name
-	</div>
-	<div class="col-lg-2">
-		Class Year
-	</div>
-	<div class="col-lg-1">
-		Diplomas Count
-	</div>
-	<div class="col-lg-1">
-		<span data-toggle="tooltip" data-placement="top" title="Height of Block where registered address first appears as a transaction input.">Block</span>
-	</div>
-	<div class="col-lg-4">
-		<span data-toggle="tooltip" data-placement="top" title="Look for this address in a transaction input of the Block.">Registered School Address</span></strong>
-	</div>
-</div>
-</br >
-    <% @issuers.each do |issuer| %>
-		<% issuer.batches.each do |batch| %>
-	    <!-- Page Heading/Breadcrumbs -->
-	    <div class="row">
-			<div class="col-lg-2">
-				<%= link_to "http://esilv.fr", :target => "_blank" do %>
-		            <div class="fill" style="background-image" ><%= image_tag batch.issuer.small_logo_path %></div>
-		          <% end %>
-        		
-			</div>
-			 <div class="col-lg-2">
-        		<%= issuer.name %>
-			</div>
-			<div class="col-lg-2">
-				<a href="<%= "#{search_batch_path(batch)}" %> "><%= batch.title %></a>
-			</div>
-			<div class="col-lg-1">
-        		<%= batch.deeds.count %>
-			</div>
-			<div class="col-lg-1">
-				<% first_block = first_block(batch.payment_address) %>
-				<% if first_block.to_i < 840000 and first_block.to_i > 0 %>
-        			<%= first_block %>
-				<% else %>
-					N/A
-				<% end %>
-			</div>
-			<div class="col-lg-4">
-        		<a href="http://www.esilv.fr/lecole/certification-blockchain-diplomes-esilv/" target="_blank"><%= batch.payment_address %></a>
-			</div>
-	  	</div>
-		<% end %>
-    <% end %>
-
-
+</br>
+<table class="table table-bordered">
+	<th>
+	  <td><strong>School Name</strong></td>
+	  <td><strong>Class Year</strong></td>
+	  <td><strong>Diplomas Count</strong></td>
+	  <td><strong><span data-toggle="tooltip" data-placement="top" title="Height of Block where registered address first appears as a transaction input.">Block</span></strong></td>
+	  <td><span data-toggle="tooltip" data-placement="top" title="Look for this address in a transaction input of the Block."><strong>Registered School Address</strong></span></td>
+	</th>
+<% @batches.each do |batch| %>
+	<tr>
+	  <td>	<%= link_to batch.school_url, :target => "_blank" do %>
+            <div class="fill" style="background-image" ><%= image_tag batch.issuer.small_logo_path %></div>
+          <% end %></td>
+	  <td><%= batch.issuer.name %></td>
+	  <td><a href="<%= "#{search_batch_path(batch)}" %> "><%= batch.title %></a></td>
+	  <td><%= batch.deeds.count %></td>
+	  <td>
+		<% if batch.first_block %>
+			<%= batch.first_block %>
+		<% else %>
+			N/A
+		<% end %></td>
+	  <td><a href='<%= batch.address_url %>' target="_blank"><%= batch.payment_address %></a></td>
+	</tr>
+	<% end %>
+</table>
+</br></br></br></br></br></br>
     <script type="text/javascript">
 
     $(document).ready(function(){

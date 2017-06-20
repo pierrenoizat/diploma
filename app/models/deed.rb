@@ -54,17 +54,19 @@ class Deed < ActiveRecord::Base
        end
      end
      
+     
      def self.search(first, last)
        # search is handled in controllers/deeds_controller.rb, index method
        # description must include first name in lower case and last name in upper case
        return scoped unless first.present? || last.present?
          where(['description LIKE ?', "%#{last}%"])
-         
      end
+
 
      def to_param
        self.access_key
      end
+
 
      def generate_access_key
        self.access_key = SecureRandom.hex(10)

@@ -6,7 +6,8 @@ class BatchesController < ApplicationController
   
   def search
     @issuer = @batch.issuer
-    @first_block = first_block(@batch.payment_address)
+    # @first_block = first_block(@batch.payment_address)
+    @first_block = @batch.first_block
   end
   
   def generate_pdf

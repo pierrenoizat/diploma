@@ -19,11 +19,8 @@ class Batch < ActiveRecord::Base
   
   def tx_hash
     string = ""
-    Deed.all.each do |deed|
-      if deed.description == self.payment_address
-        string = deed.tx_hash
-        return
-      end
+    if self.tx_raw
+      string = BTC::Transaction.new(hex: self.tx_raw).transaction_id
     end
     string
   end

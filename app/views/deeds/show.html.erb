@@ -43,7 +43,7 @@
 			<p><a class="btn btn-default btn-xs btn-success" href="<%= "#{download_deed_path(@deed)}" %> "><i class="fa fa-download"></i> Download</a>
 			<% if @deed.tx_hash.blank? %>
 			<span> </span>
-				<% if $SCHOOLS.include?(@issuer.name)%>
+				<% if Issuer::SCHOOLS.include?(@issuer.name)%>
 					<% if @deed.tx_raw.blank? %>
 					<a class="btn btn-default btn-xs btn-success" href="<%= "#{display_tx_deed_path(@deed)}" %> "><i class="fa fa-database"></i> Display Raw Signed Tx</a>
 					<% end %>
