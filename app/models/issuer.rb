@@ -4,7 +4,7 @@ class Issuer < ActiveRecord::Base
   has_many :users
   has_many :batches
   
-  SCHOOLS = ["TEST SCHOOL", "ESILV", "CDI", "TEST", "ESILV 2014", "ESILV 2015", "Test School", "Test ESSEC", "ESSEC"]
+  SCHOOLS = ["ESILV", "ESILV 2014", "ESILV 2015", "Test School", "Test ESSEC", "ESSEC", "ESILV 2016"]
   # validates :name, :inclusion => SCHOOLS # not anymore, since email address is a user default issuer name
   
   validates :mpk, presence: true
@@ -34,11 +34,7 @@ class Issuer < ActiveRecord::Base
       Rails.application.secrets.msk_esilv
      when "ESILV"
         Rails.application.secrets.msk_esilv
-     when "TEST SCHOOL"
-      Rails.application.secrets.msk_esilv
-     when "TEST"
-      Rails.application.secrets.msk_esilv
-     when "CDI"
+     when "ESILV 2016"
       Rails.application.secrets.msk_esilv
      when "ESSEC"
       Rails.application.secrets.msk_essec
