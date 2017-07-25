@@ -61,8 +61,8 @@ class UsersController < ApplicationController
       end
     end
 
-    @deeds = @user.deeds.sort_by { |obj| obj.created_at }
-    @deeds = Deed.where(id: @deeds.map(&:id)).paginate(:page => params[:page], :per_page => $PER_PAGE)
+    @deeds = @user.deeds.reverse_order  # most recent first
+    @deeds = @deeds.paginate(:page => params[:page], :per_page => $PER_PAGE)
   end
   
   def show_authorized
