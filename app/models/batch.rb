@@ -220,7 +220,7 @@ class Batch < ActiveRecord::Base
        @batch_key = BTC::Key.new(wif:self.payment_private_key)
        @batch_address = self.payment_address
        # @value = (self.amount.to_f * BTC::COIN).to_i - $NETWORK_FEE # in satoshis, amount MUST be 200 000 satoshis (~ 2 €)
-       @value = (@input_amount * BTC::COIN).to_i - 100000
+       @value = @input_amount.to_i - 100000
        BTC::Network.default = BTC::Network.mainnet
        @op_return_script = BTC::Script.new(op_return: self.deeds.last.upload)
 
