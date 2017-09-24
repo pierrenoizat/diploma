@@ -198,32 +198,22 @@ class Batch < ActiveRecord::Base
     @payment_address = self.payment_address
     puts "Payment address: #{@payment_address}"
 
-    string = $BLOCKR_ADDRESS_UNSPENT_URL  + @payment_address
     tx_id = ""
     prev_out_index = 0
     prev_tx = nil
+    utxo = Hash.new
+    utxo = utxo(@payment_address)
+    # n = result['data']['unspent'].count
 
-    @agent = Mechanize.new
-    
-    begin
-      page = @agent.get string
-    rescue Exception => e
-      page = e.page
-    end
-
-    data = page.body
-    result = JSON.parse(data)
-    n = result['data']['unspent'].count
-
-    if n < 1
+    if utxo['tx_hash'].blank?
       text = "Not enough utxos for #{self.issuer.name}, #{self.title}."
       puts text
       return nil
     else
 
-       @previous_id = result['data']['unspent'][0]['tx'] # fetch the tx ID of the first unspent output available from address
-       @input_amount = result['data']['unspent'][0]['amount'].to_f
-       @previous_index = result['data']['unspent'][0]['n'].to_i
+       @previous_id = utxo['tx_hash'] # fetch the tx ID of the first unspent output available from address
+       @input_amount = utxo['amount'].to_f
+       @previous_index = utxo['index'].to_i
        
        ##########################
        
@@ -273,5 +263,34 @@ class Batch < ActiveRecord::Base
     end
      
    end # of batch_authentification_tx method
+   
+   
+   def utxo(address)
+     utxo_params = Hash.new
+
+     string = $BLOCKCHAIN_UTXO_URL + address.to_s
+     @agent = Mechanize.new
+     begin
+     page = @agent.get string
+     rescue Exception => e
+     page = e.page
+     end
+
+     data = page.body
+     result = JSON.parse(data)
+     if !result['unspent_outputs'].blank?
+       result['unspent_outputs'].each do |utx|
+         if utx['value'].to_f >= 250000
+           utxo_params["tx_hash"] = utx['tx_hash_big_endian']
+           utxo_params["index"]  = utx['tx_output_n'].to_i
+           utxo_params["amount"]  = utx['value'].to_f  # amount in satoshis
+           utxo_params["confirmations"]  = utx['confirmations'].to_i
+         end
+       end
+     else
+       puts "No utxo avalaible for #{address}"
+     end
+     utxo_params
+   end # of model method utxo
   
 end

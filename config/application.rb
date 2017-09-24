@@ -36,14 +36,14 @@ end
 $PER_PAGE = 50
 # Find admin_uid of André Boussac as env variable
 
-$BROADCAST = true # set to false to prevent transactions from being broadcast, only seen in the logs then.
+$BROADCAST = false # set to false to prevent transactions from being broadcast, only seen in the logs then.
 $MAX_SIZE = 7999 # maximum deed (avatar) file size, in kilobytes
 
 # $NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
 $NETWORK_FEE = 100000 # in satoshis, 10 000 satoshis is around 5 cts with current € exchange rate as of 6/6/2016.
 
 $GOOGLE_DRIVE_URL = "https://www.googleapis.com/upload/drive/v2/files?uploadType=media" # simple file upload
-
+$BLOCKCHAIN_UTXO_URL = "https://blockchain.info/unspent?active="
 $BLOCKR_BLOCK_URL = "http://btc.blockr.io/api/v1/block/info/"  # used to get block hash for given block height
 
 $BLOCKR_ADDRESS_URL = "http://btc.blockr.io/api/v1/address/info/"
