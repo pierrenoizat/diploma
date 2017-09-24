@@ -36,66 +36,52 @@ class ApplicationController < ActionController::Base
   def first_block(address)
     # returns first block (oldest) where address can be found in a transaction input
     # fetch all txs for address
-    string = "http://btc.blockr.io/api/v1/address/txs/" + address
-    # string = "https://blockchain.info/address/" + address + "?format=json"
-    
+    string = "https://blockchain.info/rawaddr/" + address
     @agent = Mechanize.new
+    begin
+      page = @agent.get string
+    rescue Exception => e
+      page = e.page
+    end
 
-     begin
-       page = @agent.get string
-     rescue Exception => e
-       page = e.page
-     end
-
-     data = page.body
-     result = JSON.parse(data)
-     n = result["data"]["nb_txs"]
-     block = 840000
-     if n > 0 # address was used
-
-        result["data"]["txs"].each do |tx|
-          tx_hash = tx["tx"]
-          if  input?(address, tx_hash)
-            block = [ block, block_height(tx_hash)].min
-            puts block
-          end
-        end
-        if block < 840000
-          return block
-        else
-          puts "In no Block as input yet"
-          return block
-        end
-     else
-       puts "Virgin address: " + address
-       return 0
-     end
+    data = page.body
+    result = JSON.parse(data)
+    n = result["n_tx"]
+    i = 0
+    block = 840000
+    while i < n
+      tx = result["txs"][i]
+      if tx["inputs"][0]["prev_out"]["addr"] == address
+        tx_hash = tx["hash"]
+        block = [ block, block_height(tx_hash)].min
+        puts "According to Blockchain.info, Tx hash: #{tx_hash}"
+        puts block
+        i = n
+      else
+        i += 1
+      end
+    end
+    if block < 840000
+      return block
+    else
+      puts "In no Block as input yet"
+      return block
+    end
     
   end # of first_block helper
   
+  
   def block_height(tx_hash)
-    
-    string = "http://btc.blockr.io/api/v1/tx/info/" + tx_hash
+  
     @agent = Mechanize.new
-
-     begin
-       blockr = true
-       page = @agent.get string
-     rescue Exception => e
-       blockr = false
-       string = "http://api.blockcypher.com/v1/btc/main/txs/" + tx_hash #  if blockr.io is unavailable, use blockcypher
-       page = @agent.get string
-     end
-
-     data = page.body
-     result = JSON.parse(data)
-     if blockr
-       result["data"]["block"]
-     else
-       result["block_height"]
-     end
+    string = "http://api.blockcypher.com/v1/btc/main/txs/" + tx_hash #  if blockr.io is unavailable, use blockcypher
+    page = @agent.get string
+    data = page.body
+    result = JSON.parse(data)
+    result["block_height"]
      
   end # of block_height helper
+  
   
   def broadcast(signed_raw_transaction)
     # TODO check that this method is unused
