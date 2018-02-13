@@ -21,7 +21,7 @@ module Diploma
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
+    #config.active_record.raise_in_transactional_callbacks = true
     
     AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-west-1', bucket: 'hashtree-assets')
     
@@ -108,4 +108,4 @@ module RailsPatch22584
   end
 end
 
-ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.include(RailsPatch22584)
+#ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.include(RailsPatch22584)

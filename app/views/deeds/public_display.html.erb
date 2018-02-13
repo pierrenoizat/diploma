@@ -20,7 +20,7 @@
 
         <div class="col-md-4">
 			<% if @deed.batch %>
-				<%= image_tag image_path(@deed.batch.issuer.logo_path) %>
+				<%= image_tag image_path(@deed.batch.issuer.logo_path) unless @deed.batch.issuer.logo_path.blank? %>
 			<% else %>
 				<%= image_tag @deed.avatar.url %>
 			<% end %>
@@ -32,8 +32,10 @@
             <ul>
 				<li>Diploma Digest: <%= @deed.upload %></li></br>
 				<% if @deed.batch %>
-					<li>Diploma Report Digest: <%= Deed.find_by_description(@deed.batch.payment_address).upload %></li></br>
-					<li>Diploma Report OP_RETURN Tx ID: <a href="<%= tx_link(Deed.find_by_description(@deed.batch.payment_address).tx_hash) %>"  target="blank"><%= Deed.find_by_description(@deed.batch.payment_address).tx_hash %></a></li></br>
+					<li>Diploma Report Digest: <%= Deed.find_by_description(@deed.batch.payment_address).upload unless Deed.find_by_description(@deed.batch.payment_address).blank? %></li></br>
+					<li>Diploma Report OP_RETURN Tx ID: 
+						<% unless Deed.find_by_description(@deed.batch.payment_address).blank? %>
+						<a href="<%= tx_link(Deed.find_by_description(@deed.batch.payment_address).tx_hash) %>"  target="blank"><%= Deed.find_by_description(@deed.batch.payment_address).tx_hash %></a><% end %></li></br>
 					<li><%= @deed.issuer.name if @deed.issuer %> <%= @deed.batch.title if @deed.batch %> address:  <a href='<%= @deed.batch.address_url %>' target="_blank"><%= @deed.batch.payment_address %></a></li></br>
 					<li>Public link: <a id='fe_text' href="<%= "#{public_display_deed_path(@deed)}" %> "  target="blank"><%= public_link(@deed.access_key) %></a></li></br>
 				<% else %>

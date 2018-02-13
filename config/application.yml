@@ -14,7 +14,7 @@ default: &default
 
 development:
   <<: *default
-  mail_password: AVZCmkJutGeueyrpK8JH2x
+  mail_password: AVZCmkJutGeueyrpK8JH2x!
   diploma_email_contact_form_password: SoMad5TLGZHuqXRqma4M
 
 production:
