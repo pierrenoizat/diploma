@@ -1,15 +1,20 @@
 source 'https://rubygems.org'
-ruby '2.4.2'
-gem 'rails', '5.1.1'
-gem 'sass-rails'
+ruby '2.3.0'
+gem 'rails', '4.2.5'
+gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails'
+gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
+gem 'jbuilder', '~> 2.0'
 
 gem "cocaine", "= 0.5.7" # required for imagemagick
+# gem 'aws-sdk', '>= 2.0.0' # If using paperclip `master` (upcoming v5.0)
 gem 'aws-sdk', '1.6.9'
-gem 'paperclip'
+# gem "paperclip", git: "git://github.com/thoughtbot/paperclip.git"
+gem 'paperclip', '4.2.1'
+
 gem 'google-api-client', '~> 0.7.1'
+# gem 'google-api-client', require: 'google/api_client'
 
 gem 'launchy', '>= 2.1.1'
 
@@ -33,13 +38,15 @@ gem 'redis'
 gem 'redis-store'
 gem 'resque_mailer'
 
-gem 'puma'
-gem "rack-timeout"
+gem "activerecord-postgis-adapter", "3.0.0.beta1" 
 
 group :development, :test do
   gem 'byebug'
+  gem "factory_girl_rails", "~> 4.0"
 end
 group :development do
+  gem 'web-console', '~> 2.0'
+  gem 'spring'
   gem 'guard-minitest', '~> 2.3.2' # https://github.com/guard/guard-minitest
   # Colorize minitest output and show failing tests instantly.
   gem 'minitest-colorize', git: 'https://github.com/ysbaddaden/minitest-colorize'
@@ -51,12 +58,12 @@ gem 'bootstrap-sass'
 gem 'high_voltage'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
-gem 'pg', '0.21.0'
+gem 'pg', '~> 0.18'
 gem 'simple_form'
 
 group :development do
   gem 'better_errors'
-  #gem 'quiet_assets'
+  gem 'quiet_assets'
   gem 'rails_layout'
 end
 group :production do
