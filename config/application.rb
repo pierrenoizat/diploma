@@ -89,7 +89,7 @@ $COLLECTION_ADDRESS_PATH = "m/1/4" # we could be using capital M for "public-key
 $PAYMENT_ADDRESS = @payment_node.to_address # comment out this line if problems
 @collection_node = @master.node_for_path "M/1/4" # comment out this line if problems
 #$COLLECTION_ADDRESS = @collection_node.to_address # comment out this line if you want to force another address
-$COLLECTION_ADDRESS = "16xgoSrGkG3z6eddGr3m4iqoBDTFWuV6J4"
+$COLLECTION_ADDRESS = "1HrZfeZBXCkCaqARk78RuZKteSLgxTncZo"
 $PAYMENT_NODES_COUNT = 2 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
 # number of utxos prepared for a school on a single address
 # Payment node i has path "m/2/#{i}"
