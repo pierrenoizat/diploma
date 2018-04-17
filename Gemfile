@@ -42,6 +42,7 @@ gem 'resque_mailer'
 gem "activerecord-postgis-adapter", "3.0.0.beta1" 
 gem 'blockcypher-ruby'
 gem 'nokogiri','~> 1.8.2'
+gem 'puma'
 
 group :development, :test do
   gem 'byebug'
