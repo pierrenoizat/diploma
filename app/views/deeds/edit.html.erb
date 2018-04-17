@@ -31,11 +31,11 @@
 				<%= f.collection_select :issuer_id, Issuer.all, :id, :name %></br></br>
 				<% unless @batches.blank? %>
 					<h5>Batch: </h5>
-					<% if @batches.count > 1 %>
+					<% if @batches.count > 1 and @batches.count < 3 %>
 						<%= f.collection_select :batch_id, @batches, :id, :title %></br></br>
 					<% else %>
 						<%= @batches.first.title if @batches %></br></br>
-						<%= f.hidden_field :batch_id , :value => @batches.first.id %>
+						<%= f.hidden_field :batch_id , :value => @batches.last.id %>
 					<% end  %>
 				<% end %>
 				<!--<%= f.input :description, input_html: {value: f.object.avatar_file_name} %>-->
