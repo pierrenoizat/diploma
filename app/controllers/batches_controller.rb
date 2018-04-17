@@ -203,6 +203,14 @@ class BatchesController < ApplicationController
   def show
     @issuer = @batch.issuer
     @first_block = first_block(@batch.payment_address)
+    @deeds = @batch.deeds
+    @deeds = @deeds.sort_by { |deed| deed.created_at }
+    values = Hash.new
+    @deeds.each do |deed|
+      values["#{deed.id}"] = deed.description.split(" ")[1]
+    end
+    puts values
+    
   end
   
   def edit
