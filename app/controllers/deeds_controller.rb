@@ -192,8 +192,7 @@ class DeedsController < ApplicationController
       end
       
     end
-    
-    @batches
+    @batches = @batches.sort_by { |batch| batch.created_at }
   end
 
   # POST /deeds
@@ -266,7 +265,10 @@ class DeedsController < ApplicationController
   # PATCH/PUT /deeds/1
   # PATCH/PUT /deeds/1.json
   def update
-    @deed.batch_id = Batch.last.id
+    @issuer=@deed.issuer
+    @batches = @issuer.batches
+    @batches = @batches.sort_by { |batch| batch.created_at }
+    @deed.batch_id = @batches.last.id
     respond_to do |format|
       if @deed.update(deed_params.except(:user_id))
         format.html { redirect_to @deed, notice: 'Deed was successfully updated.' }
