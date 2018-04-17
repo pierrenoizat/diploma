@@ -21,7 +21,7 @@ module Diploma
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    #config.active_record.raise_in_transactional_callbacks = true
+    config.active_record.raise_in_transactional_callbacks = true
     
     AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-west-1', bucket: 'hashtree-assets')
     
@@ -39,8 +39,7 @@ $PER_PAGE = 50
 $BROADCAST = false # set to false to prevent transactions from being broadcast, only seen in the logs then.
 $MAX_SIZE = 7999 # maximum deed (avatar) file size, in kilobytes
 
-# $NETWORK_FEE = 10000  # in satoshis, i.e 0.0001 BTC, Bitcoin network miners fee applied when sending the op_return tx.
-$NETWORK_FEE = 100000 # in satoshis, 10 000 satoshis is around 5 cts with current € exchange rate as of 6/6/2016.
+$NETWORK_FEE = 5000 # in satoshis, 5 000 satoshis is around 30 cts with current € exchange rate as of 16/4/2018.
 
 $GOOGLE_DRIVE_URL = "https://www.googleapis.com/upload/drive/v2/files?uploadType=media" # simple file upload
 $BLOCKCHAIN_UTXO_URL = "https://blockchain.info/unspent?active="
@@ -89,8 +88,8 @@ $COLLECTION_ADDRESS_PATH = "m/1/4" # we could be using capital M for "public-key
 @payment_node = @master.node_for_path "M/1/3" # comment out this line if problems
 $PAYMENT_ADDRESS = @payment_node.to_address # comment out this line if problems
 @collection_node = @master.node_for_path "M/1/4" # comment out this line if problems
-$COLLECTION_ADDRESS = @collection_node.to_address # comment out this line if problems
-
+#$COLLECTION_ADDRESS = @collection_node.to_address # comment out this line if you want to force another address
+$COLLECTION_ADDRESS = "16xgoSrGkG3z6eddGr3m4iqoBDTFWuV6J4"
 $PAYMENT_NODES_COUNT = 2 # payment nodes funded from master payment address and used as inputs in op returns txs, preventing unconfirmed/unspent conflicts.
 # number of utxos prepared for a school on a single address
 # Payment node i has path "m/2/#{i}"
@@ -99,6 +98,10 @@ $PAYMENT_NODES_COUNT = 2 # payment nodes funded from master payment address and 
 # TODO option to send email to user upon op return tx logged successfully
 # $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/logo_paymium_128x57.png"
 # $PRINT_PDF_LOGO_PATH = "#{::Rails.root.to_s}/public/Logo_ESILV_275x85.png"
+
+$API_VERSION = "v1" # blockcypher API
+$COIN = "btc"
+$CHAIN = "main"
 
 module RailsPatch22584
   def insert_fixture(fixture, table_name)

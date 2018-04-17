@@ -8,33 +8,43 @@ class ApplicationController < ActionController::Base
   helper_method :correct_user?, :utxo_addresses, :balance, :address_utxo_count
   helper_method :broadcast, :first_block, :block_height, :input?
   
-  include Bitcoin::Builder
-  
+  include Bitcoin::Builder  
   
   def input?(address, tx_hash)
-    # returns true if address is an input of tx
+    # returns true if address is an input of tx (as input 0)
     boole = false
-    string = "http://btc.blockr.io/api/v1/tx/info/" + tx_hash
+    string = "https://blockchain.info/rawaddr/" + address
     @agent = Mechanize.new
-
-     begin
-       page = @agent.get string
-     rescue Exception => e
-       page = e.page
-     end
-
-     data = page.body
-     result = JSON.parse(data)
-     result["data"]["vins"].each do |vin|
-       if (vin["address"] == address)
-         boole = true
-       end
-     end
+    begin
+      page = @agent.get string
+    rescue Exception => e
+      page = e.page
+    end
+    data = page.body
+    result = JSON.parse(data)
+    n = result["n_tx"]
+    i = n-1
+    block = 840000
+    while i > 0
+      puts boole
+      tx = result["txs"][i]
+      if tx["inputs"][0]["prev_out"]["addr"] == address
+        if tx_hash == tx["hash"]
+          boole = true
+          i = 0
+        else
+          i -= 1
+        end
+      else
+        i -= 1
+      end
+    end
     boole
   end
   
+  
   def first_block(address)
-    # returns first block (oldest) where address can be found in a transaction input
+    # returns first block (oldest) where address can be found in a transaction inputs as input 0
     # fetch all txs for address
     string = "https://blockchain.info/rawaddr/" + address
     @agent = Mechanize.new
@@ -47,26 +57,24 @@ class ApplicationController < ActionController::Base
     data = page.body
     result = JSON.parse(data)
     n = result["n_tx"]
-    i = 0
+    i = n-1
     block = 840000
-    while i < n
+    while i > 0
       tx = result["txs"][i]
       if tx["inputs"][0]["prev_out"]["addr"] == address
         tx_hash = tx["hash"]
         block = [ block, block_height(tx_hash)].min
         puts "According to Blockchain.info, Tx hash: #{tx_hash}"
         puts block
-        i = n
+        i = 0
       else
-        i += 1
+        i -= 1
       end
     end
-    if block < 840000
-      return block
-    else
+    if block > 840000
       puts "In no Block as input yet"
-      return block
     end
+    block
     
   end # of first_block helper
   
@@ -110,50 +118,31 @@ class ApplicationController < ActionController::Base
   
   def balance(address)
     # returns balance of address in satoshis
-    string = $BLOCKR_ADDRESS_BALANCE_URL + address + "?confirmations=0"
+    require "blockcypher"
+    block_cypher = BlockCypher::Api.new(api_token: Figaro.env.blockcypher_api_token)
+    block_cypher.address_balance(address)["balance"].to_i
+  end
+  
+  def address_utxo_count(address)
+    # returns count ( < $STUDENTS_COUNT) of utxos available to fund OP_RETURN transactions from single address (school class diplomas).
+    require "blockcypher"
+    block_cypher = BlockCypher::Api.new(api_token: Figaro.env.blockcypher_api_token)
+    block_cypher.address_balance(address)["n_tx"] # number of txs (spent and unspent)
+    
+    # string = "https://blockchain.info/rawaddr/" + address
+    require "mechanize"
+    string = "https://api.blockcypher.com/"+ "#{$API_VERSION}/" + "#{$COIN}/" + "#{$CHAIN}/" + "/addrs/" + address + "?unspentOnly=1"
+    # string = "https://api.blockcypher.com/v1/btc/main" + "/addrs/" + address
     @agent = Mechanize.new
     begin
       page = @agent.get string
     rescue Exception => e
       page = e.page
     end
+
     data = page.body
     result = JSON.parse(data)
-    if result['status'].include?("error")
-      puts result['status']
-      return 0 # most likely, too many request
-    else 
-      return (result['data']['balance'].to_f)*100000000
-    end
-  end
-  
-  def address_utxo_count(address)
-  
-    # returns count ( < $STUDENTS_COUNT) of utxos available to fund OP_RETURN transactions from single address (school class diplomas).
-    # TODO publish this address next to school name and class (year)
-    string = $BLOCKR_ADDRESS_UNSPENT_URL  + address
-    puts string
-    @agent = Mechanize.new
-
-     begin
-       page = @agent.get string
-     rescue Exception => e
-       page = e.page
-     end
-
-     data = page.body
-     result = JSON.parse(data)
-     if result['status'].include?("error")
-       result['status']
-       return 0 # most likely, too many request
-     else
-       if result['data']['unspent']
-          return result['data']['unspent'].count
-        else
-          return 0
-        end
-     end
-     
+    result["txrefs"].count
   end
   
   
@@ -170,7 +159,7 @@ class ApplicationController < ActionController::Base
 
       payment_address = payment_node.to_address
 
-      if (balance(payment_address) > ($NETWORK_FEE/100000000))
+      if ( balance(payment_address) > $NETWORK_FEE )
         @addresses << payment_address
       end
       

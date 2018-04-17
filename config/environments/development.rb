@@ -59,7 +59,7 @@ Rails.application.configure do
   
   $ROOT_URL = "http://localhost:3000"
   $SCHOOLS = ["TEST SCHOOL", "ESILV", "CDI", "TEST", "ESILV 2014", "ESILV 2015", "Test School"]
-  $STUDENTS_COUNT = 4
+  $STUDENTS_COUNT = 1
   
   # $AWS_S3_BUCKET_NAME = "hashtree-assets"
   $AWS_S3_BUCKET_NAME = "hashtree-test"

@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.3.0'
-gem 'rails', '4.2.5'
+ruby '2.4.2'
+# gem 'rails', '4.2.5'
+gem 'rails', '4.2.8'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
@@ -39,10 +40,13 @@ gem 'redis-store'
 gem 'resque_mailer'
 
 gem "activerecord-postgis-adapter", "3.0.0.beta1" 
+gem 'blockcypher-ruby'
+gem 'nokogiri','~> 1.8.2'
 
 group :development, :test do
   gem 'byebug'
-  gem "factory_girl_rails", "~> 4.0"
+  # gem "factory_girl_rails", "~> 4.0"
+  gem 'factory_bot'
 end
 group :development do
   gem 'web-console', '~> 2.0'

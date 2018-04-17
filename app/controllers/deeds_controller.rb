@@ -266,6 +266,7 @@ class DeedsController < ApplicationController
   # PATCH/PUT /deeds/1
   # PATCH/PUT /deeds/1.json
   def update
+    @deed.batch_id = Batch.last.id
     respond_to do |format|
       if @deed.update(deed_params.except(:user_id))
         format.html { redirect_to @deed, notice: 'Deed was successfully updated.' }

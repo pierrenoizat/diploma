@@ -30,11 +30,13 @@ class Batch < ActiveRecord::Base
     # batch root pdf file is a list showing the hashes of all the diplomas
     # root_file_hash is the hash of this batch root pdf file
     # root pdf file is manually uploaded as a batch deed with the batch Bitcoin address (payment_address) as description.
+    hash = nil
     Deed.all.each do |deed|
       if deed.description == self.payment_address  # caracterize a batch root file
-        return deed.upload  # deed.upload is the hash of the deed file
+        hash = deed.upload  # deed.upload is the hash of the deed file
       end
     end
+    hash
   end
   
   def broadcast_tx
@@ -67,7 +69,7 @@ class Batch < ActiveRecord::Base
   end
   
   def batch_init_tx
-     
+    # DEPRECATED: simply fund self.payment_address with admin wallet (any wallet)
     # fund batch.payment_address from 
     @payment_address = self.payment_address
     puts "Init payment address: #{$PAYMENT_ADDRESS}"
@@ -220,7 +222,7 @@ class Batch < ActiveRecord::Base
        @batch_key = BTC::Key.new(wif:self.payment_private_key)
        @batch_address = self.payment_address
        # @value = (self.amount.to_f * BTC::COIN).to_i - $NETWORK_FEE # in satoshis, amount MUST be 200 000 satoshis (~ 2 €)
-       @value = @input_amount.to_i - 100000
+       @value = @input_amount.to_i - $NETWORK_FEE
        BTC::Network.default = BTC::Network.mainnet
        @op_return_script = BTC::Script.new(op_return: self.deeds.last.upload)
 
@@ -280,11 +282,11 @@ class Batch < ActiveRecord::Base
      result = JSON.parse(data)
      if !result['unspent_outputs'].blank?
        result['unspent_outputs'].each do |utx|
-         if utx['value'].to_f >= 250000
-           utxo_params["tx_hash"] = utx['tx_hash_big_endian']
-           utxo_params["index"]  = utx['tx_output_n'].to_i
-           utxo_params["amount"]  = utx['value'].to_f  # amount in satoshis
-           utxo_params["confirmations"]  = utx['confirmations'].to_i
+         if utx['value'].to_f >= 5000
+           utxo_params["tx_hash"] = utx["tx_hash_big_endian"]
+           utxo_params["index"] = utx["tx_output_n"].to_i
+           utxo_params["amount"] = utx["value"].to_f  # amount in satoshis
+           utxo_params["confirmations"] = utx["confirmations"].to_i
          end
        end
      else

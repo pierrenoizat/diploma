@@ -145,6 +145,7 @@ class BatchesController < ApplicationController
   
   
   def prepare_tx
+
     if address_utxo_count(@batch.payment_address) == 0
       address_balance = balance($PAYMENT_ADDRESS)
       if address_balance < 2*$NETWORK_FEE
@@ -161,7 +162,7 @@ class BatchesController < ApplicationController
       @batch.root_hash = @batch.root_file_hash
       @batch.save
       @batch.batch_authentification_tx
-      redirect_to @batch, notice: 'Raw signed batch tx was successfully created.'
+      redirect_to @batch, notice: "Raw signed batch tx was successfully created."
     end
   end
   
