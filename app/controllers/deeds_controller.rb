@@ -159,6 +159,9 @@ class DeedsController < ApplicationController
   def new
     @deed = Deed.new
     @issuer = Issuer.find_by_id(current_user.issuer_id)
+    @batches = @issuer.batches
+    @batches = @batches.sort_by { |batch| batch.created_at }
+    @batch = @batches.last
     
     @issuers = [ Issuer.find_by_name(current_user.email) ]
     if @issuer.blank?
