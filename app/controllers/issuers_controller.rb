@@ -25,7 +25,7 @@ class IssuersController < ApplicationController
        @batches << batch
      end
    end
-   @batches = @batches.sort_by { |batch| batch.created_at }
+   @batches = @batches.sort_by { |batch| batch.created_at }.reverse!
   end
 
 
