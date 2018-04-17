@@ -269,6 +269,7 @@ class DeedsController < ApplicationController
     @batches = @issuer.batches
     @batches = @batches.sort_by { |batch| batch.created_at }
     @deed.batch_id = @batches.last.id
+    @deed.save
     respond_to do |format|
       if @deed.update(deed_params.except(:user_id))
         format.html { redirect_to @deed, notice: 'Deed was successfully updated.' }

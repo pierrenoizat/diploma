@@ -34,7 +34,7 @@
 					<% if @batches.count > 1 and @batches.count < 3 %>
 						<%= f.collection_select :batch_id, @batches, :id, :title %></br></br>
 					<% else %>
-						<%= @batches.first.title if @batches %></br></br>
+						<%= @batches.last.title if @batches %></br></br>
 						<%= f.hidden_field :batch_id , :value => @batches.last.id %>
 					<% end  %>
 				<% end %>
