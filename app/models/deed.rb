@@ -59,7 +59,7 @@ class Deed < ActiveRecord::Base
        # search is handled in controllers/deeds_controller.rb, index method
        # description must include first name in lower case and last name in upper case
        return scoped unless first.present? || last.present?
-         where(['description LIKE ?', "%#{last}%"])
+         where(['description ILIKE ?', "%#{last}%"])
      end
 
 

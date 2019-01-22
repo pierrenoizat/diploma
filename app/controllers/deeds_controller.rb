@@ -98,7 +98,8 @@ class DeedsController < ApplicationController
   # GET /deeds.json
   def index
     @batch = Batch.find(params[:batch_id])
-    @deeds = Deed.all
+    # @deeds = Deed.all
+
     result = 0
     unless (params[:first].size < 2 or params[:last].size < 2)
       @deeds = Deed.search(params[:first], params[:last]).order("created_at DESC")
@@ -116,8 +117,8 @@ class DeedsController < ApplicationController
         end
         if result == 1
           render :public_display # Successfull search
-        else 
-          redirect_to search_batch_path(@batch), alert: "Search result: zero match or duplicates found."
+        else
+          redirect_to search_batch_path(@batch), alert: "Search result: duplicates found."
         end
       else
         redirect_to search_batch_path(@batch), alert: "Search result: not found. Make sure that first name is in lowercase, last name in uppercase (capital letters)."
