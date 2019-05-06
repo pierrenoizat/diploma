@@ -22,7 +22,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  # config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -32,7 +32,7 @@ Rails.application.configure do
   config.serve_static_files = true
   # config.serve_static_assets = true is deprecated in rails 5, replaced by line above
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
-  config.assets.compile = false # Disables security vulnerability
+  config.assets.compile = true # set to false to disable security vulnerability
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
   config.assets.digest = true
