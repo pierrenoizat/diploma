@@ -14,41 +14,30 @@ class DeedsController < ApplicationController
   end
   
   def download_sample
-    
-    s3 = AWS::S3.new(
+    s3 = Aws::S3::Client.new(
     :access_key_id     => Rails.application.secrets.access_key_id,
-    :secret_access_key => Rails.application.secrets.secret_access_key
+    :secret_access_key => Rails.application.secrets.secret_access_key,
+    :region => ENV['AWS_REGION']
     )
-
-    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-    object = bucket.objects[@deed.avatar_file_name]
-    unless object
-      bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-      object = bucket.objects[@deed.avatar_file_name]
-    end
-    send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
-    
+    resp = s3.get_object(
+      bucket: ENV['S3_BUCKET'],
+      key: @deed.avatar_file_name)
+    send_data resp.body.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
   end
   
   def download_report
-    
     if @deed.batch
       Deed.all.each do |deed|
         if deed.description == @deed.batch.payment_address
-    
-          s3 = AWS::S3.new(
+          s3 = Aws::S3::Client.new(
           :access_key_id     => Rails.application.secrets.access_key_id,
-          :secret_access_key => Rails.application.secrets.secret_access_key
+          :secret_access_key => Rails.application.secrets.secret_access_key,
+          :region => ENV['AWS_REGION']
           )
-
-          bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-          object = bucket.objects[deed.avatar_file_name]
-          unless object
-            bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-            object = bucket.objects[deed.avatar_file_name]
-          end
-    
-          send_data object.read, filename: deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
+          resp = s3.get_object(
+            bucket: ENV['S3_BUCKET'],
+            key: deed.avatar_file_name)
+          send_data resp.body.read, filename: deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
         end
       end
     end 
@@ -56,21 +45,15 @@ class DeedsController < ApplicationController
   
 
   def download
-    # Ruby SDK - Version 1
-    s3 = AWS::S3.new(
+    s3 = Aws::S3::Client.new(
     :access_key_id     => Rails.application.secrets.access_key_id,
-    :secret_access_key => Rails.application.secrets.secret_access_key
+    :secret_access_key => Rails.application.secrets.secret_access_key,
+    :region => ENV['AWS_REGION']
     )
-
-    bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-    object = bucket.objects[@deed.avatar_file_name]
-    unless object
-      bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-      object = bucket.objects[@deed.avatar_file_name]
-    end
-    
-    send_data object.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
-    
+    resp = s3.get_object(
+      bucket: ENV['S3_BUCKET'],
+      key: @deed.avatar_file_name)
+    send_data resp.body.read, filename: @deed.avatar_file_name, disposition: 'attachment', stream: 'true', buffer_size: '4096'
   end
   
   
@@ -214,34 +197,31 @@ class DeedsController < ApplicationController
     
     require 'digest'
     require 'openssl'
-
+    s3 = Aws::S3::Client.new(
+    :access_key_id     => Rails.application.secrets.access_key_id,
+    :secret_access_key => Rails.application.secrets.secret_access_key,
+    :region => ENV['AWS_REGION']
+    )
+    
     respond_to do |format|
       if @deed.save
         
         current_user.credit -= 1
         current_user.save
-        
-        s3 = AWS::S3.new(
-        :access_key_id     => Rails.application.secrets.access_key_id,
-        :secret_access_key => Rails.application.secrets.secret_access_key
-        )
 
-        key = 's3-object-key'
-
+        # key = 's3-object-key'
         # Creates a string key - store this!
-        symmetric_key = OpenSSL::Cipher::AES256.new(:CBC).random_key
+        # symmetric_key = OpenSSL::Cipher::AES256.new(:CBC).random_key
         # puts symmetric_key
+        # options = { :encryption_key => symmetric_key }
 
-        options = { :encryption_key => symmetric_key }
+        # bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
+        # object = bucket.objects[@deed.avatar_file_name]
+        resp = s3.get_object(
+          bucket: ENV['S3_BUCKET'],
+          key: @deed.avatar_file_name)
 
-        bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-        object = bucket.objects[@deed.avatar_file_name]
-        unless object
-          bucket = s3.buckets[$AWS_S3_BUCKET_NAME]
-          object = bucket.objects[@deed.avatar_file_name]
-        end
-
-        @deed.upload = Digest::SHA256.hexdigest object.read
+        @deed.upload = Digest::SHA256.hexdigest resp.body.read
         @deed.save
         # @deed.confirmation_email # TODO fix issue with mailchimp (or revert to sendgrid)
         

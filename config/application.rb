@@ -21,14 +21,25 @@ module Diploma
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
+    # config.active_record.raise_in_transactional_callbacks = true
     
-    AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-west-1', bucket: 'hashtree-assets')
+    # AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-west-1', bucket: 'hashtree-assets')
+    
+    # config.paperclip_defaults = {
+    #            :storage => :s3,
+    #            :s3_host_name => 's3-eu-west-1.amazonaws.com'
+    # }
     
     config.paperclip_defaults = {
-                :storage => :s3,
-                :s3_host_name => 's3-eu-west-1.amazonaws.com'
-     }
+        storage: :s3,
+        s3_region: ENV["AWS_REGION"],
+        s3_credentials: {
+          s3_host_name: 's3-eu-west-1.amazonaws.com',
+          bucket: ENV["S3_BUCKET"],
+          access_key_id: ENV["AWS_ACCESS_KEY_ID"],
+          secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]
+          }
+        }
     
   end
 end

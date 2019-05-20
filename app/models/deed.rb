@@ -13,12 +13,13 @@ class Deed < ActiveRecord::Base
     has_attached_file :avatar,
      :default_url => "/images/:style/missing.png",
      :storage => :s3,
-     :s3_permissions => :public_read,
+     :region => ENV['AWS_REGION'],
+     :s3_permissions => 'public-read',
      :s3_credentials => "#{Rails.root}/config/aws.yml",
-     :bucket => $AWS_S3_BUCKET_NAME,
+     :bucket => ENV['S3_BUCKET'],
      :s3_host_name => 's3-eu-west-1.amazonaws.com',
      :path => ":filename",
-     :s3_storage_class => :standard
+     :s3_storage_class => :STANDARD
 
      validates_attachment :avatar,
        :size => { :in => 0..$MAX_SIZE.kilobytes }

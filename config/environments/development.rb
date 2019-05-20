@@ -65,10 +65,10 @@ Rails.application.configure do
   $AWS_S3_BUCKET_NAME = "hashtree-test"
   
   # AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-central-1', bucket: 'hashtree-assets')
-  AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-west-1', bucket: "#{$AWS_S3_BUCKET_NAME}")
-  config.paperclip_defaults = {
-              :storage => :s3,
-              :s3_host_name => 's3-eu-west-1.amazonaws.com'
-   }
+  #AWS.config(access_key_id: Rails.application.secrets.access_key_id, secret_access_key: Rails.application.secrets.secret_access_key, region: 'eu-west-1', bucket: "#{$AWS_S3_BUCKET_NAME}")
+  #config.paperclip_defaults = {
+  #            :storage => :s3,
+  #            :s3_host_name => 's3-eu-west-1.amazonaws.com'
+  # }
   
 end

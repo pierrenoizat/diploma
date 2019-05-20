@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     collection do
       get 'school_list'
     end
+    member do
+      get 'batch_list'
+    end
     end
     
   resources :deeds do

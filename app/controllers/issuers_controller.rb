@@ -1,5 +1,5 @@
 class IssuersController < ApplicationController
-  before_action :set_issuer, only: [:show, :edit, :update, :destroy]
+  before_action :set_issuer, only: [:show, :edit, :update, :destroy, :batch_list]
   before_action :current_user_admin?, :except => [:show, :school_list]
   
   include Bitcoin::Builder
@@ -10,6 +10,23 @@ class IssuersController < ApplicationController
     @issuers = Issuer.all
   end
   
+  def batch_list
+   @issuers = []
+   @batches = []
+   puts Issuer::SCHOOLS
+   Issuer::SCHOOLS.each do |school|
+     issuer = Issuer.find_by_name(school)
+     if issuer and issuer.small_logo_path == @issuer.small_logo_path
+       @issuers << issuer
+     end
+   end
+   @issuers.each do |issuer|
+     issuer.batches.each do |batch|
+       @batches << batch
+     end
+   end
+   @batches = @batches.sort_by { |batch| batch.created_at }.reverse!
+  end
   
   def school_list
    @issuers = []
