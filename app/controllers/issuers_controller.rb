@@ -1,6 +1,6 @@
 class IssuersController < ApplicationController
   before_action :set_issuer, only: [:show, :edit, :update, :destroy, :batch_list]
-  before_action :current_user_admin?, :except => [:show, :school_list]
+  before_action :current_user_admin?, :except => [:show, :school_list, :batch_list]
   
   include Bitcoin::Builder
 
