@@ -16,8 +16,8 @@ Ruby on Rails
 
 This application requires:
 
-- Ruby 2.3.0
-- Rails 4.2.5
+- Ruby 2.5.3
+- Rails 5.2.2
 
 Getting Started
 ---------------
@@ -27,4 +27,4 @@ Once uploaded, your deeds can be found under the "Deeds" tab.
 
 License
 -------
-© Paymium - 2011-2016 Soon to be released under the [MIT license](http://opensource.org/licenses/mit-license.php)
+© diploma.report - 2015-2019 Soon to be released under the [MIT license](http://opensource.org/licenses/mit-license.php)
