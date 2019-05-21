@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :correct_user?, :except => [:index, :destroy, :edit]
+  before_action :correct_user?, :except => [:index, :destroy, :edit, :show]
   before_action :current_user_admin?, :except => [:show, :edit, :update, :show_authorized]
   
   require 'money-tree'

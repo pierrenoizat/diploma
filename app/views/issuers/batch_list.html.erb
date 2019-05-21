@@ -1,12 +1,11 @@
 <p id="notice"><%= notice %></p>
 <!-- Page Content -->
 <div class="container">
-       
-<h1>Classes</h1>
-</br>
+<%= link_to @batches.first.school_url, :target => "_blank" do %>
+            <div class="fill" style="background-image" ><%= image_tag @batches.first.issuer.logo_path %></div>
+          <% end %>
 <table class="table table-bordered">
 	<th>
-	  <td><strong>School Name</strong></td>
 	  <td><strong>Class Year</strong></td>
 	  <td><strong>Diplomas Count</strong></td>
 	  <td><strong><span data-toggle="tooltip" data-placement="top" title="Height of Block where registered address first appears as a transaction input.">Block</span></strong></td>
@@ -14,10 +13,7 @@
 	</th>
 <% @batches.each do |batch| %>
 	<tr>
-	  <td>	<%= link_to batch.school_url, :target => "_blank" do %>
-            <div class="fill" style="background-image" ><%= image_tag batch.issuer.small_logo_path %></div>
-          <% end %></td>
-	  <td><%= batch.issuer.name %></td>
+	  <td></td>
 	  <td><a href="<%= "#{search_batch_path(batch)}" %> "><%= batch.title %></a></td>
 	  <td><%= batch.deeds.count %></td>
 	  <td>
