@@ -21,11 +21,9 @@ class IssuersController < ApplicationController
      end
    end
    @issuers.each do |issuer|
-     issuer.batches.each do |batch|
-       @batches << batch
-     end
-   end
-   @batches = @batches.sort_by { |batch| batch.created_at }.reverse!
+      @batches << Batch.where("issuer_id = ? AND public = ?" , issuer.id, true).to_a
+    end
+    @batches = @batches.flatten.sort_by { |batch| batch.created_at }.reverse!
   end
   
   def school_list
@@ -38,11 +36,9 @@ class IssuersController < ApplicationController
      end
    end
    @issuers.each do |issuer|
-     issuer.batches.each do |batch|
-       @batches << batch
-     end
+     @batches << Batch.where("issuer_id = ? AND public = ?" , issuer.id, true).to_a
    end
-   @batches = @batches.sort_by { |batch| batch.created_at }.reverse!
+   @batches = @batches.flatten.sort_by { |batch| batch.created_at }.reverse!
   end
 
 
