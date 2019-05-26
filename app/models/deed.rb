@@ -33,8 +33,8 @@ class Deed < ActiveRecord::Base
      
      validates :issuer_id, presence: true
      validates :issuer_id, numericality: { only_integer: true }
-     validates :description, presence: true
-     validates :description, uniqueness: true
+     # validates :description, presence: true
+     # validates :description, uniqueness: true
      
      before_create :generate_access_key
      
