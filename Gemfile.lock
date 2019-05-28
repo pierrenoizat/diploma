@@ -928,6 +928,7 @@ GEM
     net-http-digest_auth (1.4.1)
     net-http-persistent (3.0.1)
       connection_pool (~> 2.2)
+    newrelic_rpm (6.3.0.355)
     nio4r (2.3.1)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
@@ -1123,6 +1124,7 @@ DEPENDENCIES
   mechanize
   minitest-colorize!
   money-tree
+  newrelic_rpm
   nokogiri (~> 1.8.2)
   omniauth
   omniauth-google-oauth2
