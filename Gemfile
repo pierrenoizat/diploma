@@ -39,6 +39,8 @@ gem 'simple_form'
 gem 'sprockets', '~>3.7.2'
 gem "binding_of_caller"
 
+gem 'rails_12factor', group: :production
+
 group :development, :test do
   gem 'byebug'
   gem 'factory_bot'
