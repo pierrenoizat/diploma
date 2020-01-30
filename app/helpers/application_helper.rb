@@ -3,8 +3,7 @@ module ApplicationHelper
   def tx_link(string)
     
    # "https://live.blockcypher.com/btc/tx/#{string}/"
-    
-    "https://www.blocktrail.com/BTC/tx/#{string}/"
+    "https://blockchair.com/bitcoin/transaction/#{string}/"
   end
   
   def public_link(string)

@@ -38,8 +38,7 @@ gem 'pg', '~> 0.18'
 gem 'simple_form'
 gem 'sprockets', '~>3.7.2'
 gem "binding_of_caller"
-
-gem 'rails_12factor', group: :production
+gem 'rb-readline'
 
 group :development, :test do
   gem 'byebug'
