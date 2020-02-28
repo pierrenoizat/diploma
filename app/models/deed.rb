@@ -61,6 +61,7 @@ class Deed < ActiveRecord::Base
        # description must include first name in lower case and last name in upper case
        return scoped unless first.present? || last.present?
          where(['description ILIKE ?', "%#{last}%"])
+       
      end
 
 

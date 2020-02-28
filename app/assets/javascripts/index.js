@@ -135,7 +135,7 @@ $(document).ready(function() {
 
   var crypto_finish = function(hash) {
     bar.width(100 + '%');
-    explain.html(translate('Your file hash: ') + hash);
+    explain.html(translate('Your file digest: ') + hash);
     // $.post('./api/v1/register/' + hash, onRegisterSuccess);
   };
 

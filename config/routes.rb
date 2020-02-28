@@ -45,7 +45,6 @@ Rails.application.routes.draw do
       get 'prepare_tx'
       post 'generate_pdf'
       get 'search'
-      post 'search'
     end
   end
   
