@@ -1,6 +1,6 @@
 class Deed < ActiveRecord::Base
   include Utxo
-  enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video, :photo, :slides, :diploma_report]
+  enum category: [:diploma, :identity, :property, :book, :paper, :audio, :video, :photo, :slides, :diploma_report, :class_directory]
   belongs_to :user
   belongs_to :issuer
   belongs_to :batch

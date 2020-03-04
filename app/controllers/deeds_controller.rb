@@ -86,8 +86,14 @@ class DeedsController < ApplicationController
     result = 0
     if params[:upload]
       @deed = Deed.where('upload LIKE ?', "%#{params[:upload]}%").first
-      puts @deed.description
-      render :public_display
+      if @deed 
+        puts @deed.description
+        render :public_display
+      else
+        puts "Deed not found!"
+        redirect_to search_batch_path(@batch), alert: "Search result: not found."
+      end
+      
     else
       unless (params[:first].size < 2 or params[:last].size < 2)
         @deeds = Deed.search(params[:first], params[:last]).order("created_at DESC")

@@ -84,14 +84,23 @@
 		</div>
 		<% if @batch.deeds.count > 0 %>
         <div class="col-lg-4">
-	<%= button_to t('.generate_pdf', :default => "Generate PDF"),
+	<%= button_to t('.generate_pdf', :default => "Generate Batch PDF"),
 	            generate_pdf_batch_path(@batch), :action => :generate_pdf, :class => "btn btn-success btn-xs" %>
 		</div>
 		<div class="col-lg-4">
 			<%= button_to t('.download_pdf', :default => "Download Batch PDF"),
 				            download_pdf_batch_path(@batch), :action => :download_pdf, :class => "btn btn-success btn-xs" %>
 	
-		</div>
+		</div></br></br>
+	        <div class="col-lg-4">
+		<%= button_to t('.generate_pdf', :default => "Generate Directory PDF"),
+		            generate_directory_pdf_batch_path(@batch), :action => :generate_directory_pdf, :class => "btn btn-success btn-xs" %>
+			</div>
+			<div class="col-lg-4">
+				<%= button_to t('.download_pdf', :default => "Download Directory PDF"),
+					            download_directory_pdf_batch_path(@batch), :action => :download_directory_pdf, :class => "btn btn-success btn-xs" %>
+	
+			</div>
 		<% end %>
 	</div>
     <!-- /.row -->

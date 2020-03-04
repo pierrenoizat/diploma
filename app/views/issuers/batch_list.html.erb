@@ -10,6 +10,10 @@
 	  <td><strong>Diplomas Count</strong></td>
 	  <td><strong><span data-toggle="tooltip" data-placement="top" title="Height of Block where registered address first appears as a transaction input.">Block</span></strong></td>
 	  <td><span data-toggle="tooltip" data-placement="top" title="Look for this address in a transaction input of the Block."><strong>School Signature Address</strong></span></td>
+	  <td><span data-toggle="tooltip" data-placement="top" title="Look for this address in a transaction input of the Block."><strong>Class Diploma Report</strong></span></td>
+	  <% if current_user %>
+	  <td><span data-toggle="tooltip" data-placement="top" title="Look for this address in a transaction input of the Block."><strong>Class Directory</strong></span></td>
+	  <% end%>
 	</th>
 <% @batches.each do |batch| %>
 	<tr>
@@ -23,6 +27,12 @@
 			N/A
 		<% end %></td>
 	  <td><a href='<%= batch.address_url %>' target="_blank"><%= batch.payment_address %></a></td>
+	  <% @deed = batch.deeds.where("category = ?", Deed.categories['diploma_report']).last %>
+	  <td><% if @deed %>
+			<a class="btn btn-default btn-xs btn-success" href="<%= "#{download_report_deed_path(@deed)}" %> "><i class="fa fa-download"></i>Download Diploma Report</a><% end %></td>
+		<% if current_user %>
+	  <td><% if @deed %>
+	  		<a class="btn btn-default btn-xs btn-success" href="<%= "#{download_report_deed_path(@deed)}" %> "><i class="fa fa-download"></i>Download Diploma Report</a><% end %></td><% end %>
 	</tr>
 	<% end %>
 </table>

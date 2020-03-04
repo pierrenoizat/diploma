@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     member do
       get 'download'
       get 'download_report'
+      get 'download_directory'
       get 'download_sample'
       get 'log_hash'
       get 'display_tx'
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
     member do
       get 'prepare_tx'
       post 'generate_pdf'
+      post 'generate_directory_pdf'
       get 'search'
     end
   end
@@ -52,6 +54,7 @@ Rails.application.routes.draw do
     resources :deeds
     member do
        post 'download_pdf'
+       post 'download_directory_pdf'
      end
   end
   
